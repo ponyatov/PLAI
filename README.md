@@ -4,3 +4,7 @@
 
 (c) Shriram Krishnamurthi
 
+### preinstall
+
+https://racket-lang.org/
+github://github.com/mflatt/plai-typed/master
