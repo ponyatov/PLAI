@@ -1,6 +1,8 @@
 #lang plai-typed
 
-(define-type ArithC ; base algebraic type 
+;;; [C]ore language
+
+(define-type ArithC ; [c]ore language type set
   [numC  (n : number) ] ; number
   [plusC (l : ArithC) (r : ArithC) ] ; + operator
   [multC (l : ArithC) (r : ArithC) ] ; * operator
@@ -19,7 +21,21 @@
   )
 
 (test
- (parse '(+ 2 (* 2 3)) )
- (plusC (numC 2) (multC (numC 2) (numC 3)))
+ (parse '(+ 1 (* 2 3)) )
+ (plusC (numC 1) (multC (numC 2) (numC 3)))
  )
 
+;;; [interp]reter
+
+(define (interp [a : ArithC]) : number
+  (type-case ArithC a
+    [numC (n) n]
+    [plusC (l r) (+ (interp l) (interp r))]
+    [multC (l r) (* (interp l) (interp r))]
+    )
+  )
+
+(test
+ (interp (parse '(+ 1 (* 2 3)) ) )
+ 7
+ )
