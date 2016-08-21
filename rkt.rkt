@@ -1,6 +1,6 @@
 #lang plai-typed
 
-;;; [C]ore language
+;;; 2. [C]ore language
 
 (define-type ArithC ; [c]ore language type set
   [numC  (n : number) ] ; number
@@ -25,7 +25,7 @@
  (plusC (numC 1) (multC (numC 2) (numC 3)))
  )
 
-;;; [interp]reter
+;;; 3. [interp]reter
 
 (define (interp [a : ArithC]) : number
   (type-case ArithC a
@@ -39,3 +39,38 @@
  (interp (parse '(+ 1 (* 2 3)) ) )
  7
  )
+
+;;; 4. de[s]ugaring
+
+(define-type ArithS ; de[s]ugaring type set
+  [numS  (n : number) ] ; number
+  [plusS (l : ArithS) (r : ArithS) ] ; + operator
+  [bminusS (l : ArithS) (r : ArithS) ] ; - operator
+  [uminusS (e : ArithS) ] ; unary - operator
+  [multS (l : ArithS) (r : ArithS) ] ; * operator
+  )
+
+(define (desugar [as : ArithS]) : ArithC
+  (type-case ArithS as
+    [numS (n) (numC n)]
+    [plusS (l r) (plusC (desugar l)(desugar r))]
+    [multS (l r) (multC (desugar l)(desugar r))]
+    [bminusS (l r) (plusC
+                    (desugar l)
+                    (multC (numC -1)
+                           (desugar r) )
+                    )]
+    [uminusS (e) (desugar (bminusS (numS 0) e ))]
+    )
+  )
+
+(test
+ (desugar (numS -1))
+ (numC -1)
+ )
+
+(test
+ (desugar (multS (numS 2) (bminusS (numS 3)(numS 4))))
+ (multC (numC 2) (plusC (numC 3) (multC (numC -1) (numC 4))))
+ )
+
