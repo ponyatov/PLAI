@@ -76,6 +76,14 @@
 
 ;;; 5. Functions
 
+(define-type FunDefC
+  [fdC
+   (name : symbol) ; function name
+   (arg : symbol) ; argument (single: scalar or composite)
+   (body : ArithC) ; function body : ExprC
+   ]
+  )
+
 '(define (double x) (+ x x))
 '(define (quadruple x) (double (double x)))
 '(define (const5 _) 5)
