@@ -74,13 +74,13 @@
  (multC (numC 2) (plusC (numC 3) (multC (numC -1) (numC 4))))
  )
 
-;;; 5. Functions
+;;; 5. Functions  p.21
 
 (define-type ExprC
   [numZ   (n : number) ]
   [plusZ  (l : ExprC) (r : ExprC)]
   [minusZ (l : ExprC) (r : ExprC)]
-  [idC ( sym : symbol) ]
+  [idC ( s : symbol) ]
   [app ] ; function application
   )
 
