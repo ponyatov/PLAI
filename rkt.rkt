@@ -76,11 +76,19 @@
 
 ;;; 5. Functions
 
+(define-type ExprC
+  [numZ   (n : number) ]
+  [plusZ  (l : ExprC) (r : ExprC)]
+  [minusZ (l : ExprC) (r : ExprC)]
+  [idC ( sym : symbol) ]
+  [app ] ; function application
+  )
+
 (define-type FunDefC
   [fdC
    (name : symbol) ; function name
    (arg : symbol) ; argument (single: scalar or composite)
-   (body : ArithC) ; function body : ExprC
+   (body : ExprC) ; _executable_ function body
    ]
   )
 
