@@ -79,9 +79,9 @@
 (define-type ExprC
   [numZ   (n : number) ]
   [plusZ  (l : ExprC) (r : ExprC)]
-  [minusZ (l : ExprC) (r : ExprC)]
-  [idC ( s : symbol) ]
-  [app ] ; function application
+  [multZ (l : ExprC) (r : ExprC)]
+  [idC ( s : symbol) ] ; identifier
+  [appC (fun : symbol) (arg : ExprC) ] ; function application
   )
 
 (define-type FunDefC
@@ -93,5 +93,17 @@
   )
 
 '(define (double x) (+ x x))
-'(define (quadruple x) (double (double x)))
-'(define (const5 _) 5)
+'(fdC 'double 'x '(plusC (idC 'x) (idC 'x)))
+
+(define (interpfn [e : ExprC] [fds : (listof FunDefC)] ) : number
+  (type-case ExprC e
+    [numZ (n) n]
+    [plusZ (l r) (+ (interpfn l fds) (interpfn r fds))]
+    [multZ (l r) (* (interpfn l fds) (interpfn r fds))]
+    [idC (id) 0]
+    [appC (a b) 0]
+    )
+  )
+
+; '(define (quadruple x) (double (double x)))
+; '(define (const5 _) 5)
