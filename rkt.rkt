@@ -84,7 +84,10 @@
   [appC (fun : symbol) (arg : ExprC) ] ; function application
   )
 
-(define-type FunDefC
+'(define (double x) (+ x x)) ; is equal to
+'(fdC 'double 'x '(plusC (idC 'x) (idC 'x)))
+
+(define-type FunDefC ; function defiinition required for interpfn definition
   [fdC
    (name : symbol) ; function name
    (arg : symbol) ; argument (single: scalar or composite)
@@ -92,10 +95,7 @@
    ]
   )
 
-'(define (double x) (+ x x))
-'(fdC 'double 'x '(plusC (idC 'x) (idC 'x)))
-
-(define (interpfn [e : ExprC] [fds : (listof FunDefC)] ) : number
+(define (interpfn [e : ExprC] [fds : (listof FunDefC)] ) : number ; $5.2
   (type-case ExprC e
     [numZ (n) n]
     [plusZ (l r) (+ (interpfn l fds) (interpfn r fds))]
