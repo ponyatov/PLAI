@@ -1,4 +1,5 @@
-#lang plai-typed
+#lang plai
+;; -typed
 
 ; p.21 $5. Functions 
 
