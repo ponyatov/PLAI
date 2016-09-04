@@ -76,51 +76,7 @@
 
 ;;; 5. Functions  p.21
 
-(define-type ExprC
-  [numZ   (n : number) ]
-  [plusZ  (l : ExprC) (r : ExprC)]
-  [multZ (l : ExprC) (r : ExprC)]
-  [idC ( s : symbol) ] ; identifier
-  [appC (fun : symbol) (arg : ExprC) ] ; function application
-  )
-
 '(define (double x) (+ x x)) ; is equal to
 ; '(define (quadruple x) (double (double x)))
 ; '(define (const5 _) 5)
 '(fdC 'double 'x '(plusC (idC 'x) (idC 'x)))
-
-(define-type FunDefC ; function defiinition required for interpfn definition
-  [fdC
-   (name : symbol) ; function name
-   (arg : symbol) ; argument (single: scalar or composite)
-   (body : ExprC) ; _executable_ function body
-   ]
-  )
-
-(define (interpfn [e : ExprC] [fds : (listof FunDefC)] ) : number ; $5.2
-  (type-case ExprC e
-    [numZ (n) n]
-    [plusZ (l r) (+ (interpfn l fds) (interpfn r fds))]
-    [multZ (l r) (* (interpfn l fds) (interpfn r fds))]
-    [idC (id) 0]
-    [appC (a b) 0]
-    )
-  )
-
-; get-fundef : symbol * (listof FunDefC) -> FunDefC ; p.22 function body search
-
-; p.23 $5.3 Substitution
-
-(define (subst [what : ExprC] [for : symbol] [in : ExprC] ) : ExprC
-  (type-case ExprC in
-    [numZ (n) in] ; numbers not substitutable so stays itself
-    [idC (s) (cond ; replace id
-               [(symbol=? s for) what] ; by what if for is symbol
-               [else in])] ; or for is function name so leave it unsubsted
-    [appC (f a) (appC f (subst what for a))]
-    [plusZ (l r) (plusZ (subst what for l) (subst what for r))]
-    [multZ (l r) (multZ (subst what for l) (subst what for r))]
-  )
-)
-
-; p.23 $5.4
