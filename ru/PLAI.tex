@@ -1,7 +1,228 @@
 \input{../../texheader/ebook}
-\title{Programming Languages: Application and Interpretation}
-\author{Shriram Krishnamurthi\\перевод Dmitry Ponyatov \email{dponyatov@gmail.com}}
+
+\title{{\Huge{PLAI}}\\
+Programming Languages: Application and Interpretation\\
+{\small{second edition}}\\
+{\Huge{языки программирования}}\\{\Huge{применение и реализация}}}
+
+\author{\copyright\ Шрирам Кришнамурти\\
+перевод Dmitry Ponyatov \email{dponyatov@gmail.com}}
+
 \begin{document}
 \maketitle
 \tableofcontents
+\secdown
+
+\input{1_intro}
+
+\secrel{2 Everything (We Will Say) About Parsing 10}\secdown
+\secrel{2.1 A Lightweight, Built-In First Half of a Parser . . . . . . . . . . . . . 10}
+\secrel{2.2 A Convenient Shortcut . . . . . . . . . . . . . . . . . . . . . . . . . 10}
+\secrel{2.3 Types for Parsing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11}
+\secrel{2.4 Completing the Parser . . . . . . . . . . . . . . . . . . . . . . . . . . 12}
+\secrel{2.5 Coda . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13}
+\secup
+
+\secrel{3 A First Look at Interpretation 13}\secdown
+\secrel{3.1 Representing Arithmetic . . . . . . . . . . . . . . . . . . . . . . . . 14}
+\secrel{3.2 Writing an Interpreter . . . . . . . . . . . . . . . . . . . . . . . . . . 14}
+\secrel{3.3 Did You Notice? . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15}
+\secrel{3.4 Growing the Language . . . . . . . . . . . . . . . . . . . . . . . . . 16}
+\secup
+
+\secrel{4 A First Taste of Desugaring 16}\secdown
+\secrel{4.1 Extension: Binary Subtraction . . . . . . . . . . . . . . . . . . . . . 17}
+\secrel{4.2 Extension: Unary Negation . . . . . . . . . . . . . . . . . . . . . . . 18}
+\secup
+
+\secrel{5 Adding Functions to the Language 19}\secdown
+\secrel{5.1 Defining Data Representations . . . . . . . . . . . . . . . . . . . . . 19}
+\secrel{5.2 Growing the Interpreter . . . . . . . . . . . . . . . . . . . . . . . . . 21}
+\secrel{5.3 Substitution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22}
+\secrel{5.4 The Interpreter, Resumed . . . . . . . . . . . . . . . . . . . . . . . . 23}
+\secrel{5.5 Oh Wait, There’s More! . . . . . . . . . . . . . . . . . . . . . . . . . 25}
+\secup
+
+\secrel{6 From Substitution to Environments 25}\secdown
+\secrel{6.1 Introducing the Environment . . . . . . . . . . . . . . . . . . . . . . 26}
+\secrel{6.2 Interpreting with Environments . . . . . . . . . . . . . . . . . . . . . 27}
+\secrel{6.3 Deferring Correctly . . . . . . . . . . . . . . . . . . . . . . . . . . . 29}
+\secrel{6.4 Scope . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30}
+\secdown
+\secrel{6.4.1 How Bad Is It? . . . . . . . . . . . . . . . . . . . . . . . . . 30}
+\secrel{6.4.2 The Top-Level Scope . . . . . . . . . . . . . . . . . . . . . . 31}
+\secup
+\secrel{6.5 Exposing the Environment . . . . . . . . . . . . . . . . . . . . . . . 31}
+\secup
+
+\secrel{7 Functions Anywhere 31}\secdown
+\secrel{7.1 Functions as Expressions and Values . . . . . . . . . . . . . . . . . . 32}
+\secrel{7.2 Nested What? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35}
+\secrel{7.3 Implementing Closures . . . . . . . . . . . . . . . . . . . . . . . . . 37}
+\secrel{7.4 Substitution, Again . . . . . . . . . . . . . . . . . . . . . . . . . . . 38}
+\secrel{7.5 Sugaring Over Anonymity . . . . . . . . . . . . . . . . . . . . . . . 39}
+\secup
+
+\secrel{8 Mutation: Structures and Variables 41}\secdown
+\secrel{8.1 Mutable Structures . . . . . . . . . . . . . . . . . . . . . . . . . . . 41}
+\secdown
+\secrel{8.1.1 A Simple Model of Mutable Structures . . . . . . . . . . . . 41}
+\secrel{8.1.2 Scaffolding . . . . . . . . . . . . . . . . . . . . . . . . . . . 42}
+\secrel{8.1.3 Interaction with Closures . . . . . . . . . . . . . . . . . . . . 43}
+\secrel{8.1.4 Understanding the Interpretation of Boxes . . . . . . . . . . . 44}
+\secrel{8.1.5 Can the Environment Help? . . . . . . . . . . . . . . . . . . 46}
+\secrel{8.1.6 Introducing the Store . . . . . . . . . . . . . . . . . . . . . . 48}
+\secrel{8.1.7 Interpreting Boxes . . . . . . . . . . . . . . . . . . . . . . . 49}
+\secrel{8.1.8 The Bigger Picture . . . . . . . . . . . . . . . . . . . . . . . 54}
+\secup
+\secrel{8.2 Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57}
+\secdown
+\secrel{8.2.1 Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 57}
+\secrel{8.2.2 Syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57}
+\secrel{8.2.3 Interpreting Variables . . . . . . . . . . . . . . . . . . . . . . 58}
+\secup
+\secrel{8.3 The Design of Stateful Language Operations . . . . . . . . . . . . . . 59}
+\secrel{8.4 Parameter Passing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60}
+\secup
+
+\secrel{9 Recursion and Cycles: Procedures and Data 62}\secdown
+\secrel{9.1 Recursive and Cyclic Data . . . . . . . . . . . . . . . . . . . . . . . 62}
+\secrel{9.2 Recursive Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . 64}
+\secrel{9.3 Premature Observation . . . . . . . . . . . . . . . . . . . . . . . . . 65}
+\secrel{9.4 Without Explicit State . . . . . . . . . . . . . . . . . . . . . . . . . . 66}
+\secup
+
+\secrel{10 Objects 67}\secdown
+\secrel{10.1 Objects Without Inheritance . . . . . . . . . . . . . . . . . . . . . . 67}
+\secdown
+\secrel{10.1.1 Objects in the Core . . . . . . . . . . . . . . . . . . . . . . . 68}
+\secrel{10.1.2 Objects by Desugaring . . . . . . . . . . . . . . . . . . . . . 69}
+\secrel{10.1.3 Objects as Named Collections . . . . . . . . . . . . . . . . . 69}
+\secrel{10.1.4 Constructors . . . . . . . . . . . . . . . . . . . . . . . . . . 70}
+\secrel{10.1.5 State . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 71}
+\secrel{10.1.6 Private Members . . . . . . . . . . . . . . . . . . . . . . . . 71}
+\secrel{10.1.7 Static Members . . . . . . . . . . . . . . . . . . . . . . . . . 72}
+\secrel{10.1.8 Objects with Self-Reference . . . . . . . . . . . . . . . . . . 72}
+\secrel{10.1.9 Dynamic Dispatch . . . . . . . . . . . . . . . . . . . . . . . 74}
+\secup
+\secrel{10.2 Member Access Design Space . . . . . . . . . . . . . . . . . . . . . 75}
+\secrel{10.3 What (Goes In) Else? . . . . . . . . . . . . . . . . . . . . . . . . . . 75}
+\secdown
+\secrel{10.3.1 Classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 76}
+\secrel{10.3.2 Prototypes . . . . . . . . . . . . . . . . . . . . . . . . . . . 78}
+\secrel{10.3.3 Multiple Inheritance . . . . . . . . . . . . . . . . . . . . . . 78}
+\secrel{10.3.4 Super-Duper! . . . . . . . . . . . . . . . . . . . . . . . . . . 79}
+\secrel{10.3.5 Mixins and Traits . . . . . . . . . . . . . . . . . . . . . . . . 79}
+\secup
+\secup
+
+\secrel{11 Memory Management 81}\secdown
+\secrel{11.1 Garbage . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 81}
+\secrel{11.2 What is “Correct” Garbage Recovery? . . . . . . . . . . . . . . . . . 81}
+\secrel{11.3 Manual Reclamation . . . . . . . . . . . . . . . . . . . . . . . . . . 82}
+\secdown
+\secrel{11.3.1 The Cost of Fully-Manual Reclamation . . . . . . . . . . . . 82}
+\secrel{11.3.2 Reference Counting . . . . . . . . . . . . . . . . . . . . . . 83}
+\secup
+\secrel{11.4 Automated Reclamation, or Garbage Collection . . . . . . . . . . . . 84}
+\secdown
+\secrel{11.4.1 Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . 84}
+\secrel{11.4.2 Truth and Provability . . . . . . . . . . . . . . . . . . . . . . 85}
+\secrel{11.4.3 Central Assumptions . . . . . . . . . . . . . . . . . . . . . . 85}
+\secup
+\secrel{11.5 Convervative Garbage Collection . . . . . . . . . . . . . . . . . . . . 86}
+\secrel{11.6 Precise Garbage Collection . . . . . . . . . . . . . . . . . . . . . . . 87}
+\secup
+
+\secrel{12 Representation Decisions 87}\secdown
+\secrel{12.1 Changing Representations . . . . . . . . . . . . . . . . . . . . . . . 87}
+\secrel{12.2 Errors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 89}
+\secrel{12.3 Changing Meaning . . . . . . . . . . . . . . . . . . . . . . . . . . . 89}
+\secrel{12.4 One More Example . . . . . . . . . . . . . . . . . . . . . . . . . . . 90}
+\secup
+
+\secrel{13 Desugaring as a Language Feature 91}\secdown
+\secrel{13.1 A First Example . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 91}
+\secrel{13.2 Syntax Transformers as Functions . . . . . . . . . . . . . . . . . . . 93}
+\secrel{13.3 Guards . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 95}
+\secrel{13.4 Or: A Simple Macro with Many Features . . . . . . . . . . . . . . . 95}
+\secdown
+\secrel{13.4.1 A First Attempt . . . . . . . . . . . . . . . . . . . . . . . . . 95}
+\secrel{13.4.2 Guarding Evaluation . . . . . . . . . . . . . . . . . . . . . . 97}
+\secrel{13.4.3 Hygiene . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 98}
+\secup
+\secrel{13.5 Identifier Capture . . . . . . . . . . . . . . . . . . . . . . . . . . . . 99}
+\secrel{13.6 Influence on Compiler Design . . . . . . . . . . . . . . . . . . . . . 101}
+\secrel{13.7 Desugaring in Other Languages . . . . . . . . . . . . . . . . . . . . 101}
+\secup
+
+\secrel{14 Control Operations 102}\secdown
+\secrel{14.1 Control on the Web . . . . . . . . . . . . . . . . . . . . . . . . . . . 102}
+\secdown
+\secrel{14.1.1 Program Decomposition into Now and Later . . . . . . . . . 104}
+\secrel{14.1.2 A Partial Solution . . . . . . . . . . . . . . . . . . . . . . . . 104}
+\secrel{14.1.3 Achieving Statelessness . . . . . . . . . . . . . . . . . . . . 106}
+\secrel{14.1.4 Interaction with State . . . . . . . . . . . . . . . . . . . . . . 107}
+\secup
+\secrel{14.2 Continuation-Passing Style . . . . . . . . . . . . . . . . . . . . . . . 109}
+\secdown
+\secrel{14.2.1 Implementation by Desugaring . . . . . . . . . . . . . . . . . 110}
+\secrel{14.2.2 Converting the Example . . . . . . . . . . . . . . . . . . . . 114}
+\secrel{14.2.3 Implementation in the Core . . . . . . . . . . . . . . . . . . 115}
+\secup
+\secrel{14.3 Generators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 117}
+\secdown
+\secrel{14.3.1 Design Variations . . . . . . . . . . . . . . . . . . . . . . . . 117}
+\secrel{14.3.2 Implementing Generators . . . . . . . . . . . . . . . . . . . . 119}
+\secup
+\secrel{14.4 Continuations and Stacks . . . . . . . . . . . . . . . . . . . . . . . . 121}
+\secrel{14.5 Tail Calls . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 123}
+\secrel{14.6 Continuations as a Language Feature . . . . . . . . . . . . . . . . . . 124}
+\secdown
+\secrel{14.6.1 Presentation in the Language . . . . . . . . . . . . . . . . . . 125}
+\secrel{14.6.2 Defining Generators . . . . . . . . . . . . . . . . . . . . . . 126}
+\secrel{14.6.3 Defining Threads . . . . . . . . . . . . . . . . . . . . . . . . 127}
+\secrel{14.6.4 Better Primitives for Web Programming . . . . . . . . . . . . 131}
+\secup
+\secup
+
+\secrel{15 Checking Program Invariants Statically: Types 131}\secdown
+\secrel{15.1 Types as Static Disciplines . . . . . . . . . . . . . . . . . . . . . . . 133}
+\secrel{15.2 A Classical View of Types . . . . . . . . . . . . . . . . . . . . . . . 134}
+\secdown
+\secrel{15.2.1 A Simple Type Checker . . . . . . . . . . . . . . . . . . . . 134}
+\secrel{15.2.2 Type-Checking Conditionals . . . . . . . . . . . . . . . . . . 139}
+\secrel{15.2.3 Recursion in Code . . . . . . . . . . . . . . . . . . . . . . . 139}
+\secrel{15.2.4 Recursion in Data . . . . . . . . . . . . . . . . . . . . . . . . 142}
+\secrel{15.2.5 Types, Time, and Space . . . . . . . . . . . . . . . . . . . . 144}
+\secrel{15.2.6 Types and Mutation . . . . . . . . . . . . . . . . . . . . . . . 146}
+\secrel{15.2.7 The Central Theorem: Type Soundness . . . . . . . . . . . . 147}
+\secup
+\secrel{15.3 Extensions to the Core . . . . . . . . . . . . . . . . . . . . . . . . . 148}
+\secdown
+\secrel{15.3.1 Explicit Parametric Polymorphism . . . . . . . . . . . . . . . 148}
+\secrel{15.3.2 Type Inference . . . . . . . . . . . . . . . . . . . . . . . . . 155}
+\secrel{15.3.3 Union Types . . . . . . . . . . . . . . . . . . . . . . . . . . 164}
+\secrel{15.3.4 Nominal Versus Structural Systems . . . . . . . . . . . . . . 170}
+\secrel{15.3.5 Intersection Types . . . . . . . . . . . . . . . . . . . . . . . 171}
+\secrel{15.3.6 Recursive Types . . . . . . . . . . . . . . . . . . . . . . . . 172}
+\secrel{15.3.7 Subtyping . . . . . . . . . . . . . . . . . . . . . . . . . . . . 173}
+\secrel{15.3.8 Object Types . . . . . . . . . . . . . . . . . . . . . . . . . . 176}
+\secup
+\secup
+
+\secrel{16 Checking Program Invariants Dynamically: Contracts 179}\secdown
+\secrel{16.1 Contracts as Predicates . . . . . . . . . . . . . . . . . . . . . . . . . 181}
+\secrel{16.2 Tags, Types, and Observations on Values . . . . . . . . . . . . . . . . 182}
+\secrel{16.3 Higher-Order Contracts . . . . . . . . . . . . . . . . . . . . . . . . . 183}
+\secrel{16.4 Syntactic Convenience . . . . . . . . . . . . . . . . . . . . . . . . . 187}
+\secrel{16.5 Extending to Compound Data Structures . . . . . . . . . . . . . . . . 188}
+\secrel{16.6 More on Contracts and Observations . . . . . . . . . . . . . . . . . . 189}
+\secrel{16.7 Contracts and Mutation . . . . . . . . . . . . . . . . . . . . . . . . . 189}
+\secrel{16.8 Combining Contracts . . . . . . . . . . . . . . . . . . . . . . . . . . 190}
+\secrel{16.9 Blame . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 191}
+\secup
+
+\input{17_alter}
+
 \end{document}
