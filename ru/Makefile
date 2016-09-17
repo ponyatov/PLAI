@@ -16,6 +16,9 @@ SRC += src/2/p10_1.rkt
 
 TEX += 2_2_shortcut.tex
 
+TEX += 2_3_types.tex
+SRC += src/2/p11_1.rkt src/2/p11_2.rkt src/2/p11_3.rkt
+
 LATEX = pdflatex -halt-on-error
 
 .PHONY: pdf
