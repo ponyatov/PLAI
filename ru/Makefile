@@ -10,9 +10,14 @@ SRC += src/1/p9_1.rkt src/1/p9_2.rkt src/1/p9_3.rkt src/1/p9_4.rkt
 
 TEX += 2_parsing.tex 2_1_lwtparser.tex
 
+FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf
+
 LATEX = pdflatex -halt-on-error
 
 .PHONY: pdf
 pdf: $(MODULE).pdf
 $(MODULE).pdf: $(TEX) $(FIG) $(SRC)
 	$(LATEX) $< && $(LATEX) $<
+
+tmp/%.pdf: fig/%.dot
+	dot -Tpdf -o $@ $<
