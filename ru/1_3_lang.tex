@@ -59,7 +59,7 @@ We can introduce new datatypes
 \ru{Вы можем создавать новые типы данных\note{запустить программу можно нажав
 \keys{Ctrl+R}}}:
 
-\lst{src/p8_1.rkt}
+\lst{src/1/p8_1.rkt}
 
 You can roughly think of this as analogous to the following in Java:
 \ru{Вы можете примерно понять идею в терминах языка \java:}
@@ -74,7 +74,7 @@ sub-classes \ru{и два конкретизирующих класса}\ \verb|
 In this language, we construct instances as follows:
 \ru{На этом языке мы строим экземпляры классов следующим образом:}
 
-\lst{src/p8_2.rkt}
+\lst{src/1/p8_2.rkt}
 
 As the name suggests \ru{Как следует из названия,}, \verb|define-type| creates a
 type of the given name \ru{создает тип с заданным именем}.
@@ -82,7 +82,7 @@ We can use
 this when, for instance, binding the above instances to names:
 \ru{Мы можем это использовать например при связывании эксземпляров с именами:}
 
-\lst{src/p8_3.rkt}
+\lst{src/1/p8_3.rkt}
 
 In fact you don’t need these particular type declarations, because \term{Typed
 PLAI} will infer types for you here and in many other cases.
@@ -91,7 +91,7 @@ PLAI} в этом и других случаях будет сам делать 
 Thus you could just as well have written
 \ru{Так что вы можете написать короче}
 
-\lst{src/p8_4.rkt}
+\lst{src/1/p8_4.rkt}
 
 \noindent
 but we prefer to write explicit type declarations as a matter of both discipline
@@ -109,7 +109,7 @@ as a function’s body:
 \ru{Язык предоставляет pattern-matcher для использования при написании
 выражений, таких как тело функции:}
 
-\lst{src/p9_1.rkt}
+\lst{src/1/p9_1.rkt}
 
 \noindent
 In the expression \ru{Например в выражении} (>= humps 2), for instance,
@@ -123,7 +123,7 @@ function, but also afterwards to protect against accidental changes:
 или хотя бы после, чтобы защититься от внезапных несоответствий в ее поведении
 при внесении изменений в код:}
 
-\lst{src/p9_2.rkt}
+\lst{src/1/p9_2.rkt}
 
 \noindent
 When you run the above program, the language will give you verbose output telling
@@ -149,7 +149,7 @@ name.
 Thus, we could have as well written the function as
 \ru{Так что мы могли бы также написать эту функцию как}
 
-\lst{src/p9_3.rkt}
+\lst{src/1/p9_3.rkt}
 
 \noindent
 Because each h is only visible in the case branch in which it is introduced, the
@@ -187,7 +187,7 @@ clear, let’s write it without pattern-matching:
 \ru{Часто это не так, как в случае определения good?, но для ясности давайте
 напишем без pattern-matching:}
 
-\lst{src/p9_4.rkt}
+\lst{src/1/p9_4.rkt}
 
 \DoNow{
 What happens if you mis-apply functions to the wrong kinds of values\,?
