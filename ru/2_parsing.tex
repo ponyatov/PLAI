@@ -1,5 +1,62 @@
 \secrel{2 Everything (We Will Say) About Parsing
 \ru{Все (что мы будем говорить) о разборе}}\secdown
+
+Parsing is the act of turning an input character stream into a more structured,
+internal representation.
+\ru{\termdef{Парсинг}{парсинг} или \termdef{разбор}{синтаксический разбор}\
+--- процесс превращения входного потока одиночных символов в более
+структурированное внутреннее представление\note{программы или данных, заданных в
+текстовой синтаксической форме}.}
+A common internal representation is as a tree, which programs can recursively
+process.
+\ru{Обычно используется внутреннее представление в виде дерева, которое может
+быть обработано программой рекурсивно.}
+
+For instance, given the stream
+\ru{Например, для входного потока символов\note{включая пробелы, табуляции и
+концы строк}}
+\begin{verbatim}
+23 + 5 - 6
+\end{verbatim}
+we might want a tree representing addition whose left (L) node represents the
+number 23 and whose right (R) node represents subtraction of 6 from 5.
+\ru{мы хотим получить деревянное представление сложения, в котором левая (L)
+ветвь содержит число 23, а правая (R)\ --- вложенное представление вычитания 6
+из 5.}
+A parser is responsible for performing this transformation.
+\ru{Парсер отвечает за выполнение такой транформации.}
+
+\noindent
+\begin{tabular}{c c}
+\noindent\includegraphics[height=0.6\textheight]{tmp/2_p10_R.pdf}
+&
+\noindent\includegraphics[height=0.6\textheight]{tmp/2_p10_L.pdf}
+\\
+\emph{Право}ассоциативный разбор
+&
+(*) \emph{Лево}ассоциативный разбор
+\\
+\end{tabular}\bigskip
+
+Parsing is a large, complex problem that is far from solved due to the
+difficulties of ambiguity.
+\ru{Парсинг\ --- большая проблема информатики, сложность которой
+заключается в трудностях неоднозначности.}
+For instance, an alternate parse tree (*) for the above input expression might
+put subtraction at the top and addition below it.
+\ru{Например, существует альтернативное (*) \termdef{дерево разбора}{дерево
+разбора} для того же входного выражения, в котором мы можем поместить
+вычитание на вершину дерева, а сложение будет вложенным поддеревом.}
+We might also want to consider whether this addition operation is commutative
+and hence whether the order of arguments can be switched.
+\ru{Нас также может интересовать, является ли это сложение коммутативной
+операцией, то есть можем ли мы изменить порядок аргументов\note{например для
+оптимизации кода}.}
+Everything only gets much, much worse when we get to full-fledged programming
+languages (to say nothing of natural languages).
+\ru{Все становится намного хуже по мере того, как мы пробираемся в сторону
+полноценных языков программирования (даже не говоря о натуральных языках).}
+
 \input{2_1_lwtparser}
 \secrel{2.2 A Convenient Shortcut . . . . . . . . . . . . . . . . . . . . . . . . . 10}
 \secrel{2.3 Types for Parsing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11}
