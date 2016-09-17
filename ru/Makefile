@@ -10,7 +10,10 @@ SRC += src/1/p9_1.rkt src/1/p9_2.rkt src/1/p9_3.rkt src/1/p9_4.rkt
 
 TEX += 2_parsing.tex 2_1_lwtparser.tex
 
-FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf
+FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
+
+SRC += src/2/p10_1.rkt
+
 
 LATEX = pdflatex -halt-on-error
 
