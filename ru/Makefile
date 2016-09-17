@@ -14,6 +14,7 @@ FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
 
 SRC += src/2/p10_1.rkt
 
+TEX += 2_2_shortcut.tex
 
 LATEX = pdflatex -halt-on-error
 

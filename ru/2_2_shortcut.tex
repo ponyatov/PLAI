@@ -1,0 +1,17 @@
+\secrel{A Convenient Shortcut \ru{Удобный трюк}}
+
+As you know you need to test your programs extensively, which is hard to do when you
+must manually type terms in over and over again.
+\ru{Как вы знаете, нужно тщательно тестировать свои программы, что особенно
+сложно, если вам нужно снова и снова вводить выражения вручную.}
+Fortunately, as you might expect, the parenthetical syntax is integrated deeply
+into \racket\ through the mechanism of quotation.
+\ru{К счатью, как и следовало ожидать, скобочный синтаксис глубоко
+интегрирован в \racket\ через механизм \termdef{квотирования}{квотирование}.}
+That is, \ru{это то самое выражение} \verb|'<expr>|\ --—
+which you saw a moment ago in the above example
+\ru{которое вы видели только что при выполнении предыдущего примера}\ --- 
+acts as if you had run \ru{действует так же, как если бы вы запустили}
+\verb|(read)| and typed \ru{и ввели} <expr> at the prompt \ru{в текстовом поле
+ввода} (and, of course, evaluates to the value the (read) would have
+\ru{и конечно же вычисляется в то же значение, что дает} \verb|(read)|).
