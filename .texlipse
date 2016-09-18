@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Mon Sep 19 02:19:38 GST 2016
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=ru
+mainTexFile=PLAI.tex
+outputFile=PLAI.pdf
+langSpell=
+markDer=true
+srcDir=

@@ -1,6 +1,6 @@
 MODULE ?= PLAI
 
-TEX = $(MODULE).tex ../../texheader/ebook.tex ../../texheader/lstrkt.sty
+TEX = $(MODULE).tex ../texheader/ebook.tex ../texheader/lstrkt.sty
 
 TEX += 1_intro.tex 1_1_philo.tex 1_2_struc.tex 1_3_lang.tex
 TEX += 17_alter.tex
@@ -28,7 +28,7 @@ LATEX = pdflatex -halt-on-error
 .PHONY: pdf
 pdf: $(MODULE).pdf
 $(MODULE).pdf: $(TEX) $(FIG) $(SRC)
-	$(LATEX) $< #&& $(LATEX) $<
+	$(LATEX) $< && $(LATEX) $<
 
 tmp/%.pdf: fig/%.dot
 	dot -Tpdf -o $@ $<

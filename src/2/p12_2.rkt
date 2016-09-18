@@ -3,7 +3,7 @@
 		[(s-exp-number? s) ; if s-number
 			(numC (s-exp->number s))] ; return numC(number)
 		[(s-exp-list? s) ; if composite structure
-			(let ([sl (s-exp->list s)]) ; local converted into s-exp-list -> s1
+			(let ([sl (s-exp->list s)]) ; local converted for first/second/third
 				(case (s-exp->symbol (first sl)) ; first must be operator symbol 
 					[(+)
 						(plusC (parse (second sl)) (parse (third sl)))]

@@ -1,3 +1,9 @@
 *~
 *swp
 *.bak
+/tmp/
+*.out
+*.log
+*.aux
+*.toc
+*.pdf

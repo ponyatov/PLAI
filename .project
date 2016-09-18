@@ -32,11 +32,4 @@
 	<natures>
 		<nature>net.sourceforge.texlipse.builder.TexlipseNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>ru/.tex</name>
-			<type>1</type>
-			<location>C:/MiKTeX/tex/latex/tools/.tex</location>
-		</link>
-	</linkedResources>
 </projectDescription>
