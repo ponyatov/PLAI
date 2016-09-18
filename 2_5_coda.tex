@@ -1,0 +1,54 @@
+\secrel{Coda \ru{Кода}}
+
+\racket’s syntax, which it inherits from Scheme and \lisp, is controversial.
+\ru{Синтаксис \racket а, который он наследует от Scheme и Lisp, спорен.}
+Observe, however, something deeply valuable that we get from it.
+\ru{Заметим, однако, что мы получаем от него нечто глубоко ценное.} 
+While parsing traditional languages can be very complex, parsing this syntax is
+virtually trivial.
+\ru{В то время как парсинг традиционных языков может быть очень сложным, разбор
+этого синтаксиса практически тривиален.}
+Given a sequence of tokens corresponding to the input, it is absolutely
+straightforward to turn parenthesized sequences into s-expressions;
+\ru{Для заданной последовательности лексем, соответствующих входному потоку,
+абсолютно тривиально превратить скобочные последовательности в s-выражения;}
+it is equally straightforward (as we see above) to turn sexpressions into proper
+syntax trees.
+\ru{столь же просто (как мы видим выше) преобразовать s-выражения в правильные
+синтаксические деревья.}
+I like to call such two-level languages \term{bicameral}, in loose analogy to
+government legislative houses:
+\ru{Мне нравится называть такие двухуровневые языки \term{двухпалатными}, в
+свободной аналогии к государственным законодательным учреждениям:}
+the lower-level does rudimentary well-formedness checking, while the upper-level
+does deeper validity checking.
+\ru{нижний уровень делает рудиментарную проверку правильности оформления, в то
+время как верхний уровень выполняет глубокую проверку валидности.}
+(We haven’t done any of the latter yet, but we will
+\ru{Мы еще не делали последнего, но мы будем}
+\ref{}.)
+
+The virtues of this syntax are thus manifold.
+\ru{Достоинства этого синтаксиса, таким образом, многообразны.}
+The amount of code it requires is small, and can easily be embedded in many
+contexts.
+\ru{Объем кода, который он требует, очень мал, и может быть встроен во многих
+контекстах.}
+By integrating the syntax into the language, it becomes easy for programs to
+manipulate representations of programs (as we will see more of in \ref{}).
+\ru{Интеграция синтаксиса в язык делает простой программную манипуляцию
+представлением программ (как мы увидим в \ref{}).}
+It’s therefore no surprise that even though many Lisp-based syntaxes have had
+wildly different semantics, they all share this syntactic legacy.
+\ru{Поэтому неудивительно, что множество основанных на \lisp е синтаксисов,
+имеющих дико разную семантику, все равно разделяют это общее синтаксическое
+наследие.}
+
+Of course, we could just use XML instead.
+\ru{Конечно, мы могли бы использовать XML.}
+That would be much better.
+\ru{Это было бы намного лучше.}
+Or JSON.
+\ru{Или JSON.}
+Because that wouldn’t be anything like an s-expression at all.
+\ru{Потому что все равно это в итоге было бы тем же s-выражением.}

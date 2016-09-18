@@ -23,6 +23,8 @@ TEX += 2_4_completing.tex
 P12_x = src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt
 SRC += tmp/ArithC.rkt $(P12_x)
 
+TEX += 2_5_coda.tex
+
 LATEX = pdflatex -halt-on-error
 
 .PHONY: pdf
