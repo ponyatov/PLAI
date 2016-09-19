@@ -1,5 +1,3 @@
-#lang plai-typed
-
 (define-type ArithC							; algebraic type
 	[numC  (n : number)]					; number
 	[plusC (l : ArithC) (r : ArithC)]		; + <[l]eft> <[r]ight>

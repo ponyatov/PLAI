@@ -20,7 +20,7 @@ TEX += 2_3_types.tex
 SRC += src/2/p11_1.rkt src/2/p11_2.rkt src/2/p11_3.rkt
 
 TEX += 2_4_completing.tex
-P12_x = src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt
+P12_x = src/plai.rkt src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt
 SRC += tmp/ArithC.rkt $(P12_x)
 
 TEX += 2_5_coda.tex
