@@ -28,6 +28,10 @@ TEX += 2_5_coda.tex
 
 TEX += 3_interp.tex 3_1_repr.tex 3_2_interp.tex
 
+TEX += 3_3_notice.tex
+
+TEX += 3_4_growing.tex
+
 LATEX = pdflatex -halt-on-error
 
 .PHONY: pdf

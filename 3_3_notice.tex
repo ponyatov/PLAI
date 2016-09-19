@@ -1,0 +1,104 @@
+\secrel{Did You Notice\,? \ru{Вы заметили\,?}}
+
+I just slipped something by you:
+\ru{Я только что утаил что-то от вас:}
+\DoNow{
+What is the ``meaning'' of addition and multiplication in this new language\,?
+\ru{Каков ``смысл'' сложения и умножения в этом новом языке\,?}
+}
+
+That’s a pretty abstract question, isn’t it.
+\ru{Это достаточно абстрактный вопрос, не так ли.} 
+Let’s make it concrete.
+\ru{Давайте его конкретизируем.} 
+There are many kinds of addition in computer science:
+\ru{В информатике существует множество видов сложения:}
+
+\begin{itemize}
+  \item 
+First of all, there’s many different kinds of \termdef{numbers}{number}:
+\ru{Прежде всего, существует множество видов \termdef{чисел}{число}:}
+fixed-width \ru{фиксированной длины} (e.g., 32- bit \ru{например 32-битные})
+integers \ru{целые}, signed fixed-width \ru{знаковые фиксированной длины} (e.g.,
+31-bits plus a sign-bit \ru{например 31-битные плюс бит знака}) integers
+\ru{целые}, arbitrary precision integers \ru{целые числа произвольной точности};
+in some languages, rationals \ru{в некоторых языках\ --- натуральные дроби};
+various formats of fixed- and floating-point numbers
+\ru{различные форматы чисел с фиксированной и плавающей точкой}; in some
+languages, complex numbers \ru{в некоторых языках комплектные числа}; and so on
+\ru{и так далее}.
+After the numbers have been chosen, addition may support only some combinations
+of them.
+\ru{После того как были выбраны определенные виды чисел, сложение может
+поддерживать только некоторые их комбинации.}
+  \item 
+In addition, some languages permit the addition of datatypes such as matrices.
+\ru{В дополнение, некоторые языки поддерживают сложение таких типов данных, как
+матрицы.}
+  \item 
+Furthermore, many languages support ``addition'' of strings
+\ru{Кроме того, многие языки поддерживают ``сложение'' строк} (
+we use scare-quotes because we don’t really mean the mathematical concept of
+addition, but rather the operation performed by an operator with the syntax +
+\ru{Мы используем кавычки, так как предполагаем не математическую идею
+сложения, а операцию, выполняемую оператором с синтаксисом +} ). 
+In some languages this always means concatenation;
+\ru{В некоторых языках это всегда значит конкатенацию строк;} 
+in some others, it can result in numeric results (or numbers stored in strings).
+\ru{в некоторых долбанутых языках иногда может получиться численный
+результат (или числа хранимые в строках).}
+\end{itemize}
+
+These are all different meanings for addition. 
+\ru{Все это является смыслом сложения.}
+\termdef{Semantics}{semantics}
+is the mapping of \emph{syntax} (e.g., +) to \emph{meaning} (e.g., some or all
+of the above).
+\ru{\termdef{Семантика}{семантика} это отображение \emph{синтаксиса} (например
++) на \emph{смысл} (например что-то или все из вышеперечисленного).}
+
+This brings us to our first game of:
+\ru{Это подводит нас к первоначальной игре:}
+\begin{description}\item[\emph{Which of these is the same\,?} \ru{Что из
+этого дает одинаковый результат\,?}]\
+\\
+\begin{itemize}[nosep]
+  \item 1 + 2
+  \item 1 + 2
+  \item '1' + '2'
+  \item '1' + '2'
+\end{itemize}
+\end{description}
+
+Now return to the question above.
+\ru{Теперь возвращаемся к предыдущему вопросу.} 
+What semantics do we have\,?
+\ru{Какую семантику мы имеем\,?}
+We’ve adopted whatever semantics \racket\ provides, because we map + to
+\racket’s +. 
+\ru{Мы приняли ту же семантику, которую предоставляет \racket, потому что мы
+отоборазили наш + на + в \racket е.}
+In fact that’s not even quite true:
+\ru{На самом деле это даже не совсем верно:} 
+\racket\ may, for all we know, also enable +
+to apply to strings, so we’ve chosen the restriction of \racket’s semantics to
+numbers\note{though in fact \racket’s + doesn’t tolerate strings}.
+\ru{\racket\ может, как все мы знаем, также использовать + к строкам, так что
+мы выбрали ограничение семантики \racket а только для чисел\note{\ru{хотя на
+самом деле \racket ский + нетолерантен к строкам}}.}
+
+If we wanted a different semantics, we’d have to implement it explicitly.
+\ru{Если мы хотим другую семантику, мы должны реализовать ее в явном виде.}
+
+\Exercise{
+What all would you have to change so that the number had signed- 32-bit
+arithmetic\,?
+\\
+\ru{Что мы должны изменить, чтобы числа поддерживали знаковую 32-битную
+арифметику\,?}
+}
+
+In general, we have to be careful about too readily borrowing from the host
+language.
+\ru{В общем, мы должны быть осторожными с заимствованиями из языка-носителя.}
+We’ll return to this topic later \ru{Мы вернемся к этой теме позже} \ref{}.
