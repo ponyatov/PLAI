@@ -20,12 +20,13 @@ TEX += 2_3_types.tex
 SRC += src/2/p11_1.rkt src/2/p11_2.rkt src/2/p11_3.rkt
 
 TEX += 2_4_completing.tex
-P12_x = src/plai.rkt src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt
-SRC += tmp/ArithC.rkt $(P12_x)
+P12_x = src/plai.rkt \
+	src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt src/3/p15_3.rkt
+SRC += tmp/ArithC.rkt $(P12_x) src/3/p14_1.rkt src/3/p14_2.rkt src/3/p15_2.rkt
 
 TEX += 2_5_coda.tex
 
-TEX += 3_interp.tex 3_1_repr.tex
+TEX += 3_interp.tex 3_1_repr.tex 3_2_interp.tex
 
 LATEX = pdflatex -halt-on-error
 
