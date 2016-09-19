@@ -25,12 +25,14 @@ SRC += tmp/ArithC.rkt $(P12_x)
 
 TEX += 2_5_coda.tex
 
+TEX += 3_interp.tex 3_1_repr.tex
+
 LATEX = pdflatex -halt-on-error
 
 .PHONY: pdf
 pdf: $(MODULE).pdf
 $(MODULE).pdf: $(TEX) $(FIG) $(SRC)
-	$(LATEX) $< && $(LATEX) $<
+	$(LATEX) $< && makeindex $(MODULE) && $(LATEX) $<
 
 tmp/%.pdf: fig/%.dot
 	dot -Tpdf -o $@ $<
