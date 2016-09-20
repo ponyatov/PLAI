@@ -31,6 +31,8 @@ TEX += 3_3_notice.tex
 
 TEX += 3_4_growing.tex
 
+TEX += 4_desugaring.tex
+
 include ../texheader/foot.mk
 
 tmp/ArithC.rkt: $(P12_x)
