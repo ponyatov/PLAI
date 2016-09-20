@@ -1,6 +1,5 @@
-MODULE ?= PLAI
-
-TEX = $(MODULE).tex ../texheader/ebook.tex ../texheader/lstrkt.sty
+include ../texheader/head.mk
+TEX +=../texheader/lstrkt.sty
 
 TEX += 1_intro.tex 1_1_philo.tex 1_2_struc.tex 1_3_lang.tex
 TEX += 17_alter.tex
@@ -32,15 +31,7 @@ TEX += 3_3_notice.tex
 
 TEX += 3_4_growing.tex
 
-LATEX = pdflatex -halt-on-error
-
-.PHONY: pdf
-pdf: $(MODULE).pdf
-$(MODULE).pdf: $(TEX) $(FIG) $(SRC)
-	$(LATEX) $< && makeindex $(MODULE) && $(LATEX) $<
-
-tmp/%.pdf: fig/%.dot
-	dot -Tpdf -o $@ $<
+include ../texheader/foot.mk
 
 tmp/ArithC.rkt: $(P12_x)
 	cat $^ > $@
