@@ -1,33 +1,60 @@
-\secrel{Extension: Unary Negation \ru{Расширение: унарное отрицание}}
+\secrel{Extension: Unary Negation \ru{Расширение: унарный минус}}
 
 Now let’s consider another extension, which is a little more interesting: unary
-negation. This forces you to do a little more work in the parser because,
-depending on your surface syntax, you may need to look ahead to determine
-whether you’re in the unary or binary case. But that’s not even the interesting
-part\,!
+negation.
+\ru{Теперь давайте рассмотрим другое расширение, которое является немного более
+интересным: унарный минус.}
+This forces you to do a little more work in the parser because, depending on
+your surface syntax, you may need to look ahead to determine whether you’re in
+the unary or binary case.
+\ru{Оно заставит вас сделать немного больше работы в парсере, потому что, в
+зависимости от вашего frontend синтаксиса, вам требуется посмотреть вперед для
+определения, находитесь ли вы в унарном или бинарном случае.}
+But that’s not even the interesting part\,!
+\ru{Но это даже не самое интересное\,!}
 
-There are many ways we can desugar unary negation. We can define it naturally as
-$-b=0-b$, or we could abstract over the desugaring of binary
-subtraction with this expansion: $-b=0+ -1 \times b$.
+There are many ways we can desugar unary negation.
+\ru{Существует много способов, которыми мы можем сделать обессахаривание
+унарного минуса.}
+We can define it naturally as \ru{Мы можем определить его естественно как}
+$-b=0-b$, or we could abstract over the desugaring of binary subtraction with
+this expansion: \ru{или мы можем построить абстракцию используя обессахаривание
+бинарного вычитания через это расширение:} $-b=0+ -1 \times b$.
 
 \DoNow{
-Which one do you prefer? Why?
+Which one do you prefer\,? Why\,?\\
+\ru{Что вы предпочтете\,? Почему\,?}
 }
 
-It’s tempting to pick the first expansion, because it’s much simpler. Imagine
-we’ve extended the \class{ArithS} datatype with a representation of unary
-negation:
+It’s tempting to pick the first expansion, because it’s much simpler.
+\ru{Очень заманчиво выбрать первое расширение, потому что оно намного проще.}
+Imagine we’ve extended the \class{ArithS} datatype with a representation of
+unary negation:
+\ru{Представьте что мы расширили тип данных \class{ArithS} представлением
+унарного минуса:}
 \lst{src/4/p18_2.rkt}
-Now the implementation in \term{desugar} is straightforward:
+Now the implementation in \class{desugar} is straightforward:
+\ru{Теперь реализация \class{desugar} проста:}
 \lst{src/4/p18_3.rkt}
-Let’s make sure the types match up. Observe that $e$ is a \class{ArithS} term,
-so it is valid to use as an argument to \class{bminusS}, and the entire term can
-legally be passed to \term{desugar}.
+Let’s make sure the types match up.
+\ru{Давайте удостоверимся что типы совпадают.}
+Observe that $e$ is a \class{ArithS} term, so it is valid to use as an argument
+to \class{bminusS}, and the entire term can legally be passed to \term{desugar}.
+\ru{Заметим что $e$ терм класса \class{ArithS}, так что правомерно его
+использовать как аргумент \class{bminusS}, и все выражение может быть корректно
+послано в \term{обессахариватель}.}
 It is therefore important to \emph{not} desugar $e$ but rather embed it directly
-in the generated term. This embedding of an input term in another one and
-recursively calling desugar is a common pattern in desugaring tools; it is
-called a \termdef{macro}{macro} (specifically, the ``macro'' here is this
-definition of \class{uminusS}).
+in the generated term.
+\ru{Поэтому важно \emph{не обессахаривать} $e$, а встроить его напрямую в
+сгенерированное выражение.}
+This embedding of an input term in another one and recursively calling desugar
+is a common pattern in desugaring tools;
+\ru{Это встраивание входного терма в другой и рекурсивный вызов
+обессахирвателя\ --- типовой шаблон при использовании средств обессахаривания;}
+it is called a \termdef{macro}{macro}
+\ru{он называется \termdef{макро}{макро}}
+(specifically, the ``macro'' here is this definition of \class{uminusS}
+\ru{конкретно в этом случае \term{макро} является определение \class{uminusS}}).
 
 However, there are two problems with the definition above:
 \begin{enumerate}
