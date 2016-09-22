@@ -1,12 +1,12 @@
 #TeXlipse project settings
-#Mon Sep 19 02:19:38 GST 2016
+#Thu Sep 22 23:36:55 SAMT 2016
 markTmpDer=true
 builderNum=2
 outputDir=
 makeIndSty=
 bibrefDir=
 outputFormat=pdf
-tempDir=ru
+tempDir=tmp
 mainTexFile=PLAI.tex
 outputFile=PLAI.pdf
 langSpell=
