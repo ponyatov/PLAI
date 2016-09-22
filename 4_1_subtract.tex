@@ -1,50 +1,107 @@
 \secrel{4.1 Extension: Binary Subtraction \ru{Раширение: бинарное вычитание}}
 
-First, we’ll add subtraction. Because our language already has numbers,
-addition, and multiplication, it’s easy to define subtraction: $a-b=a+-1\times
-b$.
+First, we’ll add subtraction.
+\ru{Сначала мы добавим вычитание.}
+Because our language already has numbers, addition, and multiplication, it’s
+easy to define subtraction:
+\ru{Так как наш язык уже поддерживает числа, сложение и умножение,
+легко определить операцию вычитания:}
+$a - b = a + -1 \times b$.
 
-Okay, that was easy\,! But now we should turn this into concrete code. To do so,
-we face a decision: where does this new subtraction operator reside\,? It is
-tempting, and perhaps seems natural, to just add one more rule to our existing
-\class{ArithC}\ datatype.
+Okay, that was easy\,!
+\ru{Ок, это было просто\,!}
+But now we should turn this into concrete code.
+\ru{Но теперь мы должны превратить это в рабочий код.}
+To do so, we face a decision: where does this new subtraction operator reside\,?
+\ru{Делая это, мы сталкиваемся с вопросом: где проживает этот новый оператор
+вычитания\,?}
+It is tempting, and perhaps seems natural, to just add one more rule to our
+existing \class{ArithC}\ datatype.
+\ru{Заманчиво, и кажется естественным, просто добавить еще одно правило к нашему
+существующему класу \class{ArithC}.}
 
 \DoNow{
-What are the negative consequences of modifying \class{ArithC}\,?
+What are the negative consequences of modifying \class{ArithC}\,?\\
+\ru{Каковы негативные последствия модификации класса \class{ArithC}\,?}
 }
 
-This creates a few problems. The first, obvious, one is that we now have to
-modify all programs that process \class{ArithC}. So far that’s only our
-interpreter, which is pretty simple, but in a more complex implementation, that
-could already be a concern. Second, we were trying to add new constructs that we
-can define in terms of existing ones; it feels slightly self-defeating to do
-this in a way that isn’t modular. Third, and most subtly, there’s something
-\emph{conceptually} wrong about modifying \class{ArithC}. That’s because
-\class{ArithC} represents our \emph{core} language. In contrast, subtraction and
-other additions represent our user-facing, surface language. It’s wise to record conceptually different ideas
-in distinct datatypes, rather than shoehorn them into one. The separation can
-look a little unwieldy sometimes, but it makes the program much easier for
-future developers to read and maintain. Besides, for different purposes you
-might want to layer on different extensions, and separating the core from the
-surface enables that.
+This creates a few problems.
+\ru{Это создает несколько проблем.}
+The first, obvious, one is that we now have to modify all programs that process
+\class{ArithC}.
+\ru{Первой из них очевидно является то, что теперь мы должны скорректировать
+все программы, обрабатывающие класс \class{ArithC}.}
+So far that’s only our interpreter, which is pretty simple, but in a more
+complex implementation, that could already be a concern.
+\ru{До сих пор он используется только в нашем микроскопическом интерпретаторе,
+который крайне прост, но в более сложной реализации языка это уже может быть
+проблемой.}
+Second, we were trying to add new constructs that we can define in terms of
+existing ones;
+\ru{Во вторых, мы пытаемся добавить новую языковую конструкцию, которую мы
+можем оопределить в терминах уже существующих;}
+it feels slightly self-defeating to do this in a way that isn’t modular.
+\ru{кажется довольно ущербным делать это немодульно.}
+Third, and most subtly, there’s something \emph{conceptually} wrong about
+modifying \class{ArithC}.
+\ru{В третьих, и это наиболее тонко, есть что-то \emph{концептуально}
+неправильное в модификации класса \class{ArithC}.}
+That’s because \class{ArithC} represents our \emph{core} language.
+\ru{Это потому что \class{ArithC} представляет back-end \emph{ядро} нашего
+языка.}
+In contrast, subtraction and other additions represent our
+user-facing, surface language.
+\ru{В протиположность этому, вычитание и другие расширения представляют наш
+пользовательский, front-end язык.}
+It’s wise to record conceptually different ideas in distinct datatypes, rather
+than shoehorn them into one.
+\ru{Разумно инкапсулировать концептуально разные идеи в различные типы данных,
+а не впихивать их в один.}
+ 
+The separation can look a little unwieldy sometimes, but it makes the program
+much easier for future developers to read and maintain.
+\ru{Разделение иногда может выглядеть немного громоздко, но оно упрощает
+дальнейшее развитие и поддержку программы.}
+Besides, for different purposes you might want to layer on different extensions,
+and separating the core from the surface enables that.
+\ru{Кроме того, вы можете захотить разделить расширения для различных целей в
+разные слои, и этому поможет выделение ядра языка.}
 
 Therefore, we’ll define a new datatype to reflect our intended surface syntax
 terms:
+\ru{Таким образом, вы определяем новый тип данных для отображения термов нашего
+front-end синтаксиса:}
 \lstx{\class{ArithS}}{src/4/p17_1.rkt}{rkt}
 This looks almost exactly like \class{ArithC}, other than the added case, which
 follows the familiar recursive pattern.
+\ru{Он выглядит почти так же, как и \class{ArithC}, кроме дополнительных
+случаев, следуя знакомому рекурсивному шаблону.}
 
-Given this datatype, we should do two things. First, we should modify our parser
-to also parse\ --- expressions, and always construct ArithS terms\note{rather
-than any \class{ArithC} ones}. Second, we should implement a desugar function
-that translates \class{ArithS} values into \class{ArithC} ones.
+Given this datatype, we should do two things.
+\ru{Для данного типа данных вы должны сделать две вещи.}
+First, we should modify our parser to also parse\ --- expressions, and always
+construct \class{ArithS} terms\note{rather than any \class{ArithC} ones}.
+\ru{Прежде всего, мы должны модифицировать наш парсер чтобы он разбирал
+выражения и создавал термы класса \class{ArithS}, а не ядерного \class{ArithC}.}
+Second, we should implement a \termdef{desugar}{desugar} function that
+translates \class{ArithS} values into \class{ArithC} ones.
+\ru{Во вторых, мы должны реализовать функцию
+\termdef{обессахаривания}{обессахаривание}, которая будет транслировать
+структуры из \class{ArithS} значений в аналогичных структуры из экземпляров
+\class{ArithC}.}
 
 Let’s write the obvious part of desugar:
+\ru{Напишем очевидную часть обессахароивания:}
 \lstx{<desugar>::=}{src/4/p17_2.rkt}{rkt}
 Now let’s convert the mathematical description of subtraction above into code:
+\ru{Теперь давайте преобразуем математическое описание вычитания, приведенное
+выше, в код:}
 \lstx{<bminusS-case>::=}{src/4/p18_1.rkt}{rkt}
 
 \DoNow{
 It’s a common mistake to forget the recursive calls to desugar on $l$ and
-$r$. What happens when you forget them\,? Try for yourself and see.
+$r$. What happens when you forget them\,? Try for yourself and see.\\
+\ru{Распространенная ошибка\ --- забыть рекурсивные вызовы обессахаривания $l$ 
+и $r$. Что произойдет если вы из забудете\,? Попробуйте сами, и посмотрите
+результат.}
 }
