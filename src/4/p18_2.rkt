@@ -1,0 +1,1 @@
+[uminusS (e : ArithS)]

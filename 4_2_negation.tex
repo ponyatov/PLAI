@@ -1,2 +1,72 @@
 \secrel{Extension: Unary Negation \ru{Расширение: унарное отрицание}}
 
+Now let’s consider another extension, which is a little more interesting: unary
+negation. This forces you to do a little more work in the parser because,
+depending on your surface syntax, you may need to look ahead to determine
+whether you’re in the unary or binary case. But that’s not even the interesting
+part\,!
+
+There are many ways we can desugar unary negation. We can define it naturally as
+$-b=0-b$, or we could abstract over the desugaring of binary
+subtraction with this expansion: $-b=0+ -1 \times b$.
+
+\DoNow{
+Which one do you prefer? Why?
+}
+
+It’s tempting to pick the first expansion, because it’s much simpler. Imagine
+we’ve extended the \class{ArithS} datatype with a representation of unary
+negation:
+\lst{src/4/p18_2.rkt}
+Now the implementation in \term{desugar} is straightforward:
+\lst{src/4/p18_3.rkt}
+Let’s make sure the types match up. Observe that $e$ is a \class{ArithS} term,
+so it is valid to use as an argument to \class{bminusS}, and the entire term can
+legally be passed to \term{desugar}.
+It is therefore important to \emph{not} desugar $e$ but rather embed it directly
+in the generated term. This embedding of an input term in another one and
+recursively calling desugar is a common pattern in desugaring tools; it is
+called a \termdef{macro}{macro} (specifically, the ``macro'' here is this
+definition of \class{uminusS}).
+
+However, there are two problems with the definition above:
+\begin{enumerate}
+
+\item
+The first is that the recursion is \termdef{generative}{generative
+recursion}\note{If you haven’t heard of \term{generative recursion} before, read
+the section on it in \emph{How to Design Programs}. Essentially, in generative
+recursion the sub-problem is a computed function of the input, rather than a
+structural piece of it. This is an especially simple case of generative
+recursion, because the ``function'' is simple: it’s just the \class{bminusS}
+constructor}, which forces us to take extra care. We might be tempted to fix
+this by using a different rewrite:
+\lst{src/4/p18_4.rkt}
+which does indeed eliminate the generativity.
+
+\DoNow{
+Unfortunately, this desugaring transformation won’t work at all\,!
+Do you see why\,? If you don’t, try to run it.
+}
+
+\item
+The second is that we are implicitly depending on exactly what \class{bminusS}
+means; if its meaning changes, so will that of \class{uminusS}, even if we don’t
+want it to. In contrast, defining a functional abstraction that consumes two
+terms and generates one representing the addition of the first to $-1$ times the
+second, and using this to define the desugaring of both \class{uminusS} and
+\class{bminusS}, is a little more faulttolerant.
+
+You might say that the meaning of subtraction is never going to change, so why
+bother\,? Yes and no. Yes, it’s \emph{meaning} is unlikely to change; but no,
+its \emph{implementation} might. For instance, the developer may decide to log
+all uses of binary subtraction. In the macro expansion, all uses of unary
+negation would also get logged, but they would not in the second expansion.
+
+\end{enumerate}
+
+Fortunately, in this particular case we have a much simpler option, which is to
+define $-b=-1\times b$. This expansion works with the primitives we have, and
+follows structural recursion. The reason we took the above detour, however, is
+to alert you to these problems, and warn that you might not always be so
+fortunate.
