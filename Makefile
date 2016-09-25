@@ -35,6 +35,11 @@ TEX += 4_desugaring.tex 4_1_subtract.tex 4_2_negation.tex
 SRC += src/4/p17_1.rkt src/4/p17_2.rkt src/4/p18_1.rkt
 SRC += src/4/p18_2.rkt src/4/p18_3.rkt src/4/p18_4.rkt
 
+PS = src/plai.rkt src/cr.rkt
+
+PLAI.rkt: $(PS)
+	cat $^ > $@ 
+
 include ../texheader/foot.mk
 
 tmp/ArithC.rkt: $(P12_x)
