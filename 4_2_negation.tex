@@ -110,15 +110,35 @@ and using this to define the desugaring of both
 и \class{bminusS}, является немного более отказоустойчивой.}
 
 You might say that the meaning of subtraction is never going to change, so why
-bother\,? Yes and no. Yes, it’s \emph{meaning} is unlikely to change; but no,
-its \emph{implementation} might. For instance, the developer may decide to log
-all uses of binary subtraction. In the macro expansion, all uses of unary
-negation would also get logged, but they would not in the second expansion.
+bother\,?
+\ru{Вы можете сказать что значение вычитания никогда не изменится, так что
+почему надо беспокоиться\,?}
+Yes and no.
+\ru{Да и нет.}
+Yes, it’s \emph{meaning} is unlikely to change;
+\ru{Да, его \emph{значение} вряд ли изменится;}
+but no, its \emph{implementation} might.
+\ru{но нет, его \emph{реализация} может.}
+For instance, the developer may decide to log all uses of binary subtraction.
+\ru{Например разработчик может решить логировать все использования двухместного
+вычитания.}
+In the macro expansion, all uses of unary negation would also get logged, but
+they would not in the second expansion.
+\ru{В макроподстановке все использования унарного минуса также будут
+залогрованы, но не будут во второй подстановке.}
 
 \end{enumerate}
 
 Fortunately, in this particular case we have a much simpler option, which is to
-define $-b=-1\times b$. This expansion works with the primitives we have, and
-follows structural recursion. The reason we took the above detour, however, is
-to alert you to these problems, and warn that you might not always be so
-fortunate.
+define
+\ru{К счастью, в этом конкретном случае мы имеем гораздо более простой вариант,
+как можно определить}
+$-b=-1\times b$.
+This expansion works with the primitives we have, and follows structural
+recursion.
+\ru{Это раскрытие макроса работает с примитивами, которые у нас есть, и следует
+структурной рекурсии.}
+The reason we took the above detour, however, is to alert you to these problems,
+and warn that you might not always be so fortunate.
+\ru{Причиной, по которой мы отклонились выше, стала необходимость предупредить
+вас об этих проблемах, и о том что вам не всегда будет так везти.}
