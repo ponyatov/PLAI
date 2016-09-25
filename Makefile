@@ -36,13 +36,12 @@ SRC += src/4/p17_1.rkt src/4/p17_2.rkt src/4/p18_1.rkt
 SRC += src/4/p18_2.rkt src/4/p18_3.rkt src/4/p18_4.rkt
 
 PS = src/plai.rkt src/cr.rkt
-
-PLAI.rkt: $(PS)
-	cat $^ > $@ 
+PS += src/1/p8_1.rkt src/cr.rkt src/1/p8_2.rkt
 
 include ../texheader/foot.mk
 
 tmp/ArithC.rkt: $(P12_x)
 	cat $^ > $@
 
-	
+PLAI.rkt: $(PS) Makefile
+	cat $(PS) > $@ 

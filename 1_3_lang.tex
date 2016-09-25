@@ -1,42 +1,70 @@
 \secrel{The Language of This Book \ru{Язык программирования используемый в
 книге}}
 
-Язык программирования используемый в книге\ --- 
-\href{http://www.racket-lang.org/}{\racket}. Аналогично операционным системам,
-\racket-система является исполняющей средой для целого ряда языков
-программирования, так что \emph{вы должны указать \racket у на каком языке 
-вы программируете}. Например, в Unix вы указываете в строку типа
+The main programming language used in this book is
+\ru{Язык программирования используемый в книге}\ --- 
+\href{http://www.racket-lang.org/}{\racket}.
+Like with all operating systems, however,
+\ru{Аналогично операционным системам,}
+\racket\ actually supports a host of programming languages,
+\ru{\racket-система является исполняющей средой для целого ряда языков
+программирования,}
+so you must tell \racket\
+\ru{так что вы должны указать \racket у}
+\emph{which} language you’re programming in.
+\ru{\emph{на каком} языке вы программируете.}
+You inform the Unix shell by writing a line like
+\ru{Например, в Unix вы пишете строку типа}
 
 \begin{verbatim}
 #!/bin/sh
 \end{verbatim}
-
-в первой строке shell-скрипта; вы указываете веб-браузеру
-тип документа, добавляя заголовок
+at the top of a script;
+\ru{в первой строке shell-скрипта;}
+you inform the browser by writing, say,
+\ru{вы указываете веб-браузеру тип документа, добавляя заголовок}
 
 \begin{verbatim}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" ...>
 \end{verbatim}
 
-Аналогично, \racket\ требует от вас указать какой язык вы будете использовать.
-Диалекты языков \racket\ имеют тот же скобочный синтаксис, что и сам \racket, но
-другую семантику; ту же семантику но другой синтаксис; или и то и то.
-Так что каждая программа, которую может выполнять \racket-система, начинается со
-строки \#lang за которой следует имя диалекта языка: по умолчанию, это
-оригинальный \racket\ (указыватся как \verb|racket|). В этой книге мы почти
-всегда будем использовать диалект\note{В DrRacket v.6.6, выберите меню
-\menu{Язык > Выбрать язык\ldots > Start your program with \#lang to specify the
-desired dialect}.}
-
+Similarly, \racket\ asks that you declare which language you will be using.
+\ru{Аналогично, \racket\ требует от вас указать какой язык вы будете
+использовать.}
+\racket\ languages can have the same parenthetical syntax as \racket\ but with a
+different semantics;
+\ru{Диалекты языков \racket\ имеют тот же скобочный синтаксис, что и сам
+\racket, но другую семантику;}
+the same semantics but a different syntax;
+\ru{ту же семантику но другой синтаксис;}
+or different syntax and semantics.
+\ru{или различные синтаксис и семантику.}
+Thus every \racket\ program
+\ru{Так что каждая программа, которую может выполнять \racket-система,}
+begins with \#lang followed by the name of some language:
+\ru{начинается со строки \#lang за которой следует имя диалекта языка:}
+by default, it’s \racket\ \ru{по умолчанию, это оригинальный \racket\ }
+written as \ru{указыватся как} \verb|racket|).
+In this book we’ll almost always use the language\note{In DrRacket v.5.3,
+go to Language, then Choose Language, and select ``Use the language declared in
+the source''.}
+\ru{В этой книге мы почти всегда будем использовать диалект}\note{\ru{В DrRacket
+v.6.6, выберите меню \menu{Язык > Выбрать язык\ldots > Start your program with
+\#lang to specify the desired dialect}.}}
 \begin{verbatim}
 #lang plai-typed
 \end{verbatim}
-
-Когда мы будем отклоняться от этого правила, это будет указано особо, так что
-если не указано иное, добавляйте заголовок \verb|#lang plai-typed| в начало
-каждого файла программы (предполагается что я тоже это сделал)\note{В DrRacket
-v.6.6 требуется установить расширение plai-typed:\\\menu{Файл>Install
-package\ldots>Package
+When we deviate we’ll say so explicitly,
+\ru{Когда мы будем отклоняться от этого правила,}
+so unless indicated otherwise, put
+\ru{это будет указано особо, так что если не указано иное, добавляйте заголовок}
+\verb|#lang plai-typed|
+at the top of every file
+\ru{в начало каждого файла программы}
+(and assume I’ve done the same
+\ru{предполагается что я тоже это
+сделал})\note{В DrRacket v.6.6 требуется установить расширение
+plai-typed:\\\menu{Файл>Install package\ldots>Package
 Source:>\url{github://github.com/mflatt/plai-typed/master}>Install>\ldots>Закрыть}}.
 
 The \termdef{Typed PLAI}{Typed PLAI}\ language differs from traditional \racket\
@@ -50,40 +78,34 @@ and \verb|test|\note{There are additional commands for controlling the output
 of testing, for instance. \ru{Также существуют дополнительные команды для
 управления выводом тестов.} Be sure to read the documentation for the language.
 \ru{Обязательно прочитайте документацию для языка.}
-In DrRacket v.6.6, go to \menu{Help>Help Desk}, and in the Help Desk search bar, type
-\menu{plai-typed}. \ru{В DrRacket v.6.6 идите в меню \menu{Help>Help
+In DrRacket v.5.3, go to \menu{Help>Help Desk}, and in the Help Desk search bar,
+type \menu{plai-typed}. \ru{В DrRacket v.6.6 идите в меню \menu{Help>Help
 Desk}, и в поле поиска \menu{Help Desk} введите \menu{plai-typed}.}}
 Here’s an example of each in use.
 \ru{Вот примеры использования каждого из них.} 
 We can introduce new datatypes
-\ru{Вы можем создавать новые типы данных\note{запустить программу можно нажав
+\ru{Мы можем создавать новые типы данных\note{запустить программу можно нажав
 \keys{Ctrl+R}}}:
-
 \lst{src/1/p8_1.rkt}
-
 You can roughly think of this as analogous to the following in Java:
 \ru{Вы можете примерно понять идею в терминах языка \java:}
-an abstract
-class \term{абстрактный класс} \verb|MisspelledAnimal| and two concrete
-sub-classes \ru{и два конкретизирующих класса}\ \verb|caml| \ru{верблюд} and
-\verb|yacc| \ru{якк}, each of which has one numeric constructor argument named
+an abstract class \term{абстрактный класс} \verb|MisspelledAnimal| and two
+concrete sub-classes \ru{и два конкретизирующих подкласса}\ \verb|caml|
+\ru{верблюд} and \verb|yacc| \ru{якк},
+each of which has one numeric constructor argument named
 \ru{каждый из которых имеет конструктор с числовым аргументом}
 \verb|humps| \ru{горбы} and \verb|height| \ru{высота}, respectively
 \ru{соответственно}.
 
 In this language, we construct instances as follows:
 \ru{На этом языке мы строим экземпляры классов следующим образом:}
-
 \lst{src/1/p8_2.rkt}
-
 As the name suggests \ru{Как следует из названия,}, \verb|define-type| creates a
 type of the given name \ru{создает тип с заданным именем}.
 We can use
 this when, for instance, binding the above instances to names:
 \ru{Мы можем это использовать например при связывании эксземпляров с именами:}
-
 \lst{src/1/p8_3.rkt}
-
 In fact you don’t need these particular type declarations, because \term{Typed
 PLAI} will infer types for you here and in many other cases.
 \ru{Фактически вам не нужны эти частные определения типов, так как \term{Typed
