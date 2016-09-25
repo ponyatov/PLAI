@@ -19,9 +19,9 @@ TEX += 2_3_types.tex
 SRC += src/2/p11_1.rkt src/2/p11_2.rkt src/2/p11_3.rkt
 
 TEX += 2_4_completing.tex
-P12_x = src/plai.rkt \
+ArithC = src/plai.rkt \
 	src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt src/3/p15_3.rkt
-SRC += tmp/ArithC.rkt $(P12_x) src/3/p14_1.rkt src/3/p14_2.rkt src/3/p15_2.rkt
+SRC += tmp/ArithC.rkt $(ArithC) src/3/p14_1.rkt src/3/p14_2.rkt src/3/p15_2.rkt
 
 TEX += 2_5_coda.tex
 
@@ -35,13 +35,17 @@ TEX += 4_desugaring.tex 4_1_subtract.tex 4_2_negation.tex
 SRC += src/4/p17_1.rkt src/4/p17_2.rkt src/4/p18_1.rkt
 SRC += src/4/p18_2.rkt src/4/p18_3.rkt src/4/p18_4.rkt
 
-PS = src/plai.rkt src/cr.rkt
-PS += src/1/p8_1.rkt src/cr.rkt src/1/p8_2.rkt
+MisspelledAnimal = src/plai.rkt src/cr
+MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
+MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
 
 include ../texheader/foot.mk
 
-tmp/ArithC.rkt: $(P12_x)
-	cat $^ > $@
+tmp/ArithC.rkt: $(ArithC) Makefile
+	cat $(ArithC) > $@
 
-PLAI.rkt: $(PS) Makefile
-	cat $(PS) > $@ 
+tmp/MisspelledAnimal.rkt: $(MisspelledAnimal) Makefile
+	cat $(MisspelledAnimal) > $@
+
+.PHONY: rkt
+rkt: tmp/MisspelledAnimal.rkt 	
