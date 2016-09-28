@@ -11,8 +11,8 @@ to study the parts of programming languages that are not parsing.
 \ru{Однако, с нашей точки зрения тема парсинга является сильным отвлечением,
 так как есть другие более достойные темы, касающиеся реализации языков
 программирования.}
-We will therefore exploit a handy feature of Racket to manage the transformation
-of input streams into trees: 
+We will therefore exploit a handy feature of \racket\ to manage the
+transformation of input streams into trees: 
 \ru{Поэтому мы сделаем финт ушами, и будем использовать встроенную фичу
 \racket а для получения готовых деревьев разбора из входного потока: функцию}
 \verb|read|.
@@ -35,6 +35,6 @@ symbol \ru{в котором первым элемент будет} \verb|'-|, 
 number \ru{второй элемент число} 5, and third element is the number \ru{и
 третий элемент число} 6.
 
-\fig{\ru{Дерево разбора для} (+ 23 (- 5 6))}{tmp/2_1.pdf}{height=0.7\textheight}
+\fig{\ru{Дерево разбора для} (+ 23 (- 5 6))}{tmp/2_1.pdf}{height=0.9\textheight}
 
 \lst{src/2/p10_1.rkt}

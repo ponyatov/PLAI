@@ -22,6 +22,7 @@ TEX += 2_4_completing.tex
 ArithC = src/plai.rkt \
 	src/2/p12_1.rkt src/2/p12_2.rkt src/2/p12_3.rkt src/3/p15_3.rkt
 SRC += tmp/ArithC.rkt $(ArithC) src/3/p14_1.rkt src/3/p14_2.rkt src/3/p15_2.rkt
+SRC += src/2/v1.rkt src/2/v2.rkt
 
 TEX += 2_5_coda.tex
 

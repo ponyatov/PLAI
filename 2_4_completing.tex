@@ -6,56 +6,51 @@ However, its output is generic \ru{Тем не менее, его вывод в�
 it represents the token structure without offering any comment on its intent.
 \ru{он содержит структуру токенов не предлагая каких-либо комментариев об их
 назначении.}
-We would instead prefer to have a representation that tells us something about
-the \emph{intended meaning} of the terms in our language, just as we wrote at
-the very beginning: “representing addition”, “represents a number”, and so on.
-\ru{Вместо этого мы предпочли бы иметь представление, которое говорит нам
-что-то о \emph{предполагаемом значении} термов нашего языка, так же как мы
-писали в самом начале: ``представление сложения'', ``представление числа'' и
-так далее.}
+We would instead prefer to have a representation
+\ru{Вместо этого мы предпочли бы иметь представление,}
+that tells us something about the \emph{intended meaning} of the terms in our
+language,
+\ru{которое говорит нам что-то о \emph{предполагаемом значении} термов нашего
+языка,}
+just as we wrote at the very beginning: “representing addition”, “represents a
+number”, and so on.
+\ru{так же как мы писали в самом начале: ``представление сложения'',
+``представление числа'' и так далее.}
 
-To do this, we must first introduce a datatype that captures this
-representation. \ru{Чтобы сделать это, мы сначала введем тип данных, который
-зафиксирует это представление.} We will separately discuss \ru{Мы отдельно
-рассмотрим} (section \ru{в разделе} \ref{sec31}) how and why we obtained this
+To do this, we must first introduce a datatype
+\ru{Чтобы сделать это, мы сначала введем тип данных,}
+that captures this representation.
+\ru{который зафиксирует это представление.}
+We will separately discuss \ru{Мы
+отдельно рассмотрим} (section \ru{в разделе} \ref{sec31}) how and why we obtained this
 datatype \ru{как и зачем мы применяем этот тип}, but for now let’s say it’s
 given to us \ru{но сейчас пока будем считать, что он нам задан}:
-\lstx{ArithC.rkt}{src/plai.rkt}{rkt}
 \lstx{ArithC.rkt}{src/2/p12_1.rkt}{rkt}\label{arithc}
 We now need a function that will convert s-expressions into instances of this
 datatype.
 \ru{Теперь нам нужна функция, которая преобразует s-выражение в структуру из
 экземпляров этого типа.}
 This is the other half of our parser \ru{Это вторая половина нашего парсера}:
-\lstx{ArithC.rkt}{src/2/p12_2.rkt}{rkt}
+\lstxl{ArithC.rkt}{src/2/p12_2.rkt}{rkt}
 
 Thus\note{typing in \racket\ console \emph{after program run}} \ru{Таким
 образом\note{\ru{введя выражение в \racket-консоли \emph{после выполнения
 программы}}}}
-\begin{verbatim}
-> (parse '(+ (* 1 2) (+ 2 3)))
-- ArithC
-(plusC
-    (multC (numC 1) (numC 2))
-    (plusC (numC 2) (numC 3)))
-\end{verbatim}
+\lst{src/2/v1.rkt}
 \lstx{ArithC.rkt}{src/2/p12_3.rkt}{rkt}
-\begin{verbatim}
-(good
-  (parse '(+ (* 1 2) (+ 2 3)))
-  (plusC (multC (numC 1) (numC 2)) (plusC (numC 2) (numC 3)))
-  (plusC (multC (numC 1) (numC 2)) (plusC (numC 2) (numC 3)))
-  "at line 26")
-\end{verbatim}
+\lst{src/2/v2.rkt}
 
 Congratulations\,! \ru{Мои поздравления\,!}
 You have just completed your first representation of a program.
 \ru{Вы только что завершили ваше первое представление программы.}
-From now on we can focus entirely on programs represented as recursive trees,
-ignoring the vagaries of surface syntax and how to get them into the tree form.
-\ru{С этого момента мы можем полностью сосредоточиться на программах,
-представленных в виде рекурсивных деревьев, не обращая внимания на капризы
-наносного синтаксиса и процесс получения из него дерева разбора.}
+From now on we can focus entirely on programs
+\ru{С этого момента мы можем полностью сосредоточиться на программах,}
+represented as recursive trees,
+\ru{представленных в виде рекурсивных деревьев,}
+ignoring the vagaries of surface syntax
+\ru{не обращая внимания на капризы наносного синтаксиса}
+and how to get them into the tree form.
+\ru{и процесс получения из него дерева разбора.}
 We’re finally ready to start studying programming languages\,!
 \ru{Мы, наконец, готовы приступить к изучению языков программирования\,!}
 

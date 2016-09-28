@@ -61,7 +61,7 @@ s-expression.
 You have to then cast them to their native types.
 \ru{Вы должны привести их к нативному типу.}
 For instance \ru{Например}:
-\lst{src/2/p11_1.rkt}
+\lstl{src/2/p11_1.rkt}
 This is similar to the casting that a Java programmer would have to insert.
 \ru{Это похоже на явное приведение типов, которое должен вставить программист
 на \java.}
@@ -69,22 +69,25 @@ We will study casting itself later \ru{Мы обсудим само привед
 \ref{}.
 
 Observe that the first element of the list is still not treated by the
-type checker as a symbol: a list-shaped s-expression is a list of s-expressions.
+type checker as a symbol:
 \ru{Отметим, что первый элемент списка все еще не распознается контролером
-типов как символ: списко-образное s-выражение является списком s-выражений.}
+типов как символ:}
+a list-shaped s-expression is a list of s-expressions.
+\ru{списко-образное s-выражение является списком s-выражений.}
 Thus \ru{Таким образом},
 \lst{src/2/p11_2.rkt}
 whereas again, casting does the trick:
 \ru{и снова приведение типов решает проблему :}
 \lst{src/2/p11_3.rkt}
-The need to cast s-expressions is a bit of a nuisance, but some complexity is
-unavoidable because of what we’re trying to accomplish: to convert an
-\emph{untyped input} stream into a \emph{typed output} stream through robustly
-typed means.
-\ru{Необходимость приведения s-выражений немного геморна, но некоторая сложность
-неизбежна из-за того что мы пытаемся достичь: преобразование
-\emph{нетипизированного} входного потока в \emph{типизированный} выходной поток
-через срества робастной типизации.}
+The need to cast s-expressions is a bit of a nuisance,
+\ru{Необходимость приведения s-выражений немного геморна,}
+but some complexity is unavoidable because of what we’re trying to accomplish:
+\ru{но некоторая сложность неизбежна из-за того что мы пытаемся достичь:}
+to convert an \emph{untyped input} stream into a \emph{typed output} stream
+\ru{преобразование \emph{нетипизированного} входного потока в
+\emph{типизированный} выходной поток}
+through robustly typed means.
+\ru{через средства робастной типизации.}
 Somehow we have to make explicit our assumptions about that input stream.
 \ru{Каким-то образом мы должны делать явные предположения об этом входном
 потоке.}
