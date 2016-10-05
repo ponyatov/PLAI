@@ -37,6 +37,8 @@ TEX += 4_desugaring.tex 4_1_subtract.tex 4_2_negation.tex
 SRC += src/4/p17_1.rkt src/4/p17_2.rkt src/4/p18_1.rkt
 SRC += src/4/p18_2.rkt src/4/p18_3.rkt src/4/p18_4.rkt
 
+TEX += 5_func.tex 5_1_datarepr.tex
+
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
 MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
