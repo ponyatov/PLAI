@@ -38,6 +38,8 @@ SRC += src/4/p17_1.rkt src/4/p17_2.rkt src/4/p18_1.rkt
 SRC += src/4/p18_2.rkt src/4/p18_3.rkt src/4/p18_4.rkt
 
 TEX += 5_func.tex 5_1_datarepr.tex
+SRC += src/5/p19_1.rkt src/5/p20_2.rkt src/5/p20_3.rkt
+SRC += src/5/p21_1.rkt src/5/p21_2.rkt src/5/p21_3.rkt
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
