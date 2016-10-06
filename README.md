@@ -13,5 +13,6 @@
 
 ### preinstall
 
-https://racket-lang.org/
-github://github.com/mflatt/plai-typed/master
+[racket] https://racket-lang.org/
+
+[plai-typed] github://github.com/mflatt/plai-typed/master
