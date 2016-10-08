@@ -1,1 +1,38 @@
 \secrel{6.1 Introducing the Environment  . 26}
+
+The intuition that addresses the first concern is to have the interpreter “look
+up” an identifier in some sort of directory. The intuition that addresses the
+second concern is to defer the substitution. Fortunately, these converge nicely
+in a way that also addresses the third. The directory records the intent to
+substitute, without actually rewriting the program source; by recording the
+intent, rather than substituting immediately, we can defer substitution; and the
+resulting data structure, which is called an environment, avoids the need for
+source-to-source rewriting and maps nicely to low-level machine representations.
+Each name association in the environment is called a binding.
+
+Observe carefully that what we are changing is the implementation strategy for
+the programming language, not the language itself. Therefore, none of our
+datatypes for representing programs should change, nor even should the answers
+that the interpreter provides. As a result, we should think of the previous
+interpreter as a “reference implementation” that the one we’re about to write
+should match. Indeed, we should create a generator that creates lots of tests,
+runs them through both interpreters, and makes sure their answers are the same.
+Ideally, we should prove that the two interpreters behave the same, which is a
+good topic for advanced study.
+
+Let’s first define our environment data structure. An environment is a list of
+pairs of names associated with...what?
+\note{One subtlety is in defining precisely what “the same” means, especially
+with regards to failure.}
+
+\DoNow{
+A natural question to ask here might be what the environment maps names to. But
+a better, more fundamental, question is: How to determine the answer to the
+“natural” question?
+}
+
+Remember that our environment was created to defer substitutions. Therefore, the
+answer lies in substitution. We discussed earlier (Oh Wait, There’s More!) that
+we want substitution to map names to answers, corresponding to an eager function
+application strategy. Therefore, the environment should map names to answers.
+\lsts{src/6/6_1_1.rkt}{rkt}
