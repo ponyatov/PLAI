@@ -1,1 +1,10 @@
 \secrel{6.5 Exposing the Environment  . . 31}
+
+If we were building the implementation for others to use, it would be wise and a
+courtesy for the exported interpreter to take only an expression and list of
+function definitions, and invoke our defined interp with the empty environment.
+This both spares users an implementation detail, and avoids the use of an
+interpreter with an incorrect environment. In some contexts, however, it can be
+useful to expose the environment parameter. For instance, the environment can
+represent a set of pre-defined bindings: e.g., if the language wishes to provide
+pi automatically bound to 3.2 (in Indiana).

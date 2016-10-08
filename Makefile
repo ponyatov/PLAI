@@ -59,6 +59,7 @@ SRC += src/6/6_2_7.rkt src/6/6_2_8.rkt
 TEX += 6_3_defer.tex
 SRC += src/6/6_3_1.rkt src/6/6_3_2.rkt src/6/6_3_3.rkt
 TEX += 6_4_scope.tex
+SRC += src/6/6_4_1.rkt src/6/6_4_2.rkt src/6/6_4_3.rkt src/6/6_4_4.rkt
 TEX += 6_5_expose.tex
 
 MisspelledAnimal = src/plai.rkt src/cr
