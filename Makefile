@@ -57,6 +57,7 @@ SRC += src/6/6_2_1.rkt src/6/6_2_2.rkt src/6/6_2_3.rkt
 SRC += src/6/6_2_4.rkt src/6/6_2_5.rkt src/6/6_2_6.rkt
 SRC += src/6/6_2_7.rkt src/6/6_2_8.rkt
 TEX += 6_3_defer.tex
+SRC += src/6/6_3_1.rkt src/6/6_3_2.rkt src/6/6_3_3.rkt
 TEX += 6_4_scope.tex
 TEX += 6_5_expose.tex
 

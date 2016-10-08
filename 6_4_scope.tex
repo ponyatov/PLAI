@@ -1,4 +1,23 @@
 \secrel{6.4 Scope   . 30}
+
+The broken environment interpreter above implements what is known as dynamic
+scope. This means the environment accumulates bindings as the program executes.
+As a result, whether an identifier is even bound depends on the history of
+program execution. We should regard this unambiguously as a flaw of programming
+language design. It adversely affects all tools that read and process programs:
+compilers, IDEs, and humans.
+
+In contrast, substitution—and environments, done correctly—give us lexical scope
+or static scope. “Lexical” in this context means “as determined from the source program”, while “static” in computer science means “without running the program”, so these are appealing to the same intuition. When we examine an identifier, we want to know two things: (1) Is it bound? (2) If so, where? By “where” we mean: if there are multiple bindings for the same name, which one governs this identifier? Put differently, which one’s substitution will give a value to this identifier? In general, these questions cannot be answered statically in a dynamically-scoped language: so your IDE, for instance, 
+cannot overlay arrows to show you this information (as DrRacket does).
+Thus, even though the rules of scope become more complex as the space of names
+becomes richer (e.g., objects, threads, etc.), we should always strive to preserve the spirit of static 
+scoping.
+\note{A different way to think about it is that in a dynamically-scoped
+language, the answer to these questions is the same for all identifiers, and it
+simply refers to the dynamic environment. In other words, it provides no useful
+information.}
+
 \secdown
 \secrel{6.4.1 How Bad Is It?   . 30}
 \secrel{6.4.2 The Top-Level Scope  . 31}
