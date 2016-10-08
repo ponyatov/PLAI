@@ -46,6 +46,8 @@ TEX += 5_3_subst.tex
 SRC += src/5/5_3_1.rkt src/5/5_3_2.rkt src/5/5_3_3.rkt
 TEX += 5_4_resumed.tex
 SRC += src/5/5_4_1.rkt src/5/5_4_2.rkt src/5/5_4_4.rkt src/5/5_4_5.rkt
+TEX += 5_5_more.tex
+SRC += src/5/5_5_1.rkt src/5/5_5_2.rkt 
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
