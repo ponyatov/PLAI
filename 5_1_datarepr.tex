@@ -153,3 +153,14 @@ We also need to choose a representation for a set of function definitions.
 \ru{Нам также необходимо выбрать представление для набора определений функций.}
 It’s convenient to represent these by a list.
 \ru{Удобно определить из через списки.}
+\note{Look out\,! Did you notice that we spoke of a \term{set} of function
+definitions, but chose a \emph{list} representation\,? That means we’re using an
+\emph{ordered} collection of data to represent an \emph{unordered} entity. At
+the very least, then, when testing, we should use any and all permutations of
+definitions to ensure we haven’t subtly built in a dependence on the order.}
+\note{\ru{Осторожнее\,! Вы заметили что мы говорим о \term{множестве}
+определений функций, но используем представление \emph{списком}\,? Это значит,
+что мы используем \emph{упорядоченный} набор данных для представления
+\emph{неупорядоченной} сущности. По крайней мере при тестировании мы должны
+использовать любые и все перестановки определений, чтобы убедиться что мы не
+имеем неявной зависимости от порядка определений.}}
