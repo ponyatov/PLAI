@@ -51,7 +51,11 @@ SRC += src/5/5_5_1.rkt src/5/5_5_2.rkt
 
 TEX += 6_env.tex
 TEX += 6_1_intro.tex
+SRC += src/6/6_1_1.rkt
 TEX += 6_2_interp.tex 
+SRC += src/6/6_2_1.rkt src/6/6_2_2.rkt src/6/6_2_3.rkt
+SRC += src/6/6_2_4.rkt src/6/6_2_5.rkt src/6/6_2_6.rkt
+SRC += src/6/6_2_7.rkt src/6/6_2_8.rkt
 TEX += 6_3_defer.tex
 TEX += 6_4_scope.tex
 TEX += 6_5_expose.tex
