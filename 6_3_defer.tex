@@ -1,1 +1,44 @@
 \secrel{6.3 Deferring Correctly   29}
+
+Here’s another test:
+\lsts{src/6/6_3_1.rkt}{rkt}
+In our interpreter, this evaluates to 7. Should it?
+
+Translated into Racket, this test corresponds to the following two definitions
+and expression:
+\lsts{src/6/6_3_2.rkt}{rkt}
+What should this produce? (f1 3) substitutes x with 3 in the body of f1, which
+then invokes (f2 4). But notably, in f2, the identifier x is not bound! Sure
+enough, Racket will produce an error.
+
+In fact, so will our substitution-based interpreter!
+
+Why does the substitution process result in an error? It’s because, when we
+replace the representation of x with the representation of 3 in the
+representation of f1, we do so in f1 only.
+(Obviously: x is f1’s parameter; even if another function had a parameter named
+x, that’s a different x.) Thus, when we get to evaluating the body of f2, its x
+hasn’t been substituted, resulting in the error.
+\note{This “the representation of” is getting a little annoying, isn’t it?
+Therefore, I’ll stop saying that, but do make sure you understand why I had to
+say it. It’s an important bit of pedantry.}
+
+What went wrong when we switched to environments? Watch carefully: this is
+subtle. We can focus on applications, because only they affect the environment.
+When we substituted the formal for the value of the actual, we did so by
+extending the current environment. In terms of our example, we asked the
+interpreter to substitute not only f2’s substitution in f2’s body, but also the
+current ones (those for the caller, f1), and indeed all past ones as well. That
+is, the environment only grows; it never shrinks.
+
+Because we agreed that environments are only an alternate implementation
+strategy for substitution—and in particular, that the language’s meaning should
+not change—we have to alter the interpreter. Concretely, we should not ask it to
+carry around all past deferred substitution requests, but instead make it start
+afresh for every new function, just as the substitution-based interpreter does.
+This is an easy change:
+\lsts{src/6/6_3_3.rkt}{rkt}
+
+Now we have truly reproduced the behavior of the substitution interpreter.
+\note{In case you’re wondering how to write a test case that catches errors,
+look up test/exn.}
