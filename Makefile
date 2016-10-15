@@ -62,6 +62,16 @@ TEX += 6_4_scope.tex
 SRC += src/6/6_4_1.rkt src/6/6_4_2.rkt src/6/6_4_3.rkt src/6/6_4_4.rkt
 TEX += 6_5_expose.tex
 
+TEX += 7_fnanyw.tex
+TEX += 7_1_exval.tex
+SRC += src/7/7_1_1.rkt src/7/7_1_2.rkt src/7/7_1_3.rkt src/7/7_1_4.rkt
+SRC += src/7/7_1_5.rkt src/7/7_1_6.rkt src/7/7_1_7.rkt src/7/7_1_8.rkt
+SRC += src/7/7_1_9.rkt
+TEX += 7_2_nested.tex
+TEX += 7_3_closures.tex
+TEX += 7_4_subst.tex
+TEX += 7_5_sugar.tex
+
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
 MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
