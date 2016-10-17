@@ -1,0 +1,8 @@
+(test (interp (plusC (numC 10) (appC (fdC 'const5 '_ (numC 5)) (numC 10)))
+		mt-env)
+	(numV 15))
+(test/exn (interp (appC (fdC 'f1 'x (appC (fdC 'f2 'y (plusC (idC 'x) (idC 'y)))
+				(numC 4)))
+			(numC 3))
+		mt-env)
+	"name not found")

@@ -19,10 +19,11 @@ different kinds of expressions, which we will return to when we study types.
 \ref{}}
 \lsts{src/7/7_1_3.rkt}{rkt}
 
-With this definition of application, we no longer have to look up functions by name,
-so the interpreter can get rid of the list of function definitions. If we need it we can
-restore it later, but for now let’s just explore what happens with function definitions are
-written at the point of application: so-called immediate functions.
+With this definition of application, we no longer have to look up functions by
+name, so the interpreter can get rid of the list of function definitions. If we
+need it we can restore it later, but for now let’s just explore what happens
+with function definitions are written at the point of application: so-called
+immediate functions.
 
 Now let’s tackle interp. We need to add a case to the interpreter for function
 definitions, and this is a good candidate:
@@ -62,3 +63,51 @@ not numbers:
 
 It’s worth examining the definition of one of these helper functions:
 \lsts{src/7/7_1_9.rkt}{rkt}
+Observe that it checks that both arguments are numbers before performing the
+addition. This is an instance of a safe run-time system. We’ll discuss this
+topic more when we get to types. \ref{}
+
+There are two more cases to cover. One is function definitions. We’ve already
+agreed these will be their own kind of value:
+\lsts{src/7/7_1_10.rkt}{rkt}
+
+That leaves one case, application. Though we no longer need to look up the
+function definition, we’ll leave the code structured as similarly as possible:
+\lsts{src/7/7_1_11.rkt}{rkt}
+
+In place of the lookup, we reference f which is the function definition, sitting
+right there. Note that, because any expression can be in the function definition
+position, we really ought to harden the code to check that it is indeed a
+function.
+
+\DoNow{
+What does is mean? That is, do we want to check that the function definition
+position is syntactically a function definition (fdC), or only that it
+evaluates to one (funV)? Is there a difference, i.e., can you write a program
+that satisfies one condition but not the other?
+}
+
+We have two choices:
+\begin{enumerate}[nosep]
+  \item 
+We can check that it syntactically is an fdC and, if it isn’t reject it as an
+error.
+  \item 
+We can evaluate it, and check that the resulting value is a function (and signal
+an error otherwise).
+\end{enumerate}
+We will take the latter approach, because this gives us a much more flexible
+language. In particular, even if we can’t immediately imagine cases where we, as
+humans, might need this, it might come in handy when a program needs to generate
+code. And we’re writing precisely such a program, namely the desugarer! (See
+section 7.5.) As a result, we’ll modify the application case to evaluate the
+function position:
+\lsts{src/7/7_1_12.rkt}{rkt}
+
+\Exercise{
+Modify the code to perform both versions of this check.
+}
+
+And with that, we’re done. We have a complete interpreter! Here, for instance,
+are some of our old tests again:
+\lsts{src/7/7_1_13.rkt}{rkt}
