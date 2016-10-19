@@ -1,0 +1,1 @@
+(funV 'f2 'x (plusC (idC 'x) (idC 'x)))
