@@ -73,6 +73,8 @@ SRC += src/7/7_2_1.rkt src/7/7_2_2.rkt src/7/7_2_3.rkt src/7/7_2_4.rkt
 SRC += src/7/7_2_5.rkt src/7/7_2_6.rkt src/7/7_2_7.rkt src/7/7_2_8.rkt
 SRC += src/7/7_2_9.rkt
 TEX += 7_3_closures.tex
+SRC += src/7/7_3_1.rkt src/7/7_3_2.rkt src/7/7_3_3.rkt src/7/7_3_4.rkt
+SRC += src/7/7_3_5.rkt
 TEX += 7_4_subst.tex
 TEX += 7_5_sugar.tex
 
