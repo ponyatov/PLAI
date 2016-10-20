@@ -210,6 +210,7 @@ SRC += src/13/1/5.rkt src/13/1/6.rkt src/13/1/6.err src/13/1/7.rkt
 TEX += 13_2_syntax.tex
 SRC += src/13/2/1.rkt src/13/2/2.rkt src/13/2/3.rkt 
 TEX += 13_3_guards.tex
+SRC += src/13/3/1.rkt src/13/3/2.rkt
 TEX += 13_4_smacro.tex
 TEX += 13_4_1_fatt.tex
 TEX += 13_4_2_guevl.tex

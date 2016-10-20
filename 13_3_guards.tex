@@ -1,1 +1,27 @@
 \secrel{13.3 Guards   . 95}
+
+Now we can return to the problem that originally motivated the introduction of
+syntax- case: ensuring that the binding position of a my-let-3 is syntactically
+an identifier. For this, you need to know one new feature of syntax-case: each
+rewriting rule can have two parts (as above), or three. If there are three
+present, the middle one is treated as a guard: a predicate that must evaluate to
+true for expansion to proceed rather than signal a syntax error. Especially
+useful in this context is the predicate identifier?, which determines whether a
+syntax object is syntactically an identifier (or variable).
+
+\DoNow{
+Write the guard and rewrite the rule to incorporate it.
+}
+
+Hopefully you stumbled on a subtlety: the argument to identifier? is of type
+syntax. It needs to refer to the actual fragment of syntax bound to var. Recall
+that var is bound in the syntax space, and \#' substitutes identifiers bound
+there. Therefore, the correct way to write the guard is:
+\lsts{src/13/3/1.rkt}{rkt}
+With this information, we can now write the entire rule:
+\lsts{src/13/3/2.rkt}{rkt}
+
+\DoNow{
+Now that you have a guarded rule definition, try to use the macro with a
+non-identifier in the binding position and see what happens.
+}
