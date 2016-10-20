@@ -1,1 +1,99 @@
 \secrel{13.2 Syntax Transformers as Functions  . 93}
+
+Earlier we saw that my-let-1 does not even attempt to ensure that the syntax in
+the identifier position is truly (i.e., syntactically) an identifier. We cannot
+remedy that with the syntax-rules mechanism, but we can with a much more
+powerful mechanism called syntax-case. Because syntax-case exhibits many other
+useful features as well, we’ll introduce it and then grow it gradually.
+
+The first thing to understand is that a macro is actually a function. It is not,
+however, a function from regular run-time values to other run-time values, but
+rather a function from syntax to syntax. These functions execute in a world
+whose purpose is to create the program to execute. Observe that we’re talking
+about the program to execute: the actual execution of the program may only occur
+much later (or never at all). This point is actually extremely clear when we
+examine desugaring, which is very explicitly a function from (one kind of)
+syntax to (another kind of) syntax. This is perhaps obscured above in two ways:
+\begin{itemize}
+  \item 
+The notation of syntax-rules, with no explicit parameter name or other “function
+header”, may not make clear that it is a functional transformation (though the
+rewriting rule format does allude to this fact).
+  \item 
+In desugaring, we specify one atomic function for the entire process. Here, we
+are actually writing several little functions, one for each kind of new
+syntactic construct (such as my-let-1), and these pieces are woven together by
+an invisible function that controls the overall rewriting process. (As a
+concrete example, it is not inherently clear that the output of a macro is
+expanded further—though a simple example immediately demonstrates that this is
+indeed the case.)
+\end{itemize}
+
+\Exercise{
+Write one or more macros to confirm that the output of a macro is expanded
+further.
+}
+
+There is one more subtlety. Because the form of a macro looks rather like Racket
+code, it is not immediately clear that it “lives in another world”. In the
+abstract, it may be helpful to imagine that the macro definitions are actually
+written in an entirely different language that processes only syntax. This
+simplicity is, however, misleading. In practice, program transformers—also
+called compilers—are full-blown programs, too, and need all the power of
+ordinary programs. This would have necessitated the creation of a parallel
+language purely for processing programs. This would be wasteful and pointless;
+therefore, Racket instead endows syntax-transforming programs with the full
+power of Racket itself.
+
+With that prelude, let’s now introduce syntax-case. We’ll begin by simply
+rewriting my-let-1 (under the name my-let-3) using this new notation. First, we
+have to write a header for the definition; notice already the explicit
+parameter:
+\lsts{src/13/2/1.rkt}{rkt}
+
+This binds x to the entire (my-let-3 ...) expression.
+
+As you might imagine, define-syntax simply tells Racket you’re about to define a
+new macro. It does not pick precisely how you want to implement it, leaving you
+free to use any mechanism that’s convenient. Earlier we used syntax-rules; now
+we’re going to use syntax-case. In particular, syntax-case needs to explicitly
+be given access to the expression to pattern-match:
+\lsts{src/13/2/2.rkt}{rkt}
+
+Now we’re ready to express the rewrite we wanted. Previously a rewriting rule
+had two parts: the structure of the input and the corresponding output. The same
+holds here. The first (matching the input) is the same as before, but the second
+(the output) is a little different:
+\lsts{src/13/2/3.rkt}{rkt}
+
+Observe the crucial extra characters: \#'. Let’s examine what that means.
+
+In syntax-rules, the entire output part simply specifies the structure of the
+output. In contrast, because syntax-case is laying bare the functional nature of
+transformation, the output part is in fact an arbitrary expression that may
+perform any computations it wishes. It must simply evaluate to a piece of
+syntax.
+
+Syntax is actually a distinct datatype. As with any distinct dataype, it has its
+own rules for construction. Concretely, we construct syntax values by writing
+\#'; the following s-expression is treated as a syntax value. (In case you were
+wondering, the x bound in the macro definition above is also of this datatype.)
+
+The syntax constructor, \#', enjoys a special property. Inside the output part
+of the macro, all syntax variables in the input are automatically bound, and
+replaced on occurrence. As a result, when the expander encounters var in the
+output, say, it replaces var with the corresponding part of the input expression.
+
+\DoNow{
+Remove the \#' and try using the above macro definition. What happens?
+}
+
+So far, syntax-case merely appears to be a more complicated form of syntax-
+rules: perhaps slightly better in that it more cleanly delineates the functional
+nature of expansion, and the type of output, but otherwise simply more unwieldy.
+As we will see, however, it also offers significant power.
+
+\Exercise{
+syntax-rules can actually be expressed as a macro over syntax-case.
+Define it.
+}
