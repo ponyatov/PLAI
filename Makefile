@@ -76,6 +76,8 @@ TEX += 7_3_closures.tex
 SRC += src/7/7_3_1.rkt src/7/7_3_2.rkt src/7/7_3_3.rkt src/7/7_3_4.rkt
 SRC += src/7/7_3_5.rkt
 TEX += 7_4_subst.tex
+SRC += src/7/7_4_1.rkt src/7/7_4_2.rkt src/7/7_4_3.rkt src/7/7_4_4.rkt
+SRC += src/7/7_4_5.rkt
 TEX += 7_5_sugar.tex
 
 MisspelledAnimal = src/plai.rkt src/cr

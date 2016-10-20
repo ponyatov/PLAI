@@ -1,1 +1,42 @@
 \secrel{7.4 Substitution, Again   38}
+
+We have seen that substitution is instructive in thinking through how to
+implement lambda functions. However, we have to be careful with substitution
+itself! Suppose we have the following expression (to give lambda functions their
+proper Racket syntax):
+\lsts{src/7/7_4_1.rkt}{rkt}
+Now suppose we substitute for f the following expression: (lambda (y) (+ x y)).
+Observe that it has a free identifier (x), so if it is ever evaluated, we would
+expect to get an unbound identifier error. Substitution would appear to give:
+\lsts{src/7/7_4_2.rkt}{rkt}
+But observe that this latter program has no free identifiers!
+
+That’s because we have too naive a version of substitution. To prevent
+unexpected behavior like this (which is a form of dynamic binding), we need to
+define capturefree substitution. It works roughly as follows: we first
+consistently rename all bound identifiers to entirely previously unused (known
+as fresh) names. Imagine that we give each identifier a numeric suffix to attain
+freshness. Then the original expression becomes
+\lsts{src/7/7_4_3.rkt}{rkt}
+(Observe that we renamed f to f1 in both the binding and bound locations.) Now let’s
+do the same with the expression we’re substituting:
+\lsts{src/7/7_4_4.rkt}{rkt}
+Now let’s substitute for f1:
+\note{Why didn’t we rename x? Because x may be a reference to a top-level
+binding, which should then also be renamed. This is simply another application
+of the consistent renaming principle. In the current setting, the distinction is
+irrelevant.}
+\lsts{src/7/7_4_5.rkt}{rkt}
+...and x is still free! This is a good form of substitution.
+
+But one moment. What happens if we try the same example in our environmentbased
+interpreter?
+\DoNow{
+Try it out.
+}
+
+Observe that it works correctly: it reports an unbound identifier error.
+Environments automatically implement capture-free substitution!
+\Exercise{
+In what way does using an environment avoid the capture problem of substitution?
+}
