@@ -1,0 +1,1 @@
+(test (msg o-self! 'first 5) 7)

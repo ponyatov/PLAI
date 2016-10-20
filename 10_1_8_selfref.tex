@@ -1,1 +1,47 @@
 \secrel{10.1.8 Objects with Self-Reference  72}
+
+Until now, our objects have simply been packages of named functions: functions
+with multiple named entry-points, if you will. We’ve seen that many of the
+features considered important in object systems are actually simple patterns
+over functions and scope, and have indeed been used—without names assigned to
+them—for decades by programmers armed with lambda.
+
+One characteristic that actually distinguishes object systems is that each
+object is automatically equipped with a reference to the same object, often
+called self or this. Can we implement this easily?
+\note{I prefer this slightly dry way of putting it to the anthropomorphic “knows
+about itself” terminology often adopted by object advocates.
+Indeed, note that we have gotten this far into object system properties without
+ever needing to resort to anthropomorphism.}
+
+\secdown
+
+\secrel{Self-Reference Using Mutation}
+
+Yes, we can, because we have seen just this very pattern when we implemented
+recursion; we’ll just generalize it now to refer not just to the same box or
+function but to the same object.
+\lsts{src/10/1/8/1.rkt}{rkt}
+Observe that this is precisely the recursion pattern (section 9.2), adapted
+slightly. We’ve tested it having first send a method to its own second. Sure
+enough, this produces the expected answer:
+\lsts{src/10/1/8/2.rkt}{rkt}
+
+\secrel{Self-Reference Without Mutation}
+
+If you studied how to implement recursion without mutation, you’ll notice that
+the same solution applies here, too. Observe:
+\lsts{src/10/1/8/3.rkt}{rkt}
+Each method now takes self as an argument. That means method invocation must be
+modified to follow this new pattern:
+\lsts{src/10/1/8/4.rkt}{rkt}
+That is, when invoking a method on o, we must pass o as a parameter to the
+method. Obviously, this approach is dangerous because we can potentially pass a
+different object as the “self”. Exposing this to the developer is therefore
+probably a bad idea; if this implementation technique is used, it should only be
+done in desugaring.
+\note{Nevertheless, Python exposes just this in its surface syntax. While this
+tribute to the Y-combinator is touching, perhaps the resultant brittleness was
+unnecessary.}
+
+\secup
