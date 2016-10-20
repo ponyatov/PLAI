@@ -1,1 +1,20 @@
 \secrel{11.6 Precise Garbage Collection  . . 87}
+
+In conventional GC terminology, the opposite of “conservative” is precise. This,
+too, is a misnomer, because a GC cannot be precise, i.e., both sound and
+complete. Rather, precision here is a statement about the ability to identify
+references: when confronted with a value, a precise GC knows exactly what is and
+isn’t a reference, and where the references are. This removes the monumental
+effort that a conservative GC has to put into guessing non-references (and
+hoping to eliminate as many potential references as possible through this
+process).
+
+Within the space of precise GC, which is what most contemporary language runtime
+systems use, there is a wide range of implementation techniques. I refer you to
+\href{ftp://ftp.cs.utexas.edu/pub/garbage/gcsurvey.ps}{Paul Wilson’s survey}
+(which, despite its relative age in this fast-moving field, remains an excellent
+resource), as well as the book and other materials from
+\href{https://www.cs.kent.ac.uk/people/staff/rej/gc.html}{Richard Jones}. In
+particular, for a quick and readable overview of a generational garbage
+collector, read \href{http://www.cs.princeton.edu/~appel/papers/143.ps}{Simple
+Generational Garbage Collection and Fast Allocation}.
