@@ -1,1 +1,16 @@
 \secrel{11.4.1 Overview   . 84}
+
+The key idea behind all GC algorithms is to traverse memory by following
+references between values. Traversal begins at a root set, which is all the
+places from which a program can possibly refer to a value in the store.
+Typically the root set consists of every bound variable in the environment, and
+any global variables. In an actual working implementation, the implementor must
+be careful to also note ephemeral values such as references in registers. From
+this root set, the algorithm walks all accessible values using a variety of
+algorithms that are usually variations on depth-first search to identify
+everything that is live (i.e., usable through some sequence of program
+operations). Everything else, by definition, is garbage. Again, different
+algorithms address the recovery of this space in different ways.
+\note{Depth-first search is generally preferred because it works well with
+stack-based implementations. Of course, you might (and should) wonder where the
+GC’s own stack is stored!}
