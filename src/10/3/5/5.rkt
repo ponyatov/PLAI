@@ -1,0 +1,1 @@
+mixin M extends I { ... }

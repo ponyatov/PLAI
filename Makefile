@@ -177,6 +177,8 @@ TEX += 10_3_3_multi.tex
 TEX += 10_3_4_super.tex
 
 TEX += 10_3_5_mixins.tex
+SRC += src/10/3/5/1.rkt src/10/3/5/2.rkt src/10/3/5/3.rkt
+SRC += src/10/3/5/4.rkt src/10/3/5/5.rkt  
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
