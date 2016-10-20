@@ -1,1 +1,28 @@
 \secrel{12.3 Changing Meaning   89}
+
+Mapping functions-as-values to lambda works especially because we intend for the
+two to have the same meaning. However, this makes it difficult to change the
+meaning of what a function does. Lemme give ya’ a hypothetic: suppose we wanted
+our language to implement dynamic scope. In our original interpreter, this was
+easy (almost too easy, as history shows). But try to make the interpreter that
+uses lambda implement dynamic scope. It can similarly be difficult or at least
+subtle to map eager evaluation onto a language with lazy application \ref{}.
+\note{Don’t let this go past the hypothetical stage, please.}
+
+\Exercise{
+Convert the above interpreter to use dynamic scope.
+}
+
+The point is that the raw data structure representation does not make anything
+especially easy, but it usually doesn’t get in the way, either. In contrast,
+mapping to host language features can make some intents—mainly, those match what
+the host language already does!—especially easy, and others subtle or difficult.
+There is the added danger that we may not be certain of what the host language’s
+feature does (e.g., does its “lambda” actually implement static scope?).
+
+The moral is that this is a good property to exploit only we want to “pass
+through” the base language’s meaning—-and then it is especially wise because it
+ensures that we don’t accidentally change its meaning. If, however, we want to
+exploit a significant part of the base language and only augment its meaning,
+perhaps other implementation strategies \ref{}\ will work just as well instead
+of writing an interpreter.
