@@ -1,1 +1,30 @@
 \secrel{10.3.4 Super-Duper!   . . 79}
+
+Many languages have a notion of super-invocations, i.e., the ability to invoke a
+method or access a field higher up in the inheritance chain. This includes doing
+so at the point of object construction, where there is often a requirement that
+all constructors be invoked, to make sure the object is properly defined.
+\note{Note that I say “the” and “chain”. When we switch to multiple inheritance,
+these concepts are replaced with something much more complex.}
+
+We have become so accustomed to thinking of these calls as going “up” the chain
+that we may have forgotten to ask whether this is the most natural direction.
+Keep in mind that constructors and methods are expected to enforce invariants.
+Whom should we trust more: the super-class or the sub-class? One argument would
+say that the sub-class is most refined, so it has the most global view of the
+object. Conversely, each super-class has a vested interest in protecting its
+invariants against violation by ignorant sub-classes.
+
+These are two fundamentally opposed views of what inheritance means. Going up
+the chain means we view the extension as replacing the parent. Going down the
+chain means we view the extension as refining the parent. Because we normally
+associate sub-classing with refinement, why do our languages choose the “wrong”
+order of calling? Some languages have, therefore, explored invocation in the
+downward direction by default.
+\note{
+\href{http://www.daimi.au.dk/~eernst/gbeta/}{gbeta} is a modern programming
+language that supports inner, as well as many other interesting features.
+It is also interesting to consider
+\href{http://www.cs.utah.edu/plt/publications/oopsla04-gff.pdf}{combining both
+directions}.
+}
