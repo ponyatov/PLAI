@@ -1,1 +1,38 @@
 \secrel{11.4.3 Central Assumptions  . 85}
+
+Being able to soundly perform GC depends on two critical assumptions. The first
+is one about the language’s implementation and the other about the language’s
+semantics.
+\begin{enumerate}
+
+  \item 
+When confronted with a value, the GC needs to know what kind of value it is, and
+how its memory representation is laid out. For instance, when the traversal
+reaches a cons cell, it must know:
+\begin{enumerate}
+  \item   
+that this is a cons cell; and hence,
+  \item   
+that the first is at, say, a four byte offset, and
+  \item   
+that the rest is at, say, an eight byte offset.
+\end{enumerate}
+Obviously, this property must hold recursively, thus enabling a traversal
+algorithm to correctly map the values in memory.
+
+  \item 
+That programs cannot manufacture references in two ways:
+\begin{enumerate}
+  \item 
+Object references cannot reside outside the implementation’s pre-defined root
+set.
+  \item 
+Object references can only refer to well-defined points in objects.
+\end{enumerate}
+When the second property is violated, the GC can effectively go haywire,
+misinterpreting data. The first property sounds obvious: when it is violated, it
+seems the run-time system has clearly failed to obey the language’s semantics.
+However, the consequences of this property are subtle, as we discuss below
+\ref{}.
+  
+\end{enumerate}
