@@ -111,9 +111,11 @@ SRC += src/8/1/8_4.rkt src/8/1/8_5.rkt
 
 TEX += 8_2_vars.tex
 TEX += 8_2_1_term.tex
-SRC += src/8/2/1.rkt src/8/2/2.rkt src/8/2/3.rkt src/8/2/4.rkt  
+SRC += src/8/2/1.rkt
 TEX += 8_2_2_syntax.tex
+SRC += src/8/2/2.rkt src/8/2/3.rkt src/8/2/4.rkt  
 TEX += 8_2_3_ivar.tex
+SRC += src/8/2/5.rkt src/8/2/6.rkt src/8/2/7.rkt src/8/2/8.rkt  
 
 TEX += 8_3_design.tex   
 TEX += 8_4_pars.tex   
