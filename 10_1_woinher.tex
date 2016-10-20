@@ -1,12 +1,25 @@
 \secrel{10.1 Objects Without Inheritance  . 67}
+
+The simplest notion of an object—pretty much the only thing everyone who talks about
+objects agrees about—is that an object is
+\begin{itemize}[nosep]
+  \item a value, that
+  \item maps names to
+  \item stuff: either other values or “methods”.
+\end{itemize}
+From a minimalist perspective, methods seem to be just functions, and since we
+already have those in the language, we can put aside this distinction.
+\note{We’re about to find out that “methods” are awfully close to functions but
+differ in important ways in how they’re called and/or what’s bound in them.}
+
 \secdown
-\secrel{10.1.1 Objects in the Core  . . 68}
-\secrel{10.1.2 Objects by Desugaring  69}
-\secrel{10.1.3 Objects as Named Collections  . . 69}
-\secrel{10.1.4 Constructors   . . 70}
-\secrel{10.1.5 State   71}
-\secrel{10.1.6 Private Members   71}
-\secrel{10.1.7 Static Members   . 72}
-\secrel{10.1.8 Objects with Self-Reference  72}
-\secrel{10.1.9 Dynamic Dispatch  . . 74}
+\input{10_1_1_core}
+\input{10_1_2_desugar}
+\input{10_1_3_collect}
+\input{10_1_4_construct}
+\input{10_1_5_state}
+\input{10_1_6_private}
+\input{10_1_7_static}
+\input{10_1_8_selfref}
+\input{10_1_9_dynamic}
 \secup

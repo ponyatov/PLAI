@@ -132,6 +132,15 @@ TEX += 9_4_wostate.tex
 
 TEX += 10_objects.tex
 TEX += 10_1_woinher.tex
+TEX += 10_1_1_core.tex
+TEX += 10_1_2_desugar.tex
+TEX += 10_1_3_collect.tex
+TEX += 10_1_4_construct.tex
+TEX += 10_1_5_state.tex
+TEX += 10_1_6_private.tex
+TEX += 10_1_7_static.tex
+TEX += 10_1_8_selfref.tex
+TEX += 10_1_9_dynamic.tex
 TEX += 10_2_member.tex
 TEX += 10_3_whatelse.tex
 
