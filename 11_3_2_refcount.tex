@@ -1,1 +1,71 @@
 \secrel{11.3.2 Reference Counting  . 83}
+
+Because entirely manual reclamation puts an undue burden on developers, some
+semiautomated techniques have seen long-standing use, most notably reference
+counting.
+
+In reference counting, every value has associated with it a count of how many
+references it has. The developer is responsible for incrementing and
+decrementing these counts. When the count reaches zero, the value’s space can
+safely be restored for future reuse.
+
+Observe, immediately, that there are two significant assumptions lurking under
+this simple definition.
+\begin{enumerate}
+  \item
+That the developer can track every reference. Recall that every alias is also a
+reference. Thus, a developer who writes
+\lsts{src/11/3/2/1.rkt}{rkt}
+has to remember that y is a second reference to the same value being referred to
+by x, and increment the count accordingly.
+  \item
+That every value has only a finite number of references. This assumption fails
+when a value has cycles.
+\end{enumerate}
+Because of the need to manually increment and decrement references, this
+technique suffers from a lack of both soundness and completeness. Indeed, the
+second assumption above naturally leads to lack of completeness, while the first
+assumption points to the simplest way to break soundness.
+
+The perils of manual memory management are subtle and run deeper. Because
+developers are charged with freeing memory (or, equivalently, managing reference
+counts), the policy of memory management has to become part of every library’s
+interface: effectively, “Who’s going to de-allocate values allocated by this
+library, and will the library de-allocate values passed to it?” It is
+unfortunately difficult to document and follow these policies precisely, but
+even worse, it pollutes the description of the library with low-level details
+that usually have nothing to do with its intended behavior.
+
+One intriguing idea is to automate the insertion of reference increments and
+decrements. Another is to add cycle-detection to the implementation. Doing both
+solves many of the above problems, but reference counting suffers from others,
+too:
+\begin{itemize}
+  \item 
+The reference count increases the size of each object. It has to be large enough
+to not overflow, yet small enough to not appreciably increase the program’s
+memory footprint.
+  \item 
+The time spent to increase and decrease these counts can become significant.
+  \item 
+If an object’s reference count becomes zero, everything it refers to must also
+have their reference counts decreased—possibly recursively. This means a single
+deallocation action can have a large time impact, barring clever “lazy”
+techniques (which then increase the program’s memory footprint).
+  \item 
+To decrement the reference count, we have to walk objects that are garbage. This
+seems highly counterproductive: to traverse objects we are no longer interested
+in. This has practical consequences: objects we are not interested in may not
+have been accessed in a while, which means they might have been paged out.
+The reference counter has to page them back in, just to inform them that they
+are no longer needed.
+\end{itemize}
+
+For all these reasons, reference counting should be used with utmost care. You
+should not accept it as a default, but rather ask yourself why it is you reject
+what are generally better automated techniques.
+
+\Exercise{
+If the reference count overflows, which correctness properties are hurt and
+how? Examine tradeoffs.
+}

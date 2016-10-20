@@ -186,6 +186,7 @@ TEX += 11_2_recovery.tex
 TEX += 11_3_reclamation.tex
 TEX += 11_3_1_cost.tex
 TEX += 11_3_2_refcount.tex
+SRC += src/11/3/2/1.rkt
 TEX += 11_4_automated.tex
 TEX += 11_4_1_overview.tex
 TEX += 11_4_2_truth.tex
