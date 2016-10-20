@@ -164,6 +164,7 @@ SRC += src/10/1/9/1.rkt src/10/1/9/2.rkt src/10/1/9/3.rkt
 
 TEX += 10_2_member.tex
 TEX += 10_3_whatelse.tex
+SRC += src/10/3/1.rkt
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr

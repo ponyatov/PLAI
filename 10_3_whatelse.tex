@@ -1,4 +1,46 @@
 \secrel{10.3 What (Goes In) Else?   . . 75}
+
+Until now, our case statements have not had an else clause. One reason to do so
+would be if we had a variable set of members in an object, though that is
+probably better handled through a different representation than a conditional: a
+hash-table, for instance, as we’ve discussed above. In contrast, if an object’s
+set of members is fixed, desugaring to a conditional works well for the purpose
+of illustration (because it emphasizes the fixed nature of the set of member
+names, which a hash table leaves open to interpretation—and also error). There
+is, however, another reason for an else clause, which is to “chain” control to
+another, parent, object. This is called inheritance.
+
+Let’s return to our model of desugared objects above. To implement inheritance,
+the object must be given “something” to which it can delegate method invocations
+that it does not recognize. A great deal will depend on what that “something”
+is.
+
+One answer could be that it is simply another object.
+\lsts{src/10/3/1.rkt}{rkt}
+
+Due to our representation of objects, this application effectively searches for
+the method in the parent object (and, presumably, recursively in its parents).
+If a method matching the name is found, it returns through this chain to the
+original call in msg that sought the method. If none is found, the final object
+presumably signals a “message not found” error.
+
+\Exercise{
+Observe that the application (parent-object m) is like “half a msg”, just like
+an l-value was “half a value lookup” \ref{}. Is there any connection?
+}
+
+Let’s try this by extending our trees to implement another method, size. We’ll
+write an “extension” (you may be tempted to say “sub-class”, but hold off for
+now!) for each node and mt to implement the size method. We intend these to
+extend the existing definitions of node and mt, so we’ll use the extension
+pattern described above.
+\note{We’re not editing the existing definitions because that is supposed to be
+the whole point of object inheritance: to reuse code in a black-box fashion.
+This also means different parties, who do not know one another, can each extend
+the same base code. If they had to edit the base, first they have to find out
+about each other, and in addition, one might dislike the edits of the other.
+Inheritance is meant to sidestep these issues entirely.}
+
 \secdown
 \secrel{10.3.1 Classes   . . 76}
 \secrel{10.3.2 Prototypes   78}
