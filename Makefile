@@ -117,8 +117,8 @@ SRC += src/8/2/2.rkt src/8/2/3.rkt src/8/2/4.rkt
 TEX += 8_2_3_ivar.tex
 SRC += src/8/2/5.rkt src/8/2/6.rkt src/8/2/7.rkt src/8/2/8.rkt  
 
-TEX += 8_3_design.tex   
-TEX += 8_4_pars.tex   
+TEX += 8_3_design.tex 8_4_pars.tex
+SRC += src/8/4/1.rkt src/8/4/2.rkt 
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr

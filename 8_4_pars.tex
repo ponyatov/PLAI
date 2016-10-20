@@ -1,1 +1,64 @@
 \secrel{8.4 Parameter Passing   . 60}
+
+In our current implementation, on every function call, we allocate a fresh
+location in the store for the parameter. This means the following program
+\lsts{src/8/4/1.rkt}{rkt}
+evaluates to 5, not 3. That is because the value of the formal parameter x is
+held at a different location than that of the actual parameter y, so the
+mutation affects the location of x, leaving y unscathed.
+
+Now suppose, instead, that application behaved as follows. When the actual
+parameter is a variable, and hence has a location in memory, instead of
+allocating a new location for the value, it simply passes along the existing one
+for the variable. Now the formal parameter is referring to the same store
+location as the actual: i.e., they are variable aliases. Thus any mutation on
+the formal will leak back out into the calling context; the above program would
+evaluate to 3 rather than 5. These is called a call-by-reference
+parameter-passing strategy.
+\note{Instead, our interpreter implements call-by-value, and this is the same
+strategy followed by languages like Java. This causes confusion because when the
+value is itself mutable, changes made to the value in the callee are observed by
+the caller. However, that is simply an artifact of mutable values, not of the
+calling strategy. Please avoid this confusion!}
+
+For some years, this power was considered a good idea. It was useful because
+programmers could write abstractions such as swap, which swaps the value of two
+variables in the caller. However, the disadvantages greatly outweigh the
+advantages:
+\begin{itemize}
+  \item 
+A careless programmer can alias a variable in the caller and modify it without
+realizing they have done so, and the caller may not even realize this has
+happened until some obscure condition triggers it.
+  \item 
+Some people thought this was necessary for efficiency: they assumed the
+alternative was to copy large data structures. However, call-by-value is
+compatible with passing just the address of the data structure. You only need
+make a copy if (a) the data structure is mutable, (b) you do not want the caller
+to be able to mutate it, and (c) the language does not itself provide
+immutability annotations or other mechanisms.
+  \item 
+It can force non-uniform and hence non-modular reasoning. For instance, suppose
+we have the procedure:
+\lsts{src/8/4/2.rkt}{rkt}
+If the language were to permit by-reference parameter passing, then the
+programmer cannot locally—i.e., just from the above code—determine what the
+value of x will be in the ellipses.
+\end{itemize}
+
+At the very least, then, if the language is going to permit by-reference
+parameters, it should let the caller determine whether to pass the
+reference—i.e., let the callee share the memory address of the caller’s
+variable—or not. However, even this option is not quite as attractive as it may
+sound, because now the callee faces a symmetric problem, not knowing whether its
+parameters are aliased or not. In traditional, sequential programs this is less
+of a concern, but if the procedure is reentrant, the callee faces precisely the
+same predicaments.
+
+At some point, therefore, we should consider whether any of this fuss is
+worthwhile. Instead, callers who want the callee to perform a mutation could
+simply send a boxed value to the callee. The box signals that the caller
+accepts—indeed, invites—the callee to perform a mutation, and the caller can
+extract the value when it’s done. This does obviate the ability to write a
+simple swapper, but that’s a small price to pay for genuine software engineering
+concerns.
