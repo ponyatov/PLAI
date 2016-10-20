@@ -1,1 +1,21 @@
 \secrel{10.1.5 State   71}
+
+Many people believe that objects primarily exist to encapsulate state. We
+certainly haven’t lost that ability. If we desugar to a language with variables
+(we could equivalently use boxes, in return for a slight desugaring overhead),
+we can easily have multiple methods mutate common state, such as a constructor
+argument:
+\note{Alan Kay, who won a Turing Award for inventing Smalltalk and modern object
+technology, disagrees. In
+\href{http://www.smalltalk.org/smalltalk/TheEarlyHistoryOfSmalltalk_Abstract.html}{The
+Early History of Smalltalk}, he says, “[t]he small scale [motivation for OOP]
+was to find a more flexible version of assignment, and then to try to eliminate
+it altogether”. He adds, “It is unfortunate that much of what is called
+‘object-oriented programming’ today is simply old style programming with fancier
+constructs. Many programs are loaded with ‘assignment-style’ operations now done
+by more expensive attached procedures.”}
+\lsts{src/10/1/5/1.rkt}{rkt}
+For instance, we can test a sequence of operations:
+\lsts{src/10/1/5/2.rkt}{rkt}
+and also notice that mutating one object doesn’t affect another:
+\lsts{src/10/1/5/3.rkt}{rkt}

@@ -143,6 +143,7 @@ SRC += src/10/1/3/4.rkt src/10/1/3/5.rkt src/10/1/3/6.rkt
 TEX += 10_1_4_construct.tex
 SRC += src/10/1/4/1.rkt
 TEX += 10_1_5_state.tex
+SRC += src/10/1/5/1.rkt src/10/1/5/2.rkt src/10/1/5/3.rkt 
 TEX += 10_1_6_private.tex
 TEX += 10_1_7_static.tex
 TEX += 10_1_8_selfref.tex
