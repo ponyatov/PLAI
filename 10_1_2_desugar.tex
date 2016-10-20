@@ -1,1 +1,22 @@
 \secrel{10.1.2 Objects by Desugaring  69}
+
+While defining objects in the core language may be worthwhile, it’s an unwieldy
+way to go about studying them. Instead, we’ll use Racket to represent objects,
+sticking to the parts of the language we already know how to implement in our
+interpreter. That is, we’ll assume that we are looking at the output of
+desugaring. (For this reason, we’ll also stick to stylized code, potentially
+writing unnecessary expressions on the grounds that this is what a simple
+program generator would produce.)
+
+\begin{framed}
+Alert: All the code that follows will be in \verb|#lang plai|, not in the typed
+language.
+\end{framed}
+
+\Exercise{
+Why \#lang plai? What problems do you encounter when you try to type the
+following code? Are some of them amenable to easy fixes, such as introducing a
+new datatype and applying it consistently? How about if we make simplifications
+for the purposes of modeling, such as assuming methods have only one argument?
+Or are some of them less tractable?
+}
