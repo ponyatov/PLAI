@@ -166,6 +166,16 @@ TEX += 10_2_member.tex
 TEX += 10_3_whatelse.tex
 SRC += src/10/3/1.rkt
 
+TEX += 10_3_1_classes.tex
+
+TEX += 10_3_2_proto.tex
+
+TEX += 10_3_3_multi.tex
+
+TEX += 10_3_4_super.tex
+
+TEX += 10_3_5_mixins.tex
+
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
 MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
