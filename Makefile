@@ -194,6 +194,12 @@ TEX += 11_4_3_central.tex
 
 TEX += 11_5_conserva.tex
 TEX += 11_6_precise.tex
+
+TEX += 12_repr.tex
+TEX += 12_1_changing.tex
+TEX += 12_2_errors.tex
+TEX += 12_3_meanings.tex
+TEX += 12_4_more.tex
   
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr

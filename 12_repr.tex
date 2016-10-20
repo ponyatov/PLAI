@@ -1,0 +1,27 @@
+\secrel{12 Representation Decisions 87}\secdown
+
+Go back and look again at our interpreter for function as values \ref{}. Do you
+see something curiously non-uniform about it?
+
+\DoNow{
+No, really, do. Do you?
+}
+
+Consider how we chose to represent our two different kinds of values: numbers
+and functions. Ignoring the superficial numV and closV wrappers, focus on the
+underlying data representations. We represented the interpreted language’s
+numbers as Racket numbers, but we did not represent the interpreted language’s
+functions (closures) as Racket functions (closures).
+
+That’s our non-uniformity. It would have been more uniform to use Racket’s
+representations for both, or also to not use Racket’s representation for either.
+So why did we make this particular choice?
+
+We were trying to illustrate and point, and that point is what we will explore
+right now.
+
+\input{12_1_changing}
+\input{12_2_errors}
+\input{12_3_meanings}
+\input{12_4_more}
+\secup
