@@ -1,5 +1,13 @@
-\secrel{11.3 Manual Reclamation   . . 82}
-\secdown
+\secrel{11.3 Manual Reclamation   . . 82}\secdown
+
+The most manual approach would be to entrust all de-allocation to the human. In
+C, for instance, there are two basic primitives: malloc for allocation and free
+to reclaim. malloc consumes a size and returns a reference to a store-allocated
+value; free consumes the references and reclaims its assocated memory.
+\note{“Moloch has been used figuratively in English literature from John
+Milton’s Paradise Lost (1667) to Allen Ginsberg’s ‘Howl’ (1955), to refer to a
+person or thing demanding or requiring a very costly sacrifice.”\
+--— \href{https://en.wikipedia.org/wiki/Moloch}{Wikipedia on Moloch}}
 
 \input{11_3_1_cost}
 \input{11_3_2_refcount}
