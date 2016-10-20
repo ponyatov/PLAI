@@ -1,0 +1,1 @@
+class NodeSize extends Node { ... }

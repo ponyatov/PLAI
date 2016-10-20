@@ -1,1 +1,60 @@
 \secrel{10.3.1 Classes   . . 76}
+
+Immediately we see a difficulty. Is this the constructor pattern?
+\lsts{src/10/3/1/1.rkt}{rkt}
+That suggests that the parent is at the “same level” as the object’s constructor
+fields. That seems reasonable, in that once all these parameters are given, the
+object is “fully defined”. However, we also still have
+\lsts{src/10/3/1/2.rkt}{rkt}
+Are we going to write all the parameters twice? (Whenever we write something
+twice, we should worry that we may not do so consistently, thereby inducing
+subtle errors.) Here’s an alternative: node/size can construct the instance of
+node that is its parent. That is, node/size’s parent parameter is not the parent
+object but rather the parent’s object maker.
+\lsts{src/10/3/1/3.rkt}{rkt}
+\lsts{src/10/3/1/4.rkt}{rkt}
+Then the object constructor must remember to pass the parent-object maker on
+every invocation:
+\lsts{src/10/3/1/5.rkt}{rkt}
+Obviously, this is something we might simplify with appropriate syntactic sugar.
+We can confirm that both the old and new tests still work:
+\lsts{src/10/3/1/6.rkt}{rkt}
+
+\Exercise{
+Rewrite this block of code using self-application instead of mutation.
+}
+
+What we have done is capture the essence of a class. Each function parameterized
+over a parent is...well, it’s a bit tricky, really. Let’s call it a blob for
+now. A blob corresponds to what a Java programmer defines when they write a
+class:
+\lsts{src/10/3/1/7.rkt}{rkt}
+
+\DoNow{
+So why are we going out of the way to not call it a “class”?
+}
+
+When a developer invokes a Java class’s constructor, it in effect constructs
+objects all the way up the inheritance chain (in practice, a compiler might
+optimize this to require only one constructor invocation and one object
+allocation). These are private copies of the objects corresponding to the parent
+classes (private, that is, up to the presence of static members). There is,
+however, a question of how much of these objects is visible. Java chooses
+that—unlike in our implementation above—only one method of a given name (and
+signature) remains, no matter how many there might have been on the inheritance
+chain, whereas every field remains in the result, and can be accessed by
+casting. The latter makes some sense because each field presumably has
+invariants governing it, so keeping them separate (and hence all present) is
+wise. In contrast, it is easy to imagine an implementation that also makes all
+the methods available, not only the ones lowest (i.e., most refined) in the
+inheritance hierarchy. Many scripting languages take the latter approach.
+
+\Exercise{
+The code above is fundamentally broken. The self reference is to the same
+syntactic object, whereas it needs to refer to the most-refined object:
+this is known as open recursion. Modify the object representations so that self
+always refers to the most refined version of the object. Hint: You will find the
+self-application method (section 10.1.8.2) of recursion handy
+\note{This demonstrates the other form of extensibility we get from traditional
+objects: extensible recursion.}
+}

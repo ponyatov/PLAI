@@ -167,6 +167,8 @@ TEX += 10_3_whatelse.tex
 SRC += src/10/3/1.rkt
 
 TEX += 10_3_1_classes.tex
+SRC += src/10/3/1/1.rkt src/10/3/1/2.rkt src/10/3/1/3.rkt src/10/3/1/4.rkt 
+SRC += src/10/3/1/5.rkt src/10/3/1/6.rkt src/10/3/1/7.rkt 
 
 TEX += 10_3_2_proto.tex
 
