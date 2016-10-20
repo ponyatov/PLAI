@@ -124,6 +124,7 @@ TEX += 9_recursion.tex
 TEX += 9_1_data.tex
 SRC += src/9/1/1.rkt src/9/1/2.rkt src/9/1/3.rkt src/9/1/4.rkt 
 TEX += 9_2_funcs.tex
+SRC += src/9/2/1.rkt src/9/2/2.rkt src/9/2/3.rkt src/9/2/4.rkt    
 TEX += 9_3_premat.tex
 TEX += 9_4_wostate.tex
 
