@@ -154,6 +154,8 @@ TEX += 10_1_6_private.tex
 SRC += src/10/1/6/1.rkt
 
 TEX += 10_1_7_static.tex
+SRC += src/10/1/7/1.rkt src/10/1/7/2.rkt 
+
 TEX += 10_1_8_selfref.tex
 TEX += 10_1_9_dynamic.tex
 TEX += 10_2_member.tex
