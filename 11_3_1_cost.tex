@@ -1,1 +1,54 @@
 \secrel{11.3.1 The Cost of Fully-Manual Reclamation  82}
+
+Let’s start by asking what the cost of these operations is. We might begin by
+assuming that malloc has an associated register pointing into the store (like
+new-loc \ref{}), and on every allocation it simply obtains the next free
+locations. This model is extremely simple—in fact, deceptively so. The problem
+arises when we free these values. Provided the first free is the last malloc, we
+would encounter no problem; but store data often do not follow a stack
+discipline. When we free anything but the most recently allocated value, we
+leave holes in the store. These holes lead to fragmentation, and in the worst
+case we become unable to allocate any objects even though there is ample space
+in the store—just split up across many fragments, no one of which is large
+enough.
+
+\Exercise{
+In principle, we could eliminate fragmentation by making all the free space be
+contiguous. What does it take to do so? Think through all the consequences and
+sketch whether you can in fact do this manually.
+}
+
+While fragmentation remains an insuperable problem in most manual memory
+management schemes, there is more to consider even in this seemingly simple
+discipline. What happens when we free a value? The run-time system has to
+somehow record that it is now available for future allocation. It does by
+maintaining a free list: a linked-list of the free spaces. A little reflection
+immediately suggests a question: where is the free list itself stored, and who
+manages its memory? The answer is that the free list references are stored in
+the freed cells, which immediately implies a minimum size for each allocation.
+
+In principle, then, each malloc must now traverse the free list to find a
+suitable freed spot. I say “suitable” because the allocator must make a complex
+decision. Should it take the first slot that matches or a later one? And either
+way, what does “matches” mean? Should it take only slots the exact right size,
+or take larger slots and break them up into smaller ones (thereby increasing the
+likelihood of creating unusably small holes)? And so on.
+
+Developers like allocation to be cheap. Therefore, in practice, allocation
+systems
+\note{Failing to make allocation cheap makes developers try to encode tricks
+based on reusing values, thereby reducing clarity and quite possibly also
+correctness.}
+tend to use just a fixed set of sizes, often in powers of two. This makes it
+possible to maintain not one but many free lists, each of holes of the same size
+(which is a power of two). A table refers to each of these lists, and indexing
+in the table is cheap by using bit-shifting. In return, developers sacrifice
+space, because objects not a power-of-two size will end up being needlessly
+padded. (This is a classic computer science trade-off: trading space for time.)
+Also, free must put the freed memory in the right slot, and perhaps even break
+up larger blocks into multiple smaller blocks to prepare for future allocations.
+Nothing about this model is inherently as cheap as it seems.
+\note{In particular, free is not free.}
+
+Of course, all this assumes that developers can function in even a sound, much
+less complete, fashion. But they don’t.
