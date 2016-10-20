@@ -84,7 +84,8 @@ SRC += src/7/5/5.rkt src/7/5/6.rkt src/7/5/7.rkt src/7/5/8.rkt
 SRC += src/7/5/9.rkt src/7/5/10.rkt
 
 TEX += 8_mutation.tex
-TEX += 8_1_mutable.tex   
+TEX += 8_1_mutable.tex
+SRC += src/8/1/1.rkt   
 TEX += 8_2_vars.tex   
 TEX += 8_3_design.tex   
 TEX += 8_4_pars.tex   
