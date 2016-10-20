@@ -1,1 +1,29 @@
 \secrel{13.4.3 Hygiene   . . 98}
+
+Hopefully now you’re nervous about something else.
+\DoNow{
+What?
+}
+
+Consider the macro \verb|(let ([v #t]) (my-or-4 #f v))|. What would we expect
+this to compute? Naturally, \#t: the first branch is \#f but the second is v,
+which is bound to \#t. But let’s look at the expansion:
+\lsts{src/13/4/3/1.rkt}{rkt}
+This expression, when run directly, evaluates to \verb|#f|. However,
+\verb|(let ([v #t]) (my- or-4 #f v))| evaluates to \verb|#t|. In other words,
+the macro seems to magically produce the right value: the names of identifiers
+chosen in the macro seem to be independent of those introduced by the macro!
+This is unsurprising when it happens in a function; the macro expander enjoys a
+property called hygiene that gives it the same property.
+
+One way to think about hygiene is that it effectively automatically renames all
+bound identifiers. That is, it’s as if the program expands as follows:
+\lsts{src/13/4/3/2.rkt}{rkt}
+turns into
+\lsts{src/13/4/3/3.rkt}{rkt}
+(notice the consistent renaming of v to v1), which turns into
+\lsts{src/13/4/3/4.rkt}{rkt}
+which, after renaming, becomes
+\lsts{src/13/4/3/5.rkt}{rkt}
+when expansion terminates. Observe that each of the programs above, if run
+directly, will produce the correct answer.
