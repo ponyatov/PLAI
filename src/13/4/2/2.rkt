@@ -1,0 +1,6 @@
+(let ([init #f])
+(if (begin (set! init (not init))
+init)
+(begin (set! init (not init))
+init)
+#f))

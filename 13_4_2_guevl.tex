@@ -1,1 +1,35 @@
 \secrel{13.4.2 Guarding Evaluation  . 97}
+
+We said above that this expands as we expect. Or does it? Let’s try the
+following example:
+\lsts{src/13/4/2/1.rkt}{rkt}
+Observe that or returns the actual value of the first “truthy” value, so the
+developer can use it in further computations. Therefore, this returns the value
+of init. What do we expect it to be? Naturally, because we’ve negated the value
+of init once, we expect it to be \#t. But evaluating it produces \#f!
+\note{This problem is not an artifact of set!.
+If instead of internal mutation we had, say, printed output, the printing would
+have occurred twice.}
+
+To understand why, we have to examine the expanded code. It is this:
+\lsts{src/13/4/2/2.rkt}{rkt}
+Aha! Because we’ve written the output pattern as
+\lsts{src/13/4/2/3.rkt}{rkt}
+This looked entirely benign when we first wrote it, but it illustrates a very
+important principle when writing macros (or indeed any other program
+transformation systems): do not copy code! In our setting, a syntactic variable
+should never be repeated; if you need to repeat it in a way that might cause
+multiple execution of that code, make sure you have considered the consequences
+of this. Alternatively, if you meant to work with the value of the expression,
+bind it once and use the bound identifier’s name subsequently. This is easy to
+demonstrate:
+\lsts{src/13/4/2/4.rkt}{rkt}
+This pattern of introducing a binding creates a new potential problem: you may
+end up evaluating expressions that weren’t necessary. In fact, it creates a
+second, even more subtle one: even if it going to be evaluated, you may evaluate
+it in the wrong context! Therefore, you have to reason carefully about whether
+an expression will be evaluated, and if so, evaluate it once in just the right
+place, then store that value for subsequent use.
+
+When we repeat our previous example, that contained the set!, with my-or-4, we
+see that the result is \#t, as we would have hoped.

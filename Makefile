@@ -216,6 +216,7 @@ TEX += 13_4_1_fatt.tex
 SRC += src/13/4/1/1.rkt src/13/4/1/2.rkt src/13/4/1/3.rkt 
 SRC += src/13/4/1/4.rkt src/13/4/1/5.rkt src/13/4/1/6.rkt 
 TEX += 13_4_2_guevl.tex
+SRC += src/13/4/2/1.rkt src/13/4/2/2.rkt src/13/4/2/3.rkt src/13/4/2/4.rkt 
 TEX += 13_4_3_hygiene.tex
 TEX += 13_5_indent.tex
 TEX += 13_6_influ.tex
