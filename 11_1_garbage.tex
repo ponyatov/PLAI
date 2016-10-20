@@ -1,1 +1,21 @@
 \secrel{11.1 Garbage   81}
+
+We use the term garbage to refer to allocated memory that is no longer
+necessary. There are two distinct kinds of allocations that a typical
+programming language runtime system performs. One kind is for the environment;
+this follows a push-and-pop discipline consistent with the nature of static
+scope. Returning from a procedure returns that procedure’s allocated environment
+space for subsequent use, seemingly free of cost. In contrast, allocation on the
+store has to follow an value’s lifetime, which could outlive that of the scope
+in which it was created—indeed, it may live forever. Therefore, we need a
+different strategy for recovering space consumed by store-allocated garbage.
+\note{It’s not free! The machine has to execute an explicit “pop” instruction to
+recover that space. As a result, it is not necessarily cheaper than other memory
+management strategies.}
+
+There are many methods for recovering this space, but they largely fall into two
+camps: manual and automatic. Manual collection depends on the developer being
+able to know and correctly discard unwated memory. Traditionally, humans have
+not proven especially good at this (though in some cases they have knowledge a
+machine might not \ref{}). Over several decades, therefore, automated methods
+have become nearly ubiquitous.
