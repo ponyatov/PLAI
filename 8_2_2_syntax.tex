@@ -1,1 +1,28 @@
 \secrel{8.2.2 Syntax   . . 57}
+
+Whereas other languages overload the mutation syntax (= or :=), in Racket they
+are kept distinct: set! is used to mutate variables. This forces Racket
+programmers to confront the distinction we introduced at the beginning of
+section 8. We will, of course, sidestep these syntactic issues in our core
+language by using different constructs for boxes and for variables.
+
+The first thing to note about variable mutation is that, although it too has two subterms
+like box mutation (setboxC), its syntax is fundamentally different. To understand
+why, let’s return to our Java fragment:
+\lsts{src/8/2/2.rkt}{java}
+In this setting, we cannot write an arbitrary expression in place of x: we must
+literally write the name of the identifier itself. That is because, if it were
+an expression position, then we could evaluate it, yielding a value: for
+instance, if x were previously bound to 1, this would be tantamout to writing
+the following statement:
+\lsts{src/8/2/3.rkt}{java}
+But this is, of course, nonsensical! We can’t assign a new value to 1, and
+indeed 1 is pretty much the definition of immutable. Thus, what we instead want
+is to find where x is in the store, and change the value held over there.
+
+Here’s another way to see this. Suppose the local variable o were bound to some
+String object; let’s call this object s. Say we write
+\lsts{src/8/2/4.rkt}{java}
+Are we trying to change s in any way? Certainly not: this statement intends to
+leave s alone. It only wants to change the value that o is referring to, so that
+subsequent references evaluate to this new string object instead.

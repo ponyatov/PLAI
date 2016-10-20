@@ -1,0 +1,1 @@
+o = new String("a new string");
