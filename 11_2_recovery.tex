@@ -1,1 +1,27 @@
 \secrel{11.2 What is “Correct” Garbage Recovery?  . . 81}
+
+Garbage recovery should neither recover space too early (soundness) nor too late
+(completeness). While both can be regarded as flaws, they are not symmetric in
+their impact: arguably, recovering too early is much worse. That is because if
+we recover a store location prematurely, the computation will continue to use it
+and potentially write other data into it, thereby working with nonsensical data.
+This leads at the very least to program incorrectness, but in more extreme
+situations leads to much worse phenomena such as security violations. In
+contrast, holding on to memory for too long decreases performance and eventually
+causes the program to terminate even though, in a platonic sense, it had memory
+available. This performance degradation and premature termination is always
+annoying, and in certain mission-critical systems can be deeply problematic, but
+at least the program does not compute nonsense.
+
+Ideally we would love to have all three: automation, soundness, and
+completeness. However, we face a classic “pick two” tradeoff. Ideal humans are
+capable of attaining both soundness and completeness, but in practice rarely
+achieve either. A computer can offer automation and either soundness or
+completeness, but computability arguments demonstrate that automation can’t be
+accompanied by both of the others. In practice, therefore, automated techniques
+offer soundness, on the grounds that: (a) it does the least harm, (b) it is
+relatively easy to implement, and (c) with some human intervention it can more
+closely approximate completeness.
+\note{You, surely, are perfect, but what of your fellow developers? And by the
+way, the economics discipline has been looking for you.}
+
