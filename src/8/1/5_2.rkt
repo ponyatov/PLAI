@@ -1,0 +1,5 @@
+(let ([b (box 0)])
+  (+ (begin (set-box! b (+ 1 (unbox b)))
+    (unbox b))
+  (begin (set-box! b (+ 1 (unbox b)))
+    (unbox b))))
