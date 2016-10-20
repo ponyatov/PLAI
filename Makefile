@@ -201,6 +201,7 @@ SRC += src/12/1/1.rkt
 TEX += 12_2_errors.tex
 TEX += 12_3_meanings.tex
 TEX += 12_4_more.tex
+SRC += src/12/4/1.rkt src/12/4/2.rkt src/12/4/3.rkt src/12/4/4.rkt 
   
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr

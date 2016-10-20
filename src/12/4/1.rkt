@@ -1,0 +1,1 @@
+(define-type-alias Env (symbol -> Value))
