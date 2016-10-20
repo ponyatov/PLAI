@@ -201,7 +201,20 @@ SRC += src/12/1/1.rkt
 TEX += 12_2_errors.tex
 TEX += 12_3_meanings.tex
 TEX += 12_4_more.tex
-SRC += src/12/4/1.rkt src/12/4/2.rkt src/12/4/3.rkt src/12/4/4.rkt 
+SRC += src/12/4/1.rkt src/12/4/2.rkt src/12/4/3.rkt src/12/4/4.rkt
+
+TEX += 13_desugaring.tex
+TEX += 13_1_first.tex
+TEX += 13_2_syntax.tex
+TEX += 13_3_guards.tex
+TEX += 13_4_smacro.tex
+TEX += 13_4_1_fatt.tex
+TEX += 13_4_2_guevl.tex
+TEX += 13_4_3_hygiene.tex
+TEX += 13_5_indent.tex
+TEX += 13_6_influ.tex
+TEX += 13_7_otherlangs.tex
+ 
   
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr

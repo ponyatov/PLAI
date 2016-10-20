@@ -1,0 +1,31 @@
+\secrel{13 Desugaring as a Language Feature 91}\secdown
+
+We have thus far extensively discussed and relied upon desugaring, but our
+current desguaring mechanism have been weak. We have actually used desugaring in
+two different ways. One, we have used it to shrink the language: to take a large
+language and distill it down to its core \ref{}. But we have also used it to
+grow the language: to take an existing language and add new features to it
+\ref{}. This just shows that desugaring is a tremendously useful feature to
+have. Indeed, it is so useful that we might ask two questions:
+\begin{itemize}
+  \item 
+Because we create languages to simplify the creation of common tasks, what would
+a language designed to support desugaring look like? Note that by “look” we
+don’t mean only syntax but also its key behavioral properties.
+  \item 
+Given that general-purpose languages are often used as a target for desugaring,
+why don’t they offer desugaring capabilities in the language itself ? For
+instance, this might mean extending a base language with the additional language
+that is the response to the previous question.
+\end{itemize}
+We are going to explore the answer to both questions simultaneously, by studying
+the facilities provided for this by \racket.
+
+\input{13_1_first}
+\input{13_2_syntax}
+\input{13_3_guards}
+\input{13_4_smacro}
+\input{13_5_indent}
+\input{13_6_influ}
+\input{13_7_otherlangs}
+\secup
