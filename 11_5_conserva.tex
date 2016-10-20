@@ -1,1 +1,57 @@
 \secrel{11.5 Convervative Garbage Collection  . . 86}
+
+We’ve explained that the typical root set consists of the environment, global
+variables, and some choice ephemerals. Where else might references reside?
+
+In most languages, nowhere else. But some languages (I’m looking at you, C and
+C++) allow references to be turned into arbitrary numbers, and arbitrary numbers
+to be turned back into references. As a result, in principle, any numeric value
+in the program (which, because of the nature of C and C++’s types, virtually any
+value in the program) could potentially be treated as a reference.
+
+This is problematic for two reasons. First, it means the GC can no longer limit
+its attention to the small root set; instead, the entire store is now
+potentially the root set. Second, if the GC tries to modify the object in any
+way—e.g., to record a “visited” bit during traversal—then it is potentially
+changing non-reference values: e.g., it might actually be changing an innocent
+numeric constant in the program. As a result, the particular confluence of
+features in languages like C and C++ conspire to make sound, efficient GC
+extremely difficult.
+
+But not impossible. A stimulating line of research called conservative GC has
+managed to create reasonably effective GC systems for such languages. The
+principle behind conservative GC notes that, while in principle every store
+location might be a root, in practice many of them are not. It then proceeds
+through a series of increasingly clever observations to deduce what must not be
+a reference (the opposite of a traditional GC) and can hence be safely ignored:
+for instance, on a word-aligned architecture, no odd number can never be a
+reference. By skipping most of the store, by making some basic assumptions about
+program behavior (e.g., that it will not manufacture certain kinds of
+references), and by being careful to not modify the store—e.g., changing bits in
+values, or moving data around—it can actually yield a reasonably effective GC
+strategy.
+\note{Nevertheless, it is a bit of a dog walking on its hind legs.}
+
+Conservative GC is often popular with programming language implementations that
+are written in, or rely on a base of code in, C or C++. For instance, early
+versions of \racket\ relied exclusively on it. There are many good reasons for
+this:
+\begin{enumerate}
+  \item 
+It offers a quick bootstrapping technique, so the language implementor can focus
+on other, more innovative, features.
+  \item 
+A language that controls all references (as Racket does) can easily create
+memory representations that are especially conducive to increasing the
+effectiveness of the GC (e.g., padding all true numbers with a one in the
+least-significant-bit).
+  \item 
+It enables easy interoperation with useful libraries written in C and C++
+(provided, of course, that they too meet the expectations of the technique).
+\end{enumerate}
+
+A word on vocabulary is in order. As we have argued [REF], all practical GC
+techniques are “conservative” in that they approximate truth with reachability.
+The word “conservative” has, however, become a term-of-art to refer to a GC
+technique that operates in an uncooperative (and hopefully not hostile) run-time
+system.
