@@ -118,7 +118,13 @@ TEX += 8_2_3_ivar.tex
 SRC += src/8/2/5.rkt src/8/2/6.rkt src/8/2/7.rkt src/8/2/8.rkt  
 
 TEX += 8_3_design.tex 8_4_pars.tex
-SRC += src/8/4/1.rkt src/8/4/2.rkt 
+SRC += src/8/4/1.rkt src/8/4/2.rkt
+
+TEX += 9_recursion.tex
+TEX += 9_1_data.tex
+TEX += 9_2_funcs.tex
+TEX += 9_3_premat.tex
+TEX += 9_4_wostate.tex
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
