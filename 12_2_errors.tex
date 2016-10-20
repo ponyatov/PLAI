@@ -1,1 +1,23 @@
 \secrel{12.2 Errors   . 89}
+
+When programs go wrong, programmers need a careful presentation of errors. Using
+host language features runs the risk that users will see host language errors,
+which they will not understand. Therefore, we have to carefully translate error
+conditions into terms that the user of our language will understand, without
+letting the host language “leak through”.
+
+Worse, programs that should error might not! For instance, suppose we decide
+that functions should only appear in top-level positions. If we fail to
+expressly check for this, desugaring into the more permissive lambda may result
+in an interpreter that produces answers where it should have halted with an
+error. Therefore, we have to take great care to permit only the intended surface
+language to be mapped to the host language.
+
+As another example, consider the different mutation operations. In our language,
+attempting to mutate an unbound variable produces an error. In some languages,
+doing so results in the variable being defined. Failing to pin down our intended
+semantics is a common language designer error, saying instead, “It is whatever
+the implementation does”. This attitude (a) is lazy and sloppy, (b) may yield
+unexpected and negative consequences, and (c) makes it hard for you to move your
+language from one implementation platform to another. Don’t ever make this
+mistake!
