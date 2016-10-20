@@ -1,1 +1,23 @@
 \secrel{10.3.3 Multiple Inheritance  . 78}
+
+Now you might ask, why is there only one fall-through option? It’s easy to
+generalize this to there being many, which leads naturally to multiple
+inheritance. In effect, we have multiple objects to which we can chain the
+lookup, which of course raises the question of what order in which we should do
+so. It would be bad enough if the ascendants were arranged in a tree, because
+even a tree does not have a canonical order of traversal: take just
+breadth-first and depth-first traversal, for instance (each of which has
+compelling uses). Worse, suppose a blob A extends B and C; but now suppose B and
+C each extend D. Now we have to confront this question: will there be one or two
+\note{This infamous situation is called diamond inheritance. If you choose to
+include multiple inheritance in your language you can lose yourself for days in
+design decisions on this. Because it is highly unlikely you will find a
+canonical answer, your pain}
+D objects in the instance of A? Having only one saves space and might interact
+better with our expectations, but then, will we visit this object once or twice?
+Visiting it twice should not make any difference, so it seems unnecessary. But
+visiting it once means the behavior of one of B or C might change. And so on. As
+a result, virtually every multiple-inheritance language is accompanied by a
+subtle algorithm merely to define the lookup order.
+
+Multiple inheritance is only attractive until you’ve thought it through.
