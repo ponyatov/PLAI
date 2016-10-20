@@ -33,6 +33,40 @@ extremely useful for understanding how mutation works. Therefore, we will add a
 simple, two-term version of sequencing to the core.
 
 \secrel{8.1.2 Scaffolding   42}
+
+First, let’s extend our core language datatype:
+\note{This is an excellent illustration of the non-canonical nature of
+desguaring. We’ve chosen to add to the core a construct that is certainly not
+necessary. If our goal was to shrink the size of the interpreter— perhaps at
+some cost to the size of the input program—we would not make this choice. But
+our goal in this book is to study pedagogic interpreters, so we choose a larger
+language because it is more instructive.}
+\lsts{src/8/1/2_1.rkt}{rkt}
+Observe that in a setboxC expression, both the box position and its new value
+are expressions. The latter is unsurprising, but the former might be. It means
+we can write programs such as this in corresponding Racket:
+\lsts{src/8/1/2_2.rkt}{rkt}
+This evaluates to a list of boxes, the first containing 1 and the second 2.
+Observe that the first argument to the first set-box! instruction was (first l),
+i.e., an expression that evaluated to a box, rather than just a literal box or
+an identifier. This is precisely analogous to languages like Java, where one can
+(taking some type liberties) write
+\note{Your output may look like '(\#\&1 \#\&2). The \#\& notation is Racket’s
+abbreviated syntactic prefix for “box”.}
+\lsts{src/8/1/2_3.rkt}{rkt}
+Observe that l.get(0) is a compound expression being used to find the
+appropriate box, and evaluates to the box object on which set is invoked.
+
+For convenience, we will assume that we have implemented desguaring to provide
+us with (a) let and (b) if necessary, more than two terms in a sequence (which
+can be desugared into nested sequences). We will also sometimes write
+expressions in the original Racket syntax, both for brevity (because the core
+language terms can grow quite large and unwieldy) and so that you can run these
+same terms in Racket and observe what answers they produce. As this implies, we
+are taking the behavior in Racket—which is similar to the behavior in just about
+every mainstream language with mutable objects and structures—as the reference
+behavior.
+
 \secrel{8.1.3 Interaction with Closures  . . 43}
 \secrel{8.1.4 Understanding the Interpretation of Boxes . . 44}
 \secrel{8.1.5 Can the Environment Help?  46}
