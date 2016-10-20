@@ -81,7 +81,13 @@ SRC += src/7/7_4_5.rkt
 TEX += 7_5_sugar.tex
 SRC += src/7/5/1.rkt src/7/5/2.rkt src/7/5/3.rkt src/7/5/4.rkt 
 SRC += src/7/5/5.rkt src/7/5/6.rkt src/7/5/7.rkt src/7/5/8.rkt 
-SRC += src/7/5/9.rkt src/7/5/10.rkt   
+SRC += src/7/5/9.rkt src/7/5/10.rkt
+
+TEX += 8_mutation.tex
+TEX += 8_1_mutable.tex   
+TEX += 8_2_vars.tex   
+TEX += 8_3_design.tex   
+TEX += 8_4_pars.tex   
 
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
