@@ -1,1 +1,63 @@
 \secrel{12.1 Changing Representations  . . 87}
+
+For a moment, let’s explore numbers. Racket’s numbers make a good target for
+reuse because they are so powerful: we get arbitrary-sized integers (bignums),
+rationals (which benefit from the bignum representation of integers), complex
+numbers, and so on. Therefore, they can represent most ordinary programming
+language number systems. However, that doesn’t mean they are what we want: they
+could be too little or too much.
+\begin{itemize}
+  \item 
+They are too much if what we want is a more restricted number system. For
+instance, Java prescribes a very specific set of fixed-size representations
+(e.g., int is specified to be 32-bit). Numbers that fall outside these sets
+cannot be directly represented as numbers, and arithmetic must respect these
+sets (e.g., overflowing so that adding 1 to 2147483647 does not produce
+2147483648).
+  \item 
+They are too little if we want even richer numbers, whether quaternions or
+numbers with associated probabilities.
+\end{itemize}
+Worse, we didn’t even stop and ask what we wanted, but blithely proceeded with
+Racket numbers.
+
+The reason we did so is because we weren’t really interested in the study of
+numbers; rather, we were interested in programming language features such as
+functions-asvalues. As language designers, however, you should be sure to ask
+these hard questions up front.
+
+Now let’s talk about our representation of closures. We could have instead
+represented closures by exploiting Racket’s corresponding concept, and
+correspondingly, function application with unvarnished Racket application.
+
+\DoNow{
+Replace the closure data structure with Racket functions representing
+functions-as-values.
+}
+
+Here we go:
+\lsts{src/12/1/1.rkt}{rkt}
+
+\Exercise{
+Observe a curious shift. In our previous implementation, the environment was
+extended in the appC case. Here, it’s extended in the lamC case. Is one of these
+incorrect? If not, why did this change occur?
+}
+
+This is certainly concise, but we’ve lost something very important:
+understanding. Saying that a source language function corresponds to lambda
+tells us virtually nothing: if we already knew precisely what lambda does we
+might not be studying it, and if we didn’t, this mapping would teach us
+absolutely nothing (and might, in fact, pile confusion on top of our ignorance).
+For the same reason, we did not use Racket’s state to understand the varieties
+of stateful operators \ref{}.
+
+Once we’ve understood the feature, however, we should feel to use it as a
+representation. Indeed, doing so might yield much more concise interpreters
+because we aren’t doing everything manually. In fact, some later interpreters
+\ref{}\ will become virtually unreadable if we did not exploit these richer
+representations. Nevertheless, exploiting host language features has perils that
+we should safeguard against.
+\note{It’s a little like saying, “Now that we understand addition in terms of
+increment-by-one, we can use addition to define multiplication: we don’t have to
+use only increment-by-one to define it.”}
