@@ -1,1 +1,25 @@
 \secrel{8.2.1 Terminology   . . 57}
+
+First, our choice of terms. We’ve insisted on using the word “identifier” before because
+we wanted to reserve “variable” for what we’re about to study. In Java, when we say
+(assuming x is locally bound, e.g., as a method parameter)
+\lsts{src/8/2/1.rkt}{java}
+we’re asking to change the value of x. After the first assignment, the value of
+x is 1; after the second one, it’s 3. Thus, the value of x varies over the
+course of the execution of the method.
+
+Now, we also use the term “variable” in mathematics to refer to function
+parameters. For instance, in f(y) = y + 3 we say that y is a “variable”. That is
+called a variable because it varies across invocations; however, within each
+invocation, it has the same value in its scope. Our identifiers until now have
+corresponded to this notion of a variable. In contrast, programming variables
+can vary even within each invocation, like the Java x above.
+\note{If the identifier was bound to a box, then it remained bound to the same
+box value. It’s the content of the box that changed, not which box the
+identifier was bound to.}
+
+Henceforth, we will use variable when we mean an identifier whose value can
+change within its scope, and identifier when this cannot happen. If in doubt, we
+might play it safe and use “variable”; if the difference doesn’t really matter,
+we might use either one. It is less important to get caught up in these specific
+terms than to understand that they represent a distinction that matters \ref{}.
