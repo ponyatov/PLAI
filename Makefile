@@ -178,8 +178,22 @@ TEX += 10_3_4_super.tex
 
 TEX += 10_3_5_mixins.tex
 SRC += src/10/3/5/1.rkt src/10/3/5/2.rkt src/10/3/5/3.rkt
-SRC += src/10/3/5/4.rkt src/10/3/5/5.rkt  
+SRC += src/10/3/5/4.rkt src/10/3/5/5.rkt
 
+TEX += 11_memory.tex
+TEX += 11_1_garbage.tex
+TEX += 11_2_recovery.tex
+TEX += 11_3_reclamation.tex
+TEX += 11_3_1_cost.tex
+TEX += 11_3_2_refcount.tex
+TEX += 11_4_automated.tex
+TEX += 11_4_1_overview.tex
+TEX += 11_4_2_truth.tex
+TEX += 11_4_3_central.tex
+
+TEX += 11_5_conserva.tex
+TEX += 11_6_precise.tex
+  
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
 MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
