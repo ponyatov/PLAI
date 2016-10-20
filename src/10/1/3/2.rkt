@@ -1,0 +1,1 @@
+(test ((o-1 'add1) 5) 6) ;; the test succeeds

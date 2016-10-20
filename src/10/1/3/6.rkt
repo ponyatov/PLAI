@@ -1,0 +1,1 @@
+(test ((o-1 (string->symbol "add1")) 5) 6) ;; this also succeeds
