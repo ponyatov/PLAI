@@ -1,0 +1,1 @@
+(test (msg a-tree 'add) (+ 10 5 15 6))
