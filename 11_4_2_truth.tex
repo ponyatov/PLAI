@@ -1,1 +1,27 @@
 \secrel{11.4.2 Truth and Provability  . 85}
+
+If you read carefully, you’ll notice that I slipped an algorithm into the above
+description. This is an implementation detail, not part of the specification!
+Indeed, the specification of garbage collection is in terms of truth: we want to
+collect precisely all the values that are garbage, no more and no less. But we
+cannot obtain truth for any Turing-complete programming language, so we must
+settle for provability. And the style of algorithm described above gives us an
+efficient “proof” of liveness, rendering the complement garbage. There are of
+course variations on this scheme that enable us to collect more or less garbage,
+which correspond to different strengths of proof a value’s “garbageness”.
+
+This last remark highlights a weakness of the strict specification, which says
+nothing about how much garbage should be collected. It is actually useful to
+think about the extreme cases.
+
+\DoNow{
+It is trivial to define a sound garbage collection strategy. Similarly, it is
+also trivial to define a complete garbage collection strategy. Do you see how?
+}
+
+To be sound, we simply have to make sure we don’t accidentally remove anything
+that is live. The one way to be absolutely certain of this is to collect no
+garbage at all. Dually, the trivial complete GC collects everything. Obviously
+neither of these is useful (and the latter is certain to be highly dangerous).
+But this highlights that in practice, we want a GC that is not only sound but as
+complete as possible, while also being efficient.
