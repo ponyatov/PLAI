@@ -1,0 +1,44 @@
+\secrel{10 Objects 67}\secdown
+
+When a language admits functions as values, it provides developers the most
+natural way to represent a unit of computation. Suppose a developer wants to
+parameterize some function f. Any language lets f be parameterized by passive
+data, such as numbers and strings. But it is often attractive to parameterize it
+over active data: a datum that can compute an answer, perhaps in response to
+some information. Furthermore, the function passed to f can—assuming
+lexically-scoped functions—refer to data from the caller without those data
+having to be revealed to f, thus providing a foundation for security and
+privacy. Thus, lexically-scoped functions are central to the design of many
+secure programming techniques.
+
+While a function is a splendid thing, it suffers from excessive terseness.
+Sometimes we might want multiple functions to all close over to the same shared
+data; the sharing especially matters if some of the functions mutate it and
+expect the others to see the result of those mutations. In such cases, it
+becomes unwieldly to send just a single function as a parameter; it is more
+useful to send a group of functions. The recipient then needs a way to choose
+between the different functions in the group. This grouping of functions, and
+the means to select one from the group, is the essence of an object.
+We are therefore perfectly placed to study objects having covered functions
+(section \ref{sec7}) and mutation (section \ref{sec8})—and, it will emerge,
+recursion (section \ref{sec9}).
+\note{
+I cannot hope to do justice to the enormous space of object systems.
+Please read \href{http://users.dcc.uchile.cl/~etanter/ooplai/}{Object-Oriented
+Programming Languages: Application and Interpretation} by Éric Tanter, which
+goes into more detail and covers topics ignored here.
+}
+
+Let’s add this notion of objects to our language. Then we’ll flesh it out and
+grow it, and explore the many dimensions in the design space of objects. We’ll
+first show how to add objects to the core language, but because we’ll want to
+prototype many different ideas quickly, we’ll soon shift to a desguaring-based
+strategy. Which one you use depends on whether you think understanding them is
+critical to understanding the essence of your language. One way to measure this
+is how complex your desguaring strategy becomes, and whether by adding some key
+core language enhancements, you can greatly reduce the complexity of desugaring.
+
+\input{10_1_woinher}
+\input{10_2_member}
+\input{10_3_whatelse}
+\secup

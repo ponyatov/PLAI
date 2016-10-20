@@ -130,6 +130,11 @@ SRC += src/9/3/1.rkt src/9/3/2.rkt src/9/3/3.rkt
 SRC += src/9/3/4.rkt src/9/3/5.rkt src/9/3/6.rkt  
 TEX += 9_4_wostate.tex
 
+TEX += 10_objects.tex
+TEX += 10_1_woinher.tex
+TEX += 10_2_member.tex
+TEX += 10_3_whatelse.tex
+
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
 MisspelledAnimal += src/1/p9_1.rkt src/cr src/1/p9_2.rkt
