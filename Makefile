@@ -141,6 +141,7 @@ TEX += 10_1_3_collect.tex
 SRC += src/10/1/3/1.rkt src/10/1/3/2.rkt src/10/1/3/3.rkt 
 SRC += src/10/1/3/4.rkt src/10/1/3/5.rkt src/10/1/3/6.rkt 
 TEX += 10_1_4_construct.tex
+SRC += src/10/1/4/1.rkt
 TEX += 10_1_5_state.tex
 TEX += 10_1_6_private.tex
 TEX += 10_1_7_static.tex

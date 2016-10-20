@@ -1,1 +1,9 @@
 \secrel{10.1.4 Constructors   . . 70}
+
+A constructor is simply a function that is invoked at object construction time.
+We currently lack such a function. by turning an object from a literal into a
+function that takes constructor parameters, we achieve this effect:
+\lsts{src/10/1/4/1.rkt}{rkt}
+In the first example, we pass 5 as the constructor’s argument, so adding 3
+yields 8. The second is similar, and shows that the two invocations of the
+constructors don’t interfere with one another.
