@@ -1,0 +1,1 @@
+[msgC (o n) (lookup-msg n (interp o env))]
