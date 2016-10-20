@@ -1,0 +1,2 @@
+lambda: expected either <id> or `[<id> : <type>]'
+  for function argument in: 3

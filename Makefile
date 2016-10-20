@@ -205,6 +205,8 @@ SRC += src/12/4/1.rkt src/12/4/2.rkt src/12/4/3.rkt src/12/4/4.rkt
 
 TEX += 13_desugaring.tex
 TEX += 13_1_first.tex
+SRC += src/13/1/1.rkt src/13/1/2.rkt src/13/1/3.rkt src/13/1/4.rkt 
+SRC += src/13/1/5.rkt src/13/1/6.rkt src/13/1/6.err src/13/1/7.rkt 
 TEX += 13_2_syntax.tex
 TEX += 13_3_guards.tex
 TEX += 13_4_smacro.tex

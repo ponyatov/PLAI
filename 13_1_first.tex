@@ -1,1 +1,70 @@
 \secrel{13.1 A First Example   . . 91}
+
+Remember that in \ref{}\ we added let as syntactic sugar over lambda. The
+pattern we followed was this:
+\note{DrRacket has a very useful tool called the Macro Stepper, which shows the
+step-by-step expansion of programs. You should try all the examples in this
+chapter using the Macro Stepper. For now, however, you should run them in \#lang
+plai rather than \#lang plai-typed.}
+\lsts{src/13/1/1.rkt}{rkt}
+is transformed into
+\lsts{src/13/1/2.rkt}{rkt}
+
+\DoNow{
+If this doesn’t sound familiar, now would be a good time to refresh your
+memory of why this works.
+}
+
+The simplest way of describing this transformation would be to state it
+directly: to write, somehow,
+\lsts{src/13/1/3.rkt}{rkt}
+In fact, this is almost precisely what Racket enables you to do.
+\note{We’ll use the name my-let instead of let Because the latter is already
+defined in Racket.}
+\lsts{src/13/1/4.rkt}{rkt}
+syntax-rules tells Racket that whenever it sees an expression with my-let-1
+immediately after the opening parenthesis, it should check that it follows the
+pattern (my- let-1 (var val) body). The var, val and body are syntactic
+variables: they are variables that stand for bodies of code. In particular, they
+match whatever s-expression is in that position. If the expression matches the
+pattern, then the syntactic variables are bound to the corresponding parts of
+the expression, and become available for use in the right-hand side.
+\note{You may have noticed some additional syntax, such as (). We’ll explain
+this later.}
+
+The right-hand side—in this case, ((lambda (var) body) val)—is the output
+generated. Each of the syntactic variables are replaced with the corresponding
+parts of the input using our old friend, substitution. This substitution is
+utterly simplistic: it makes no attempt to. Thus, if we were to try using it
+with
+\lsts{src/13/1/5.rkt}{rkt}
+Racket would not initially complain that 3 is provided in an identifier
+position; rather, it would let the identifier percolate through, desugaring this
+into
+\lsts{src/13/1/6.rkt}{rkt}
+which in turn produces an error:
+\lst{src/13/1/6.err}
+
+This immediately tells us that the desugaring process is straightforward in its
+function: it doesn’t attempt to guess or be clever, but instead simply rewrites
+while substituting. The output is an expression that is again subject to
+desugaring.
+
+As a matter of terminology, this simple form of expression-rewriting is often
+called a macro, as we mentioned earlier in \ref{}. Traditionally this form of
+desugaring is called macro expansion, though this term is misleading because the
+output of desugaring can be smaller than the input (though it is usually
+larger).
+
+Of course, in Racket, a let can bind multiple identifiers, not just one. If we
+were to write this informally, say on a board, we might write something like
+\verb|(let ([var val] ...) body) -> ((lambda (var ...) body) val ...)| with the
+\ldots meaning “zero or more”, and the intent being that the var ... in the
+output should correspond to the sequence of vars in the input. Again, this is
+almost precisely Racket syntax:
+\lsts{src/13/1/7.rkt}{rkt}
+
+Observe the power of the \ldots\ notation: the sequence of “pairs” in the input
+is turned into a pair of sequences in the output; put differently, Racket
+“unzips” the input sequence. Conversely, this same notation can be used to zip
+together sequences.
