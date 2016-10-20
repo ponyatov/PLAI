@@ -1,1 +1,30 @@
 \secrel{10.3.2 Prototypes   78}
+
+In our description above, we’ve supplied each class with a description of its
+parent class. Object construction then makes instances of each as it goes up the
+inheritance chain. There is another way to think of the parent: not as a class
+to be instantiated but, instead, directly as an object itself. Then all children
+with the same parent would observe the very same object, which means changes to
+it from one child object would be visible to another child. The shared parent
+object is known as a prototype.
+\note{The archetypal prototype-based language is
+\href{http://www.selflanguage.org/}{Self}. Though you may have read that
+languages like JavaScript are “based on” Self, there is value to studying the
+idea from its source, especially because Self presents these ideas in their
+purest form.}
+
+Some language designers have argued that prototypes are more primitive than
+classes in that, with other basic mechanisms such as functions, one can recover
+classes from prototypes—but not the other way around. That is essentially what
+we have done above: each “class” function contains inside it an object
+description, so a class is an object-returning-function. Had we exposed these
+are two different operations and chosen to inherit directly an object, we would
+have something akin to prototypes.
+
+\Exercise{
+Modify the inheritance pattern above to implement a Self-like, prototypebased
+language, instead of a class-based language. Because classes provide each object
+with distinct copies of their parent objects, a prototypelanguage might provide
+a clone operation to simplify creation of the operation that simulates classes
+atop prototypes.
+}
