@@ -1,1 +1,83 @@
 \secrel{9.1 Recursive and Cyclic Data  . . 62}
+
+Recursion in data can refer to one of two things. It can mean referring to
+something of the same kind, or referring to the same thing itself.
+
+Recursion of the same kind leads to what we traditionally call recursive data.
+For instance, a tree is a recursive data structure: each vertex can have
+multiple children, each of which is itself a tree. But if we write a procedure
+to traverse the nodes of a tree, we expect it to terminate without having to
+keep track of which nodes it has already visited. They are finite data
+structures.
+
+In contrast, a graph is often a cyclic datum: a node refers to another node,
+which may refer back to the original one. (Or, for that matter, a node may refer
+directly to itself.) When we traverse a graph, absent any explicit checks for
+what we have already visited, we should expect a computation to diverge, i.e.,
+not terminate. Instead, graph algorithms need a memory of what they have visited
+to avoid repeating traversals.
+
+Adding recursive data, such as lists and trees, to our language is quite
+straightforward. We mainly require two things:
+\begin{enumerate}[nosep]
+  \item 
+The ability to create compound structures (such as nodes that have references to
+children).
+  \item 
+The ability to bottom-out the recursion (such as leaves).
+\end{enumerate}
+
+\Exercise{
+Add lists and binary trees as built-in datatypes to the programming language.
+}
+
+Adding cyclic data is more subtle. Consider the simplest form of cyclic datum, a
+cell referring back to itself:
+\bigskip
+
+Let’s try to define this in Racket. Here’s one attempt:
+\lsts{src/9/1/1.rkt}{rkt}
+But this doesn’t work: b on the right-hand side of the let isn’t bound. It’s
+easy to see if we desugar it:
+\lsts{src/9/1/2.rkt}{rkt}
+and, for clarity, we can rename the b in the function:
+\lsts{src/9/1/3.rkt}{rkt}
+Now it’s patently clear that b is unbound.
+
+Absent some magical Racket construct we haven’t yet seen, it becomes clear that
+we can’t create a cyclic datum in one shot. Instead, we need to first create a
+“place” for the datum, then refer to that place within itself. The use of
+“then”—i.e., the introduction of time—should suggest a mutation operation.
+Indeed, let’s try it with boxes.
+\note{That construct would be shared, but virtually no other language has this
+notational mechanism, so we won’t dwell on it here. In fact, what we are
+studying is the main idea behind how shared actually works.}
+
+Our plan is as follows. First, we want to create a box and bind it to some
+identifier, say b. Now, we want to mutate the content of the box. What do we
+want it to contain? A reference to itself. How does it obtain that reference? By
+using the name, b, that is already bound to it. In this way, the mutation
+creates the cycle:
+\lsts{src/9/1/4.rkt}{rkt}
+Note that this program will not run in Typed PLAI as written. We’ll return to
+typing such programs later \ref{}. For now, run it in the untyped (\#lang plai)
+language.
+
+When the above program is Run, Racket prints this as: \verb|#0='#&#0#|. This
+notation is in fact precisely what we want. Recall that \verb|#&| is how Racket
+prints boxes. The \verb|#0=| (and similarly for other numbers) is how Racket
+names pieces of cyclic data. Thus, Racket is saying, “\verb|#0| is bound to a
+box whose content is \verb|#0#|, i.e., whatever is bound to \verb|#0|, i.e.,
+itself”.
+
+\Exercise{
+Run the equivalent program through your interpreter for boxes and make sure it
+produces a cyclic value. How do you check this?
+}
+
+The idea above generalizes to other datatypes. In this same way we can also
+produce cyclic lists, graphs, and so on. The central idea is this two-step
+process: first name an vacant placeholder; then mutate the placeholder so its
+content is itself; to obtain “itself”, use the name previously bound. Of course,
+we need not be limited to “self-cycles”: we can also have mutually-cyclic data
+(where no one element is cyclic but their combination is).
