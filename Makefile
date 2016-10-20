@@ -99,7 +99,15 @@ TEX += 8_1_5_envhelp.tex
 SRC += src/8/1/5_1.rkt src/8/1/5_2.rkt src/8/1/5_3.rkt 
 SRC += src/8/1/5_4.rkt src/8/1/5_5.rkt
 TEX += 8_1_6_store.tex
-SRC += src/8/1/6_1.rkt src/8/1/6_2.rkt src/8/1/6_3.rkt      
+SRC += src/8/1/6_1.rkt src/8/1/6_2.rkt src/8/1/6_3.rkt
+TEX += 8_1_7_ibox.tex
+SRC += src/8/1/7_1.rkt src/8/1/7_2.rkt src/8/1/7_3.rkt src/8/1/7_4.rkt  
+SRC += src/8/1/7_5.rkt src/8/1/7_6.rkt src/8/1/7_7.rkt src/8/1/7_8.rkt  
+SRC += src/8/1/7_9.rkt src/8/1/7_10.rkt src/8/1/7_11.rkt src/8/1/7_12.rkt  
+SRC += src/8/1/7_13.rkt  
+TEX += 8_1_8_bigger.tex
+SRC += src/8/1/8_1.rkt src/8/1/8_2.rkt src/8/1/8_3.rkt 
+SRC += src/8/1/8_4.rkt src/8/1/8_5.rkt 
 
 TEX += 8_2_vars.tex
 TEX += 8_3_design.tex   

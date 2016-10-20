@@ -1,1 +1,149 @@
 \secrel{8.1.8 The Bigger Picture  . . 54}
+
+Even though we’ve finished the implementation, there are still many subtleties
+and insights to discuss.
+
+\begin{enumerate}
+  \item 
+Implicit in our implementation is a subtle and important decision: the order of
+evaluation. For instance, why did we not implement addition thus?  
+\lsts{src/8/1/8_1.rkt}{rkt}
+It would have been perfectly consistent to do so. Similarly, embodied in the
+pattern of store-passing is the decision to evaluate the function position
+before the argument. Observe that:
+\begin{itemize}
+  \item 
+Previously, we delegated such decisions to the underlying language
+implementation. Now, store-passing has forced us to sequentialize the
+computation, and hence make this decision ourselves (whether we realized it or
+not).
+  \item
+Even more importantly, this decision is now a semantic one. Before there were
+mutations, one branch of an addition, for instance, could not affect the value
+produced by the other branch. Because each branch can have mutations that impact
+the value of the other, we must choose some order so that programmers can
+predict what their program is going to do! Being forced to write a store-passing
+interpreter has made this clear.
+\note{The only effect they could have was halting with an error or failing to
+terminate—which, to be sure, are certainly observable effects, but at a much
+more gross level. A program would not terminate with two different answers
+depending on the order of evaluation.}
+\end{itemize}
+
+  \item
+Observe that in the application rule, we are passing along the dynamic store,
+i.e., the one resulting from evaluating both function and argument. This is
+precisely the opposite of what we said to do with the environment. This
+distinction is critical. The store is, in effect, “dynamically scoped”, in that
+it reflects the history of the computation, not its lexical shape. Because we
+are already using the term “scope” to refer to the bindings of identifiers,
+however, it would be confusing to say “dynamically scoped” to refer to the
+store. Instead, we simply say that it is persistent.
+
+Languages sometimes dangerously conflate these two. In C, for instance, values
+bound to local identifiers are allocated (by default) on the stack. However, the
+stack matches the environment, and hence disappears upon completion of the call.
+If the call, however, returned references to any of these values, these
+references are now pointing to unused or even overridden memory: a genuine
+source of serious errors in C programs. The problem is that the values
+themselves persist; it is only the identifiers that refer to them that have
+lexical scope.
+
+  \item
+We have already discussed how there are two strategies for overriding the store:
+to simply extend it (and rely on fetch to extract the newest one) or to
+“searchand- replace”. The latter strategy has the virtue of not holding on to
+useless store bindings that will can never be obtained again.
+
+However, this does not cover all the wasted memory. Over time, we cease to be
+able to access some boxes entirely: e.g., if they are bound to only one
+identifier, and that identifier is no longer in scope. These locations are
+called garbage. Thinking more conceptually, garbage locations are those whose
+elimination does not have any impact on the value produced by a program. There
+are many strategies for identifying and reclaiming garbage locations, usually
+called garbage collection \ref{}.
+  
+  \item
+It’s very important to evaluate every expression position and thread the store
+that results from it. Consider, for instance, this implementation of unboxC:
+\lsts{src/8/1/8_2.rkt}{rkt}
+Did you notice? We fetched the location from sto, not s-a. But sto reflects
+mutations up to but before the evaluation of the unboxC expression, not any
+within it. Could there possibly be any? Mais oui!
+\lsts{src/8/1/8_3.rkt}{rkt}
+With the incorrect code above, this would evaluate to 0 rather than 1.
+
+  \item
+Here’s another, similar, error:
+\lsts{src/8/1/8_4.rkt}{rkt}
+
+How do we break this? Well, we’re returning the old store, the one before any
+mutations in the unboxC happened. Thus, we just need the outside context to
+depend on one of them.
+\lsts{src/8/1/8_5.rkt}{rkt}
+
+This should evaluate to 2, but because the store being returned is one where b’s
+location is bound to the representation of 0, the result is 1.
+
+If we combined both bugs above—i.e., using sto twice in the last line instead of
+s-a twice—this expression would evaluate to 0 rather than 2.
+
+\Exercise{
+Go through the interpreter; replace every reference to an updated store
+with a reference to one before update; make sure your test cases catch
+all the introduced errors!
+}
+
+  \item
+Observe that these uses of “old” stores enable us to perform a kind of time
+travel: because mutation introduces a notion of time, these enable us to go back
+in time to when the mutation had not yet occurred. This sounds both interesting and
+perverse; does it have any use?
+
+It does! Imagine that instead of directly mutating the store, we introduce the
+idea of a journal of intended updates to the store. The journal flows in a
+threaded manner just like the real store itself. Some instruction creates a new
+journal; after that, all lookups first check the journal, and only if the
+journal cannot find a binding for a location is it looked for in the actual
+store. There are two other new instructions: one to discard the journal (i.e.,
+perform time travel), and the other to commit it (i.e., all of its edits get
+applied to the real store).
+
+This is the essence of software transactional memory. Each thread maintains its
+own journal. Thus, one thread does not see the edits made by the other before
+committing (because each thread sees only its own journal and the global store,
+but not the journals of other threads). At the same time, each thread gets its
+own consistent view of the world (it sees edits it made, because these are
+recorded in the journal). If the transaction ends successfully, all threads
+atomically see the updated global store. If the transaction aborts, the
+discarded journal takes with it all changes and the state of the thread reverts
+(modulo global changes committed by other threads).
+
+Software transactional memory offers one of the most sensible approaches to
+tackling the difficulties of multi-threaded programming, if we insist on
+programming with shared mutable state. Because most computers have only one
+global store, however, maintaining the journals can be expensive, and much
+effort goes into optimizing them. As an alternative, some hardware architectures
+have begun to provide direct support for transactional memory by making the
+creation, maintenance, and commitment of journals as efficient as using the
+global store, removing one important barrier to the adoption of this idea.
+
+\Exercise{
+Augment the language with the journal features of software transactional
+memory journal.
+}
+
+\end{enumerate}
+
+\Exercise{
+An alternate implementation strategy is to have the environment map names to
+boxed Values. We don’t do it here because it: (a) would be cheating, (b)
+wouldn’t tell us how to implement the same feature in a language without boxes,
+(c) doesn’t necessarily carry over to other mutation operations, and (d) most of
+all, doesn’t really give us insight into what is happening here.
+
+It is nevertheless useful to understand, not least because you may find it a
+useful strategy to adopt when implementing your own language. Therefore, alter
+the implementation to obey this strategy. Do you still need store-passing style?
+Why or why not?
+}
