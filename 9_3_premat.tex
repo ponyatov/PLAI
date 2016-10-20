@@ -1,1 +1,48 @@
 \secrel{9.3 Premature Observation   . 65}
+
+Our preceding discussion of this pattern shows a clear temporal sequencing:
+create, update, use. We can capture it in a desugaring rule. Suppose we add the
+following new syntax:
+\lsts{src/9/3/1.rkt}{rkt}
+As an example of its use,
+\lsts{src/9/3/2.rkt}{rkt}
+would evaluate to the factorial of 10. This new syntax would desugar to:
+\lsts{src/9/3/3.rkt}{rkt}
+Where we assume that all references to name in value and body have been
+rewritten to (unbox name), or alternatively that we instead use variables:
+\lsts{src/9/3/4.rkt}{rkt}
+
+This naturally inspires a question: what if we get these out of order? Most
+interestingly, what if we try to use name before we’re done updating its true
+value into place? Then we observe the state of the system right after creation,
+i.e., we can see the placeholder in its raw form.
+
+The simplest example that demonstrates this is as follows:
+\lsts{src/9/3/5.rkt}{rkt}
+or equivalently,
+\lsts{src/9/3/6.rkt}{rkt}
+In most Racket variants, this leaks the initial value given to the placeholder—a
+value that was never meant for public consumption. This is troubling because it
+is, after all, a legitimate value, which means it can probably be used in at
+least some computations. If a developer accesses and uses it inadvertently,
+however, they are effectively computing with nonsense.
+
+There are generally three solutions to this problem:
+\begin{enumerate}
+  \item 
+Make sure the value is sufficiently obscure so that it can never be used in a
+meaningful context. This means values like 0 are especially bad, and indeed
+most common datatypes should be shunned. Instead, the language might create
+a new type of value just for use here. Passed to any other operation, this will
+result in an error.
+  \item 
+Explicitly check every use of an identifier for belonging to this special “premature”
+value. While this is technically feasible, it imposes an enormous performance
+penalty on a program. Thus, it is usually only employed in teaching
+languages.
+  \item 
+Allow the recursion constructor to be used only in the case of binding functions,
+and then make sure that the right-hand side of the binding is syntactically a function.
+Unfortunately, this solution can be a bit drastic because it precludes writing,
+for instance, structures to create graphs.
+\end{enumerate}

@@ -126,6 +126,8 @@ SRC += src/9/1/1.rkt src/9/1/2.rkt src/9/1/3.rkt src/9/1/4.rkt
 TEX += 9_2_funcs.tex
 SRC += src/9/2/1.rkt src/9/2/2.rkt src/9/2/3.rkt src/9/2/4.rkt    
 TEX += 9_3_premat.tex
+SRC += src/9/3/1.rkt src/9/3/2.rkt src/9/3/3.rkt 
+SRC += src/9/3/4.rkt src/9/3/5.rkt src/9/3/6.rkt  
 TEX += 9_4_wostate.tex
 
 MisspelledAnimal = src/plai.rkt src/cr
