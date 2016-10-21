@@ -1,1 +1,24 @@
 \secrel{13.6 Influence on Compiler Design  101}
+
+The use of macros in a language’s definition has an impact on all tools,
+especially compilers. As a working example, consider let. let has the virtue
+that it can be compiled efficiently, by just extending the current environment.
+In contrast, the expansion of let into function application results in a much
+more expensive operation: the creation of a closure and its application to the
+argument, achieving effectively the same result but at the cost of more time
+(and often space).
+
+This would seem to be an argument against using the macro. However, a smart
+compiler recognizes that this pattern occurs often, and instead internally
+effectively converts left-left-lambda \ref{}\ back into the equivalent of let.
+This has two advantages. First, it means the language designer can freely use
+macros to obtain a smaller core language, rather than having to trade that off
+against the execution cost.
+
+It has a second, much subtler, advantage. Because the compiler recognizes this
+pattern, other macros can also exploit it and obtain the same optimization; they
+don’t need to contort their output to insert let terms if the left-left-lambda
+pattern occurs naturally, as they would have to do otherwise. For instance, the
+left-left-lambda pattern occurs naturally when writing certain kinds of
+pattern-matchers, but it would take an extra step to convert this into a let in
+the expansion—which is no longer necessary.
