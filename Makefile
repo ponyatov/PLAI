@@ -236,6 +236,7 @@ TEX += 14_1_2_partial.tex
 SRC += src/14/1/2/1.rkt src/14/1/2/2.rkt src/14/1/2/3.rkt src/14/1/2/4.rkt 
 SRC += src/14/1/2/5.rkt src/14/1/2/6.rkt src/14/1/2/7.rkt src/14/1/2/8.rkt 
 TEX += 14_1_3_stateless.tex
+SRC += src/14/1/3/1.rkt
 TEX += 14_1_4_interaction.tex
 
 TEX += 14_2_contpass.tex

@@ -1,1 +1,27 @@
 \secrel{14.1.3 Achieving Statelessness  . . 106}
+
+We haven’t actually achieved statelessness yet, because we have this large table
+residing on the server, with no clear means to remove entries from it. It would
+be better if we could avoid the server state entirely. This means we have to
+move the relevant state to the client.
+
+There are actually two ways in which the server holds state. One is that we have
+reserved the right to create as many entries in the hash table as we wish,
+rather than a constant number (i.e., linear in the size of the program itself).
+The other is what we’re storing in the table: honest-to-goodness closures, which
+might be holding on to an arbitrary amount of state. We’ll see this more clearly
+soon.
+
+Let’s start by eliminating the closure. Instead, let’s have each of the funtion
+arguments to be named, top-level functions (which immediately forces us to have
+only a fixed number of them, because the program’s size cannot be unbounded):
+\lsts{src/14/1/3/1.rkt}{rkt}
+Observe how each code block refers only to the name of the next, rather than to
+a real closure. The value of the argument comes from the form. There’s just one
+problem:
+v1 in prog2 is a free identifier!
+
+The way to fix this problem is, instead of creating a closure after one step, to
+send v1 to the client to be stored there. Where do we store this? The browser
+offers two mechanisms for doing this: cookies and hidden fields. Which one do we
+use?
