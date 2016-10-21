@@ -1,0 +1,1 @@
+(define table (make-hash empty))
