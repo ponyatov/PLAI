@@ -225,7 +225,14 @@ SRC += src/13/5/1.rkt src/13/5/2.rkt src/13/5/3.rkt
 SRC += src/13/5/4.rkt src/13/5/5.rkt src/13/5/6.rkt 
 TEX += 13_6_influ.tex
 TEX += 13_7_otherlangs.tex
- 
+
+TEX += 14_control.tex
+TEX += 14_1_onweb.tex
+TEX += 14_2_contpass.tex
+TEX += 14_3_gens.tex
+TEX += 14_4_cont.tex
+TEX += 14_5_tailcalls.tex
+TEX += 14_6_contlang.tex
   
 MisspelledAnimal = src/plai.rkt src/cr
 MisspelledAnimal += src/1/p8_1.rkt src/cr src/1/p8_4.rkt src/cr
