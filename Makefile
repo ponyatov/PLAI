@@ -221,6 +221,8 @@ TEX += 13_4_3_hygiene.tex
 SRC += src/13/4/3/1.rkt src/13/4/3/2.rkt src/13/4/3/3.rkt 
 SRC += src/13/4/3/4.rkt src/13/4/3/5.rkt 
 TEX += 13_5_indent.tex
+SRC += src/13/5/1.rkt src/13/5/2.rkt src/13/5/3.rkt 
+SRC += src/13/5/4.rkt src/13/5/5.rkt src/13/5/6.rkt 
 TEX += 13_6_influ.tex
 TEX += 13_7_otherlangs.tex
  
