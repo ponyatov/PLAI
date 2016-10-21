@@ -244,6 +244,11 @@ SRC += src/14/1/4/9.rkt src/14/1/4/10.rkt
 
 TEX += 14_2_contpass.tex
 TEX += 14_2_1_impl.tex
+SRC += src/14/2/1/1.rkt src/14/2/1/2.rkt src/14/2/1/3.rkt src/14/2/1/4.rkt 
+SRC += src/14/2/1/5.rkt src/14/2/1/6.rkt src/14/2/1/7.rkt src/14/2/1/8.rkt 
+SRC += src/14/2/1/9.rkt src/14/2/1/10.rkt src/14/2/1/11.rkt src/14/2/1/12.rkt 
+SRC += src/14/2/1/13.rkt src/14/2/1/14.rkt src/14/2/1/15.rkt src/14/2/1/16.rkt 
+SRC += src/14/2/1/7.rkt src/14/2/1/18.rkt 
 TEX += 14_2_2_conv.tex
 TEX += 14_2_3_core.tex
 
