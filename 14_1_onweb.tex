@@ -1,7 +1,87 @@
 \secrel{14.1 Control on the Web   102}
+
+Let us begin our study by examining the structure of Web programs. Consider the
+following program:
+\note{ Henceforth, we’ll call this our “addition server”.
+You should, of course, understand this as a stand-in for more sophisticated
+applications. For instance, the two prompts might ask for starting and ending
+points for a trip, and in place of addition we might compute a route or compute
+airfares. There might even be computation between the two steps: e.g., after
+entering the first city, the airline might prompt us with choices of where it
+flies from there.}
+\lsts{src/14/1/1.rkt}{rkt}
+To test these ideas, here’s an implementation of read-number:
+\lsts{src/14/1/2.rkt}{rkt}
+When run at the console or in DrRacket, this program prompts us for one number,
+then another, and then displays their sum.
+
+Now suppose we want to run this on a Web server. We immediately encounter a
+difficulty: the structure of server-side Web programs is such that they generate
+a single Web page—such as the one asking for the first number—and then halt. As
+a result, the rest of the program—which in this case prompts for the second
+number, then adds them, and then prints that result, is lost.
+
+\DoNow{
+Why do Web servers behave in such a strange way?
+}
+
+There are at least two reasons for this behavior: one perhaps historical, and
+the other technical. The historical reason is that Web servers were initially
+designed to serve pages, i.e., static content. Any program that ran had to
+generate its output to a file, from which a server could offer it. Naturally,
+developers wondered why that same program couldn’t run on demand. This made Web
+content dynamic. Terminating the program after generating a single piece of
+output was the simplest incremental step towards programs, not pages, on the
+Web.
+
+The more important reason—and the one that has stayed with us—is technical.
+Imagine our addition server has generated its first prompt. Recall that there is
+considerable pending computation: the second prompt, the addition, and the
+display of the result. This computation must suspend waiting for the user’s
+input. If there are millions of users, then millions of computations must be
+suspended, creating an enormous performance problem. Furthermore, suppose a user
+does not actually complete the computation—analogous to searching at an on-line
+bookstore or airline site, but not completing the purchase. How does the server
+know when or even whether to terminate the computation? And until it does, the
+resources associated with that computation remain in use.
+
+Conceptually, therefore, the Web protocol was designed to be stateless: it would
+not store state on the server associated with intermediate computations.
+Instead, Web program developers would be forced to maintain all necessary state
+elsewhere, and each request would need to be able to resume the computation in
+full. In practice, the Web has not proven to be stateless at all, but it still
+hews largely in this direction, and studying the structure of such programs is
+very instructive.
+
+Now consider client-side Web programs: those that run inside the browser,
+written in or compiled to JavaScript. Suppose such a computation needs to
+communicate with a server. The primitive for this is called XMLHttpRequest. The
+user makes an instance of this primitive and invokes its send method to send a
+message to the server. Communicating with a server is not, however,
+instantaneous (and indeed may never complete, depending on the state of the
+network). This leaves the sending process suspended.
+
+The designers of JavaScript decided to make the language single-threaded: i.e.,
+there would be only one thread of execution at a time. This avoids the various
+perils that arise from combining mutation with threads. As a result, however,
+the JavaScript process locks up awaiting the response, and nothing else can
+happen: e.g., other handlers on the page no longer respond.
+\note{Due to the structuring problems this causes, there are now various
+proposals to, in effect, add “safe” threads to JavaScript. The ideas described
+in this chapter can be viewed as an alternative that offer similar structuring
+benefits.}
+
+To avoid this problem, the design of XMLHttpRequest demands that the developer
+provide a procedure that responds to the request if and when it arrives. This
+callback procedure is registered with the system. It needs to embody the rest of
+the processing of that request. Thus, for entirely different reasons—not
+performance, but avoiding the problems of synchronization, non-atomicity, and
+deadlocks—the client-side Web has evolved to demand the same pattern of
+developers. Let us now better understand that pattern.
+
 \secdown
-\secrel{14.1.1 Program Decomposition into Now and Later 104}
-\secrel{14.1.2 A Partial Solution   104}
-\secrel{14.1.3 Achieving Statelessness  . . 106}
-\secrel{14.1.4 Interaction with State  . 107}
+\input{14_1_1_decomp}
+\input{14_1_2_partial}
+\input{14_1_3_stateless}
+\input{14_1_4_interaction}
 \secup

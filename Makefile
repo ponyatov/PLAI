@@ -227,7 +227,13 @@ TEX += 13_6_influ.tex
 TEX += 13_7_otherlangs.tex
 
 TEX += 14_control.tex
+
 TEX += 14_1_onweb.tex
+TEX += 14_1_1_decomp.tex
+TEX += 14_1_2_partial.tex
+TEX += 14_1_3_stateless.tex
+TEX += 14_1_4_interaction.tex
+
 TEX += 14_2_contpass.tex
 TEX += 14_3_gens.tex
 TEX += 14_4_cont.tex
