@@ -1,6 +1,48 @@
 \secrel{14.2 Continuation-Passing Style  . . 109}
+
+The functions we’ve been writing have a name. Though we’ve presented ideas in
+terms of theWeb, we’re relying on a much older idea: the functions are called
+continuations, and this style of programs is called continuation-passing style
+(CPS). This is worth studying in its own right, because it is the basis for
+studying a variety of other nontrivial control operations—such as generators.
+\note{We will take the liberty of using CPS as both a noun and verb: a
+particular structure of code and the process that converts code into it.}
+
+Earlier, we converted programs so that no Web input operation was nested inside
+another. The motivation was simple: when the program terminates, all nested
+computations are lost. A similar argument applies, in a more local sense, in the
+case of XMLHttpRequest: any computation depending on the result of a response
+from aWeb server needs to reside in the callback associated with the request to
+the server.
+
+In fact, we don’t need to transform every expression. We only care about
+expressions that involve actual Web interaction. For example, if we computed a
+more complex mathematical expression than just addition, we wouldn’t need to
+transform it. If, however, we had a function call, we’d either have to be
+absolutely certain the function didn’t have any Web invocations either inside
+it, or in the functions in invokes, or the ones they invoke...or else, to be
+defensive, we should transform them all. Therefore, we have to transform every
+expression that we can’t be sure performs noWeb interactions.
+
+The heart of our transformation is therefore to turn every one-argument
+function, f, into one with an extra argument. This extra argument is the
+continuation, which represents the rest of the computation. The continuation is
+itself a function of one argument. This argument takes the value that would have
+been returned by f and passes it to the rest of the computation. f, instead of
+returning a value, instead passes the value it would have returned to its
+continuation.
+
+CPS is a general transformation, which we can apply to any program. Because it’s
+a program transformation, we can think of it as a special kind of desugaring: in
+particular, instead of transforming programs from a larger language to a smaller
+one (as macros do), or from one language to entirely another (as compilers do),
+it transforms programs within the same language: from the full language to a
+more restricted version that obeys the pattern we’ve been discussing. As a
+result, we can reuse an evaluator for the full language to also evaluate
+programs in the CPS subset.
+
 \secdown
-\secrel{14.2.1 Implementation by Desugaring  . . 110}
-\secrel{14.2.2 Converting the Example  . . 114}
-\secrel{14.2.3 Implementation in the Core  115}
+\input{14_2_1_impl}
+\input{14_2_2_conv}
+\input{14_2_3_core}
 \secup

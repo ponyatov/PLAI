@@ -242,8 +242,11 @@ SRC += src/14/1/4/1.rkt src/14/1/4/2.rkt src/14/1/4/3.rkt src/14/1/4/4.rkt
 SRC += src/14/1/4/5.rkt src/14/1/4/6.rkt src/14/1/4/7.rkt src/14/1/4/8.rkt
 SRC += src/14/1/4/9.rkt src/14/1/4/10.rkt
 
-
 TEX += 14_2_contpass.tex
+TEX += 14_2_1_impl.tex
+TEX += 14_2_2_conv.tex
+TEX += 14_2_3_core.tex
+
 TEX += 14_3_gens.tex
 TEX += 14_4_cont.tex
 TEX += 14_5_tailcalls.tex
