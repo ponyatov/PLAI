@@ -1,1 +1,16 @@
 \secrel{13.7 Desugaring in Other Languages  . . 101}
+
+Many modern languages define operations via desguaring, not only Racket. In
+Python, for instance, iterating using for is simply a syntactic pattern. A
+developer who writes for x in o is
+\begin{itemize}
+  \item 
+introducing a new identifier (call it i—but be sure to not capture any other i
+the programmer has already defined, i.e., bind i hygienically!),
+  \item 
+binding it to an iterator obtained from o, and
+  \item 
+creating a (potentially) infinite while loop that repeatedly invokes the .next
+method of i until the iterator raises the StopIteration exception.
+\end{itemize}
+There are many such patterns in modern programming languages.
