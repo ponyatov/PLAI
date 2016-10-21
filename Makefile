@@ -229,7 +229,9 @@ TEX += 13_7_otherlangs.tex
 TEX += 14_control.tex
 
 TEX += 14_1_onweb.tex
+SRC += src/14/1/1.rkt src/14/1/2.rkt 
 TEX += 14_1_1_decomp.tex
+SRC += src/14/1/1/1.rkt src/14/1/1/2.rkt src/14/1/1/3.rkt 
 TEX += 14_1_2_partial.tex
 TEX += 14_1_3_stateless.tex
 TEX += 14_1_4_interaction.tex
