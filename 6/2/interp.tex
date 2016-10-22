@@ -1,0 +1,55 @@
+\secrel{6.2 Interpreting with Environments  27}
+
+Now we can tackle the interpreter. One case is easy, but we should revisit all
+the others:
+\lsts{6/2/1.rkt}{rkt}
+The arithmetic operations are easiest. Recall that before, the interpreter
+recurred without performing any new substitutions. As a result, there are no new
+deferred substitutions to perform either, which means the environment does not
+change:
+\lsts{6/2/2.rkt}{rkt}
+
+Now let’s handle identifiers. Clearly, encountering an identifier is no longer
+an error: this was the very motivation for this change. Instead, we must look up
+its value in the directory:
+\lsts{6/2/3.rkt}{rkt}
+
+\DoNow{
+Implement lookup.
+}
+
+Finally, application. Observe that in the substitution interpreter, the only
+case that caused new substitutions to occur was application. Therefore, this
+should be the case that constructs bindings. Let’s first extract the function
+definition, just as before:
+\lsts{6/2/4.rkt}{rkt}
+Previously, we substituted, then interpreted. Because we have no substitution
+step, we can proceed with interpretation, so long as we record the deferral of
+substitution.
+\lsts{6/2/5.rkt}{rkt}
+That is, the set of function definitions remains unchanged; we’re interpreting
+the body of the function, as before; but we have to do it in an environment that
+binds the formal parameter. Let’s now define that binding process:
+\lsts{6/2/6.rkt}{rkt}
+the name being bound is the formal parameter (the same name that was substituted
+for, before). It is bound to the result of interpreting the argument (because
+we’ve decided on an eager application semantics). And finally, this extends the
+environment we already have. Type-checking this helps to make sure we got all
+the little pieces right.
+
+Once we have a definition for lookup, we’d have a full interpreter. So here’s
+one:
+\lsts{6/2/7.rkt}{rkt}
+Observe that looking up a free identifier still produces an error, but it has
+moved from the interpreter—which is by itself unable to determine whether or not
+an identifier is free—to lookup, which determines this based on the content of
+the environment.
+
+Now we have a full interpreter. You should of course test it make sure it works
+as you’d expect. For instance, these tests pass:
+\lsts{6/2/8.rkt}{rkt}
+So we’re done, right?
+
+\DoNow{
+Spot the bug.
+}

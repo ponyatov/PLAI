@@ -1,0 +1,40 @@
+\secrel{8.1.4 Understanding the Interpretation of Boxes . . 44}
+
+Let’s begin by reproducing our current interpreter:
+\lst{8/1/4/1.rkt}
+Because we’ve introduced a new kind of value, the box, we have to update the set
+of values:
+\lst{8/1/4/2.rkt}
+Two of these cases should be easy. When we’re given a box expression, we simply
+evaluate it and return it wrapped in a boxV:
+\lst{8/1/4/3.rkt}
+Similarly, extracting a value from a box is easy:
+\lst{8/1/4/4.rkt}
+
+By now, you should be constructing a healthy set of test cases to make sure
+these behave as you’d expect.
+
+Of course, we haven’t done any hard work yet. All the interesting behavior is,
+presumably, hidden in the treatment of setboxC. It may therefore surprise you
+that we’re going to look at seqC first instead (and you’ll see why we included
+it in the core).
+
+Let’s take the most natural implementation of a sequence of two instructions:
+\lst{8/1/4/5.rkt}
+
+That is, we evaluate the first term, then the second, and return the result of
+the second.
+
+You should immediately spot something troubling. We bound the result of
+evaluating the first term, but didn’t subsequently do anything with it. That’s
+okay: presumably the first term contained a mutation expression of some sort,
+and its value is uninteresting (indeed, note that set-box! returns a void
+value). Thus, another implementation might be this:
+\lst{8/1/4/6.rkt}
+
+Not only is this slightly dissatisfying in that it just uses the analogous
+Racket sequencing construct, it still can’t possibly be right! This can only
+work only if the result of the mutation is being stored somewhere. But because
+our interpreter only computes values, and does not perform any mutation itself,
+any mutations in (interp b1 env) are completely lost. This is obviously not what
+we want.

@@ -1,0 +1,45 @@
+\secrel{8.2.3 Interpreting Variables  . 58}
+
+We’ll start by reflecting this in our syntax:
+\lsts{8/2/3/5.rkt}{rkt}
+Observe that we’ve jettisoned the box operations, but kept sequencing because
+it’s handy around mutation. Importantly, we’ve now added the setC case, and its
+first subterm is not an expression but the literal name of a variable. We’ve
+also renamed idC to varC.
+
+Because we’ve gotten rid of boxes, we can also get rid of the special box
+values. When the only kind of mutation you have is variables, you don’t need new
+kinds of values.
+\lsts{8/2/3/6.rkt}{rkt}
+
+As you might imagine, to support variables we need the same store-passing style
+that we’ve seen before (section 8.1.7), and for the same reasons. What differs
+is in precisely how we use it. Because sequencing is interpreted in just the
+same way (observe that the code for it does not depend on boxes versus
+variables), that leaves us just the variable mutation case to handle.
+
+First, we might as well evaluate the value expression and obtain the updated
+store:
+\lsts{8/2/3/7.rkt}{rkt}
+
+What now? Remember we just said that we don’t want to fully evaluate the
+variable, because that would just give the value it is bound to. Instead, we
+want to know which memory location it corresponds to, and update what is stored
+at that memory location; this latter part is just the same thing we did when
+mutating boxes:
+\lsts{8/2/3/8.rkt}{rkt}
+
+The very interesting new pattern we have here is this. When we added boxes, in
+the idC case, we looked up an identifier in the environment, and immediately
+fetched the value at that location from the store; the composition yielded a
+value, just as it used to before we added stores. Now, however, we have a new
+pattern: looking up an identifier in the environment without subsequently
+fetching its value from the store. The result of invoking just lookup is
+traditionally called an l-value, for “left-handside (of an assignment) value”.
+This is a fancy way of saying “memory address”, and stands in contast to the
+actual values that the store yields: observe that it does not directly
+correspond to anything in the type Value.
+
+And we’re done! We did all the hard work when we implemented store-passing style
+(and also in that application allocated new locations for variables).
+

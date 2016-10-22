@@ -1,0 +1,35 @@
+\secrel{8 Mutation: Structures and Variables 41}\secdown
+
+It’s time for another
+
+\bigskip
+\textbf{Which of these is the same?}
+\begin{itemize}
+  \item \verb|f = 3|
+  \item \verb|o.f = 3|
+  \item \verb|f = 3|
+\end{itemize}
+
+Assuming all three are in Java, the first and third could behave exactly like
+each other or exactly like the second: it all depends on whether f is a local
+identifier (such as a parameter) or a field of the object (i.e., the code is
+really this.f = 3).
+
+In either case, we are asking the evaluator to permanently change the value
+bound to f. This has important implications for other observers. Until now, for
+a given set of inputs, a computation always returned the same value. Now, the
+answer depends on when it was invoked: above, it depends on whether it was
+invoked before or after the value of f was changed. The introduction of time has
+profound effects on reasoning about programs.
+
+However, there are really two quite different notions of change buried in the
+uniform syntax above. Changing the value of a field (o.f = 3 or this.f = 3) is
+extremely different from changing that of an identifier (f = 3 where f is bound
+inside the method, not by the object). We will explore these in turn. We’ll
+tackle fields below, and return to identifiers in section \ref{8_2_vars}.
+
+\input{8/1/mutable}
+\input{8/2/vars}
+\input{8/3/design}
+\input{8/4/pars}
+\secup

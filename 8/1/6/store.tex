@@ -1,0 +1,27 @@
+\secrel{8.1.6 Introducing the Store  . 48}
+
+The preceding discussion tells us that we need two repositories to accompany the
+expression, not one. One of them, the environment, continues to be responsible
+for maintaining lexical scope. But the environment cannot directly map
+identifiers to their value, because the value might change. Instead, something
+else needs to be responsible for maintaining the dynamic state of mutated boxes.
+This latter data structure is called the store.
+
+Like the environment, the store is a partial map. Its domain could be any
+abstract set of names, but it is natural to think of these as numbers, meant to
+stand for memory locations. This is because the store in the semantics maps
+directly onto (abstracted) physical memory in the machine, which is
+traditionally addressed by numbers. Thus the environment maps names to
+locations, and the store maps locations to values:
+\lsts{8/1/6/1.rkt}{rkt}
+We’ll also equip ourselves with a function to look up values in the store, just
+as we already have one for the environment (which now returns locations
+instead):
+\lsts{8/1/6/2.rkt}{rkt}
+
+With this, we can refine our notion of values to the correct one:
+\lsts{8/1/6/3.rkt}{rkt}
+
+\Exercise{
+Fill in the bodies of lookup and fetch.
+}

@@ -1,0 +1,45 @@
+\secrel{The Interpreter, Resumed\\\ru{Возвращаемся к
+интерпретатору}}\label{interpresumed}
+
+Phew! Now that we’ve completed the definition of substitution (or so we think),
+let’s complete the interpreter. Substitution was a heavyweight step, but it also
+does much of the work involved in applying a function. It is tempting to write
+\lsts{5/4/1.rkt}{rkt}
+Tempting, but wrong.
+
+\DoNow{
+Do you see why?
+}
+
+Reason from the types. What does the interpreter return? Numbers. What does
+substitution return? Oh, that’s right, expressions! For instance, when we
+substituted in the body of double, we got back the representation of (+ 5 5).
+This is not a valid answer for the interpreter. Instead, it must be reduced to
+an answer. That, of course, is precisely what the interpreter does:
+\lsts{5/4/2.rkt}{rkt}
+Okay, that leaves only one case: identifiers. What could possibly be complicated
+about them? They should be just about as simple as numbers! And yet we’ve put
+them off to the very end, suggesting something subtle or complex is afoot.
+
+\DoNow{
+Work through some examples to understand what the interpreter should do in the
+identifier case.
+}
+
+Let’s suppose we had defined double as follows:
+\lsts{5/4/3.rkt}{rkt}
+When we substitute 5 for x, this produces the expression (+ 5 y). So far so
+good, but what is left to substitute y? As a matter of fact, it should be clear
+from the very outset that this definition of double is erroneous. The identifier
+y is said to be free, an adjective that in this setting has negative
+connotations.
+
+In other words, the interpreter should never confront an identifier. All
+identifiers ought to be parameters that have already been substituted (known as
+bound identifiers—here, a positive connotation) before the interpreter ever sees
+them. As a result, there is only one possible response given an identifier:
+\lsts{5/4/4.rkt}{rkt}
+And that’s it!
+
+Finally, to complete our interpreter, we should define get-fundef:
+\lsts{5/4/5.rkt}{rkt}

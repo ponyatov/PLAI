@@ -1,0 +1,30 @@
+\secrel{7.3 Implementing Closures   . 37}
+
+We need to change our representation of values to record closures rather than
+raw function text:
+\lsts{7/3/1.rkt}{rkt}
+While we’re at it, we might as well alter our syntax for defining functions to
+drop the useless name. This construct is historically called a lambda:
+\lsts{7/3/2.rkt}{rkt}
+
+When encountering a function definition, the interpreter must now remember to
+save the substitutions that have been applied so far:
+\note{“Save the environment! Create a closure today!”\ --- Cormac Flanagan}
+\lsts{7/3/3.rkt}{rkt}
+
+This saved set, not the empty environment, must be used when applying a
+function:
+\lsts{7/3/4.rkt}{rkt}
+
+There’s actually another possibility: we could use the environment present at
+the point of application:
+\lsts{7/3/5.rkt}{rkt}
+
+\Exercise{
+What happens if we extend the dynamic environment instead?
+}
+
+In retrospect, it becomes even more clear why we interpreted the body of a
+function in the empty environment. When a function is defined at the top-level,
+it is not “closed over” any identifiers. Therefore, our previous function
+applications have been special cases of this form of application.

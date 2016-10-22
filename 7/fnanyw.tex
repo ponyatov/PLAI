@@ -1,0 +1,43 @@
+\secrel{7 Functions Anywhere 31}\secdown
+
+The introduction to the Scheme programming language definition establishes this
+design principle:
+\begin{framed}
+Programming languages should be designed not by piling feature on top of
+feature, but by removing the weaknesses and restrictions that make additional
+features appear necessary. \ref{}
+\end{framed}
+As design principles go, this one is hard to argue with. (Some restrictions, of
+course, have good reason to exist, but this principle forces us to argue for
+them, not admit them by default.) Let’s now apply this to functions.
+
+One of the things we stayed coy about when introducing functions (section 5) is
+exactly where functions go. We may have suggested we’re following the model of
+an idealized DrRacket, with definitions and their uses kept separate. But,
+inspired by the Scheme design principle, let’s examine how necessary that is.
+
+Why can’t functions definitions be expressions? In our current
+arithmetic-centric language we face the uncomfortable question “What value does
+a function definition represent?”, to which we don’t really have a good answer.
+But a real programming language obviously computes more than numbers, so we no
+longer need to confront the question in this form; indeed, the answer to the
+above can just as well be, “A function value”. Let’s see how that might work
+out.
+
+What can we do with functions as values? Clearly, functions are a distinct kind
+of value than a number, so we cannot, for instance, add them. But there is one
+evident thing we can do: apply them to arguments! Thus, we can allow function
+values to appear in the function position of an application. The behavior would,
+naturally, be to apply the function. Thus, we’re proposing a language where the
+following would be a valid program (where I’ve used brackets so we can easily
+identify the function)
+\lsts{7/1.rkt}{rkt}
+and would evaluate to \verb|(+ 2 (* 4 3))|, or 14.\note{Did you see that I just
+used substitution\,?}
+
+\input{7/1/exval}
+\input{7/2/nested}
+\input{7/3/closures}
+\input{7/4/subst}
+\input{7/5/sugar}
+\secup

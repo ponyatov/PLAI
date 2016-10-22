@@ -1,0 +1,169 @@
+\secrel{8.1.7 Interpreting Boxes  . . 49}
+
+Now we have something that the environment can return, updated, reflecting
+mutations during the evaluation of the expression, without having to change the
+environment in any way. Because a function can return only one value, let’s
+define a data structure to hold the new result from the interpreter:
+\lsts{8/1/7/1.rkt}{rkt}
+Thus the interpreter’s type becomes:
+\lsts{8/1/7/2.rkt}{rkt}
+
+The easiest one to dispatch is numbers. Remember that we have to return the
+store reflecting all mutations that happened while evaluating the given
+expression. Because a number is a constant, no mutations could have happened, so
+the returned store is the same as the one passed in:
+\lsts{8/1/7/3.rkt}{rkt}
+
+A similar argument applies to closure creation; observe that we are speaking of
+the creation, not use, of closures:
+\lsts{8/1/7/4.rkt}{rkt}
+
+Identifiers are almost as straightforward, though if you are simplistic, you’ll
+get a type error that will alert you that to obtain a value, you must now look
+up both in the environment and in the store:
+\lsts{8/1/7/5.rkt}{rkt}
+
+Notice how lookup and fetch compose to produce the same result that lookup
+alone produced before.
+
+Now things get interesting.
+
+Let’s take sequencing. Clearly, we need to interpret the two terms:
+\lsts{8/1/7/6.rkt}{rkt}
+Oh, but wait. The whole point was to evaluate the second term in the store
+returned by the first one—otherwise there would have been no point to all these
+changes. Therefore, instead we must evaluate the first term, capture the
+resulting store, and use it to evaluate the second. (Evaluating the first term
+also yields its value, but sequencing ignores this value and assumes the first
+time was run purely for its potential mutations.) We will write this in a
+stylized manner:
+\lsts{8/1/7/7.rkt}{rkt}
+
+This says to (interp b1 env sto); name the resulting value and store v-b1 and
+s-b1, respectively; and evaluate the second term in the store from the first:
+(interp b2 env s-b1). The result will be the value and store returned by the
+second term, which is what we expect. The fact that the first term’s effect is
+only on the store can be read from the code because, though we bind v-b1, we
+never subsequently use it.
+\DoNow{
+Spend a moment contemplating the code above. You’ll soon need to adjust
+your eyes to read this pattern fluently.
+}
+
+Now let’s move on to the binary arithmetic primitives. These are similar to
+sequencing in that they have two sub-terms, but in this case we really do care
+about the value from each branch. As usual, we’ll look at only plusC since multC
+is virtually identical.
+\lsts{8/1/7/8.rkt}{rkt}
+
+Observe that we’ve unfolded the sequencing pattern out another level, so we can
+hold on to both results and supply them to num+.
+
+Here’s an important distinction. When we evaluate a term, we usually use the
+same environment for all its sub-terms in accordance with the scoping rules of
+the language. The environment thus flows in a recursive-descent pattern. In
+contrast, the store is threaded: rather than using the same store in all
+branches, we take the store from one branch and pass it on to the next, and take
+the result and send it back out. This pattern is called store-passing style.
+
+Now the penny drops. We see that store-passing style is our secret ingredient:
+it enables the environment to preserve lexical scope while still giving a
+binding structure that can reflect changes. Our intution told us that the
+environment had to somehow participate in obtaining different results for the
+same expression, and we can now see how it does: not directly, by itself
+changing, but indirectly, by referring to the store, which updates. Now we only
+need to see how the store itself “changes”.
+
+Let’s begin with boxing. To store a value in a box, we have to first allocate a
+new place in the store where its value will reside. The value corresponding to a
+box will then remember this location, for use in box mutation.
+\lsts{8/1/7/9.rkt}{rkt}
+
+\DoNow{
+Observe that we have relied above on new-loc, which is itself implemented in
+terms of boxes! This is outright cheating. How would you modify the interpreter
+so that we no longer need an mutating implementation of new-loc?
+}
+
+To eliminate this style of new-loc, the simplest option would be to add yet
+another parameter to and return value from the interpreter, which represents the
+largest address used so far. Every operation that allocates in the store would
+return an incremented address, while all others would return it unchanged. In
+other words, this is precisely another application of the store-passing pattern.
+Writing the interpreter this way would make it extremely unwieldy and might
+obscure the more important use of store-passing for the store itself, which is
+why we have not done so. However, it is important to make sure that we can:
+that’s what tells us that we are not reliant on boxes to add boxes to the
+language.
+
+Now that boxes are recording the location in memory, getting the value
+corresponding to them is easy.
+\lsts{8/1/7/10.rkt}{rkt}
+
+It’s the same pattern we saw before, where we have to use fetch to obtain the
+actual value residing at that location. Note that we are relying on Racket to
+halt with an error if the underlying value isn’t actually a boxV; otherwise it
+would be dangerous to not check, since this would be tantamount to dereferencing
+arbitrary memory (as C programs can, sometimes with disastrous consequences).
+
+Let’s now see how to update the value held in a box. First we have to evaluate
+the box expression to obtain a box, and the value expression to obtain the new
+value to store in it. The box’s value is going to be a boxV holding a location.
+
+In principle, we want to “change”, or override, the value at that location in
+the store. We can do this in two ways.
+\begin{enumerate}[nosep]
+  \item 
+One is to traverse the store, find the old binding for that location, and
+replace it with the new one, copying all the other store bindings unchanged.
+  \item 
+The other, lazier, option is to simply extend the store with a new binding for
+that location, which works provided we always obtain the most recent binding for
+a location (which is how lookup works in the environment, so fetch presumably
+also does in the store).
+\end{enumerate}
+
+The code below is written to be independent of these options:
+\lsts{8/1/7/11.rkt}{rkt}
+
+However, because we’ve implemented override-store as cons above, we’ve actually
+taken the lazier (and slightly riskier, because of its dependence on the
+implementation of fetch) option.
+\Exercise{
+Implement the other version of store alteration, whereby we update an existing
+binding and thereby avoid multiple bindings for a location in the store.
+}
+\Exercise{
+When we look for a location to override the value stored at it, can the location
+fail to be present? If so, write a program that demonstrates this. If not,
+explain what invariant of the interpreter prevents this from happening.
+}
+
+Alright, we’re now done with everything other than application! Most of
+application should already be familiar: evaluate the function position, evaluate
+the argument position, interpret the closure body in an extension of the
+closure’s environment...but how do stores interact with this?
+\lsts{8/1/7/12.rkt}{rkt}
+
+Let’s start by thinking about extending the closure environment. The name we’re
+extending it with is obviously the name of the function’s formal parameter. But
+what location do we bind it to? To avoid any confusion with already-used
+locations (a confusion we will explicitly introduce later! [REF]), let’s just
+allocate a new location. This location is used in the environment, and the value
+of the argument resides at this location in the store:
+\lsts{8/1/7/13.rkt}{rkt}
+
+Because we have not said the function parameter is mutable, there is no real
+need to have implemented procedure calls this way. We could instead have
+followed the same strategy as before. Indeed, observe that the mutability of
+this location will never be used: only setboxC changes what’s in an existing
+store location (the override- store above is technically a store
+initialization), and then only when they are referred to by boxVs, but no box is
+being allocated above. However, we have chosen to implement application this way
+for uniformity, and to reduce the number of cases we’d have to handle.
+\note{You could call this the useless app store.}
+
+\Exercise{
+It’s a useful exercise to try to limit the use of store locations only to boxes.
+How many changes would you need to make?
+}

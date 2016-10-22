@@ -1,0 +1,220 @@
+\secrel{The Language of This Book \ru{Язык программирования используемый в
+книге}}
+
+The main programming language used in this book is
+\ru{Язык программирования используемый в книге}\ --- 
+\href{http://www.racket-lang.org/}{\racket}.
+Like with all operating systems, however,
+\ru{Аналогично операционным системам,}
+\racket\ actually supports a host of programming languages,
+\ru{\racket-система является исполняющей средой для целого ряда языков
+программирования,}
+so you must tell \racket\
+\ru{так что вы должны указать \racket у}
+\emph{which} language you’re programming in.
+\ru{\emph{на каком} языке вы программируете.}
+You inform the Unix shell by writing a line like
+\ru{Например, в Unix вы пишете строку типа}
+
+\begin{verbatim}
+#!/bin/sh
+\end{verbatim}
+at the top of a script;
+\ru{в первой строке shell-скрипта;}
+you inform the browser by writing, say,
+\ru{вы указываете веб-браузеру тип документа, добавляя заголовок}
+
+\begin{verbatim}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" ...>
+\end{verbatim}
+
+Similarly, \racket\ asks that you declare which language you will be using.
+\ru{Аналогично, \racket\ требует от вас указать какой язык вы будете
+использовать.}
+\racket\ languages can have the same parenthetical syntax as \racket\ but with a
+different semantics;
+\ru{Диалекты языков \racket\ имеют тот же скобочный синтаксис, что и сам
+\racket, но другую семантику;}
+the same semantics but a different syntax;
+\ru{ту же семантику но другой синтаксис;}
+or different syntax and semantics.
+\ru{или различные синтаксис и семантику.}
+Thus every \racket\ program
+\ru{Так что каждая программа, которую может выполнять \racket-система,}
+begins with \#lang followed by the name of some language:
+\ru{начинается со строки \#lang за которой следует имя диалекта языка:}
+by default, it’s \racket\ \ru{по умолчанию, это оригинальный \racket\ }
+written as \ru{указыватся как} \verb|racket|).
+In this book we’ll almost always use the language\note{In DrRacket v.5.3,
+go to\\
+Language, then Choose Language, and select ``Use the language declared in
+the source''.}
+\ru{В этой книге мы почти всегда будем использовать диалект}\note{\ru{В DrRacket
+v.6.6, выберите меню\\\menu{Язык > Выбрать язык\ldots > Start your program with
+\#lang to specify the desired dialect}.}}
+\begin{verbatim}
+#lang plai-typed
+\end{verbatim}
+When we deviate we’ll say so explicitly,
+\ru{Когда мы будем отклоняться от этого правила, это будет указано особо,}
+so unless indicated otherwise, put
+\ru{так что если не указано иное, добавляйте заголовок}
+\verb|#lang plai-typed|
+at the top of every file
+\ru{в начало каждого файла программы}
+(and assume I’ve done the same
+\ru{предполагается что я тоже это
+сделал})\note{В DrRacket v.6.6 требуется установить расширение
+plai-typed:\\\menu{Файл>Install package\ldots>Package
+Source:>\url{github://github.com/mflatt/plai-typed/master}>Install>\ldots>Закрыть}}.
+
+The \termdef{Typed PLAI}{Typed PLAI}\ language differs from traditional \racket\
+most importantly by being statically typed.
+\ru{Язык \term{Typed PLAI}\ отличается от традиционного \racket\ в основном
+\emph{статической типизацией}.}
+It also gives you some useful new constructs:
+\ru{Он также дает вам некоторые новые полезные конструкции:}
+\verb|define-type| \ru{определение-типа}, \verb|type-case| \ru{выбор-по-типу},
+and \verb|test|\note{There are additional commands for controlling the output
+of testing, for instance. \ru{Также существуют дополнительные команды для
+управления выводом тестов.} Be sure to read the documentation for the language.
+\ru{Обязательно прочитайте документацию для языка.}
+In DrRacket v.5.3, go to \menu{Help>Help Desk}, and in the Help Desk search bar,
+type \menu{plai-typed}. \ru{В DrRacket v.6.6 идите в меню \menu{Help>Help
+Desk>plai-typed}.}}
+Here’s an example of each in use.
+\ru{Вот примеры использования каждого из них.} 
+We can introduce new datatypes
+\ru{Мы можем создавать новые типы данных\note{запустить программу можно нажав
+\keys{Ctrl+R}}}:
+\lst{1/3/p8_1.rkt}
+You can roughly think of this as analogous to the following in Java:
+\ru{Вы можете примерно понять идею в терминах языка \java:}
+an abstract class \term{абстрактный класс} \verb|MisspelledAnimal| and two
+concrete sub-classes \ru{и два конкретизирующих подкласса}\ \verb|caml|
+\ru{верблд} and \verb|yacc| \ru{якк},
+each of which has one numeric constructor argument named
+\ru{каждый из которых имеет конструктор с числовым аргументом}
+\verb|humps| \ru{горбы} and \verb|height| \ru{высота}, respectively
+\ru{соответственно}.
+
+In this language, we construct instances as follows:
+\ru{На этом языке мы строим экземпляры классов следующим
+образом:\note{выполните это \emph{в командной строке \racket}, и посмотрите на
+класс результата}}
+\lst{1/3/p8_2.rkt}
+As the name suggests, \ru{Как следует из названия,} \verb|define-type| creates
+a type of the given name \ru{создает тип с заданным именем}.
+We can use
+this when, for instance, binding the above instances to names:
+\ru{Мы можем это использовать например при связывании экземпляров с именами:}
+\lst{1/3/p8_3.rkt}
+In fact you don’t need these particular type declarations,
+\ru{Фактически вам не нужны эти частные определения типов,} 
+because \term{Typed PLAI} will infer types for you here and in many other cases.
+\ru{так как \term{Typed PLAI} в этом и других случаях будет сам делать для вас
+\term{вывод типов}.}
+Thus you could just as well have written
+\ru{Так что вы можете написать короче}
+\lst{1/3/p8_4.rkt}
+but we prefer to write explicit type declarations
+\ru{но мы предпочтем писать полные объявления типов}
+as a matter of both discipline and comprehensibility when we return to programs
+later.
+\ru{с точки зрения как
+дисциплины, так и усвояемости, когда мы вернемся к программам позже.}
+
+The type names can even be used recursively, as we will see repeatedly in this
+book (for instance, section \ref{sec2_4}).
+\ru{Имена типов даже могут быть использованы рекурсивно, как мы увидим
+несколько позже в этой книге (например в разделе \ref{sec2_4}).}
+
+The language provides a pattern-matcher for use when writing expressions, such
+as a function’s body:
+\ru{Язык предоставляет pattern-matcher для использования при написании
+выражений, таких как тело функции:}
+\lst{1/3/p9_1.rkt}
+In the expression \ru{Например в выражении} (>= humps 2), for instance,
+\verb|humps| is the name given to whatever value was given as the argument to
+the constructor \ru{имя humps соответствует любому значению, данному как
+аргумент для конструктора} \verb|caml|.
+
+Finally, you should write test cases, ideally before you’ve defined your
+function, but also afterwards to protect against accidental changes:
+\ru{И наконец, вы должны написать тесты, в идеале до того как вы ее реализовали,
+или хотя бы после, чтобы защититься от внезапных несоответствий в ее поведении
+при внесении изменений в код:}
+\lst{1/3/p9_2.rkt}
+When you run the above program, the language will give you verbose output telling
+you both tests passed.
+\ru{При запуске тестов язык даст вам подробный отчет, что оба теста успешно
+пройдены.}
+Read the documentation to learn how to suppress most of these messages.
+\ru{Прочитайте документацию, чтобы узнать как подавить вывод большей части
+этих сообщений.}
+
+Here’s something important that is obscured above.
+\ru{Вот еще кое-что важное, что было неясно выше.}
+We’ve used the same name,
+\ru{Мы использовали одно и то же имя,}
+humps (and height), in \emph{both} the datatype definition and in the fields of
+the patternmatch.
+\ru{и в определении типа данных, и в полях объекта при проверке совпадения
+шаблонов.}
+This is absolutely unnecessary because the two are related by \emph{position},
+not name.
+\ru{Это совершенно необязательно, так как каждая пара связана по \emph{позиции},
+а не по имени.}
+Thus, we could have as well written the function as
+\ru{Так что мы могли бы также написать эту функцию как}
+\lst{1/3/p9_3.rkt}
+Because each $h$ is only visible in the case branch in which it is introduced,
+the two $h$s do not in fact clash.
+\ru{Так как каждый $h$ виден только в той case-секции, где он используется,
+два $h$ фактически не сталкиваются.}
+You can therefore use convention and readability to
+dictate your choices.
+\ru{Таким образом вы можете использовать соглашения по оформлению кода для
+улучшения читаемости, и диктовать свой выбор.}
+In general, it makes sense to provide a long and descriptive name
+\ru{В общем, имеет смысл использовать длинные описательные имена}
+when defining the datatype\note{because you probably won’t use
+that name again},
+\ru{при определении типа данных\note{\ru{потому что вы возможно больше никогда
+не будете использовать это имя снова}},}
+but shorter names in the \class{type-case} because you’re likely to use use
+those names one or more times.
+\ru{и короткие имена в \class{type-case}, где они обычно используются несколько
+раз.}
+
+I did just say you’re unlikely to use the field descriptors introduced in the
+datatype definition, but you can.
+\ru{Также я хочу упомянуть декрипторы полей класса, которые вы возможно
+захотите использовать.}
+The language provides \term{selectors} to extract fields without the need for
+pattern-matching: e.g., \class{caml-humps}.
+\ru{Язык предоставляет \term{селекторы} для получения значений полей без
+необходимости использовать pattern-matching, например \class{caml-humps}.}
+Sometimes,
+it’s much easier to use the selector directly rather than go through the
+pattern-matcher.
+\ru{Иногда намного проще использовать селектор, чем возиться с мэтчингом
+шаблонов.}
+It often isn’t, as when defining \class{good?}\ above,
+\ru{Часто это не так, как в случае определения \class{good?},}
+but just to be clear, let’s write it without pattern-matching:
+\ru{но для ясности давайте напишем без pattern-matching:}
+\lst{1/3/p9_4.rkt}
+
+\DoNow{
+What happens if you mis-apply functions to the wrong kinds of values\,?\\
+\ru{Что произойдет, если вы ошибочно примените функции к неправильным типам
+значений\,?}
+
+For instance, what if you give the \class{caml}\ constructor a string\,?\\
+\ru{Например, что если вы дадите конструктору \class{caml}\ строковый
+аргумент\,?}
+
+What if you send a number into each version of \class{good?}\ above\,?\\
+\ru{Что произойдет если вы пошлете число к каждой версии \class{good?}\
+описанных выше\,?} }

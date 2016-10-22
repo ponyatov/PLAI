@@ -1,0 +1,50 @@
+\secrel{A First Look at Interpretation \ru{Первый взгляд на
+интерпретацию}}\label{firstinterp}\secdown
+
+Now that we have a representation of programs, there are many ways in which we
+might want to manipulate them.
+\ru{Теперь, когда мы имеем представление программ, существует множество
+способов, которыми мы можем манипулировать ими.}
+We might want to display a
+program in an attractive way \ru{Мы можем захотеть выводить листинг программы в
+красивом виде} (“pretty-print”), convert into code in some other format
+\ru{преобразовать в код в какой-то другой формат} (“compilation”
+\ru{``компиляция''/''трансляция''}), ask whether it obeys certain properties 
+\ru{убедиться что она отвечает определенным требованиям}
+(“verification” \ru{``верификация''}), and so on \ru{и так далее}.
+For now, we’re going to focus on asking what value it corresponds to
+(“\termdef{e\underline{val}uation}{evaluation}”\ --- the reduction of programs
+to \emph{\underline{val}ues}).
+\ru{Для начала, мы собираемся сфокусироваться на вопросе\ --- какому значению
+соответствует программа (“\termdef{вычисление}{вычисление}"\ --- редукция
+программы до \emph{значения})}
+
+Let’s write an evaluator, in the form of an \termdef{interpreter}{interpreter},
+for our arithmetic language.
+\ru{Давайте напишем вычислитель, в форме
+\termdef{интерпретатора}{интерпретатор}, для нашего арифметического языка.}
+We choose arithmetic first for three reasons \ru{Мы выбрали арифметику прежде
+всего по следующим трем причинам}:
+\begin{itemize}[nosep]
+  \item[(a)]
+  you already know how it works, so we can focus on the mechanics of writing
+evaluators;
+\ru{вы уже знаете как работает арифметика, и мы можем сфокусироваться на
+механике написания вычислителей;}
+  \item[(b)]
+  it’s contained in
+every language we will encounter later, so we can build upwards and outwards from it;
+\ru{она содержится в каждом языке, с которым мы столкнемся в дальнейшем, так
+что мы будем расширять этот арифметический язык вверх и вширь;} and \ru{и}
+  \item[(c)] 
+it’s at once both small and big enough to illustrate many points
+we’d like to get across.
+\ru{этот язык минималистичен, но при этом достаточно большой, чтобы
+проиллюстрировать многие моменты, которые мы хочем до вас донести.}
+\end{itemize}
+
+\input{3/1/repr}
+\input{3/2/interp}
+\input{3/3/notice}
+\input{3/4/growing}
+\secup

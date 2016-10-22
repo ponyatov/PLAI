@@ -1,0 +1,67 @@
+\secrel{Writing an Interpreter \ru{Написание интерпретатора}}
+
+Now let’s write an interpreter for this arithmetic language.
+\ru{Теперь давайте напишем интерпретатор для этого арифметического языка.} 
+First, we should think about what its type is.
+\ru{Для начала нам надо подумать, какие типы он использует\,?} 
+It clearly consumes a \verb|ArithC| value.
+\ru{Совершенно ясно что на вход подается структура типа} \verb|ArithC|. 
+What does it produce\,?
+\ru{Что он возвращает\,?} 
+Well, an interpreter evaluates
+\ru{Ну, интерпретатор вычисляет} \ --- and what kind of value might arithmetic
+expressions reduce to\,?
+\ru{и к какому значению может редуцироваться арифметическое выражение\,?} 
+Numbers, of course.
+\ru{Конечно, числу.} 
+So the interpreter is going to be a function from arithmetic expressions to
+numbers.
+\ru{Таким образом, интерпретатор должен быть функцией от арифметического
+выражения, возвращающей число.}
+
+\Exercise{
+Write your test cases for the interpreter.
+\ru{Напишите тесты для интерпретатора.}
+}
+
+Because we have a recursive datatype, it is natural to structure our interpreter
+as a recursive function over it.
+\ru{Так как мы имеем рекурсивный тип данных\note{допускаются произвольные
+вложения того же типа}, нормально что структура нашего интерпретатора тоже
+должна быть рекурсивной функций над выражением.}
+Here’s a first template\note{Templates are
+explained in great detail in \emph{How to Design Programs}.}
+\ru{Вот первый шаблон\note{\ru{Шаблоны очень детально описаны в \emph{How to
+Design Programs}}}} :
+\lstx{ArithC.rkt}{3/p14_1.rkt}{rkt}
+You’re probably tempted to jump straight to code, which you can:
+\ru{Вероятно у вас есть соблазн сразу перейти к коду, который вы можете
+написать:}
+\lstx{ArithC.rkt}{3/p14_2.rkt}{rkt}
+
+\DoNow{
+Do you spot the errors\,?
+\ru{Вы увидели ошибки\,?}
+}
+
+Instead, let’s expand the template out a step:
+\ru{Вместо этого давайте расширим шаблон на один шаг:}
+\lstx{ArithC.rkt}{3/p15_2.rkt}{rkt}
+and now we can fill in the blanks:
+\ru{и теперь мы можем заполнить пробелы:}
+\lstx{ArithC.rkt}{3/p15_3.rkt}{rkt}
+
+Later on \ru{Позже в} \ref{}, we’re going to wish we had returned a more complex
+datatype than just numbers.
+\ru{мы пожелаем возвращать более сложный тип данных, чем просто числа.}
+But for now, this will do.
+\ru{Но сейчас нам этого достаточно.}
+
+Congratulations: you’ve written your first interpreter\,!
+\ru{Поздравляем: вы только что написали свой первый интерпретатор\,!} 
+I know, it’s very nearly an anticlimax\note{\ru{ситуация, когда проблема
+казавшеяся очень сложной, решается с помощью чего-то тривиального //
+Wikipedia}}\note{\ru{род морских улиток // там же}}.
+\ru{Я знаю, это очень близко к разочарованию.}
+But they’ll get harder\ --- much harder\ --- pretty soon, I promise.
+\ru{Но все станет жестче\ --- намного жестче\ --- совсем скоро, я обещаю.}

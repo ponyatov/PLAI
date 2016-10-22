@@ -1,0 +1,69 @@
+\secrel{8.3 The Design of Stateful Language Operations  . . 59}
+
+Though most programming languages include one or both kinds of state we have
+studied, their admission should not be regarded as a trivial or foregone matter.
+On the one hand, state brings some vital benefits:
+
+\begin{itemize}
+  \item 
+State provides a form of modularity. As our very interpreter demonstrates,
+without explicit stateful operations, to achieve the same effect:
+\begin{itemize}
+  \item 
+We would need to add explicit parameters and return values that pass the
+equivalent of the store around.
+  \item
+These changes would have to be made to all procedures that may be involved in a
+communication path between producers and consumers of state.
+\end{itemize}
+
+Thus, a different way to think of state in a programming language is that it is
+an implicit parameter already passed to and returned from all procedures,
+without imposing that burden on the programmer. This enables procedures to
+communicate “at a distance” without all the intermediaries having to be aware of
+the communication.
+
+  \item
+State makes it possible to construct dynamic, cyclic data structures, or at
+least to do so in a relatively straightforward manner \ref{sec9}.
+
+  \item
+State gives procedures memory, such as new-loc above. If a procedure could not
+remember things for itself, the callers would need to perform the remembering on
+its behalf, employing the moral equivalent of store-passing. This is not only
+unwieldy, it creates the potential for a caller to interfere with the memory for
+its own nefarious purposes (e.g., a caller might purposely send back an old
+store, thereby obtaining a reference already granted to some other party,
+through which it might launch a correctness or security attack).
+
+\end{itemize}
+
+On the other hand, state imposes real costs on programmers as well as on
+programs that process programs (such as compilers). One is “aliasing”, which we
+discuss later \ref{}. Another is “referential transparency”, which too I
+hope to return to \ref{}. Finally, we have described above how state provides a
+form of modularity. However, this same description could be viewed as that of a
+back-channel of communication that the intermediaries did not know and could not
+monitor. In some (especially security and distributed system) settings, such
+back-channels can lead to collusion, and can hence be extremely dangerous and
+undesirable.
+
+Because there is no optimal answer, it is probably wise to include mutation
+operators but to carefully delinate them. In Standard ML, for instance, there is
+no variable mutation, because it is considered unnecessary. Instead, the
+language has the equivalent of boxes (called refs). One can easily simulate
+variables using boxes (e.g., see new-loc and consider how it would be written
+with variables instead), so no expressive power is lost, though it does create
+more potential for aliasing than variables alone would have (aliasing
+\ref{aliasing}) if the boxes are not used carefully.
+
+In return, however, developers obtain expressive types: every data structure is
+considered immutable unless it contains a ref, and the presence of a ref is a
+warning to both developers and programs (such as compilers) that the underlying
+value may keep changing. Thus, for instance, if b is a box, a developer should
+be aware that replacing all instances of (unbox b) with v, where v is bound to
+(unbox b), is unwise: the former always fetches the current value in the box,
+while the latter may be referring to an older content. (Conversely, if the
+developer wants the value at a certain point in time, oblivious to future
+mutations to the box, they should be sure to retrieve and bind it rather than
+always use unbox.)

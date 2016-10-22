@@ -1,0 +1,37 @@
+\secrel{Oh Wait, There’s More\,!\\\ru{Подождите, есть кое-что еще\,!}}
+
+Earlier, we gave the following type to subst:
+\lsts{5/5/1.rkt}{rkt}
+Sticking to surface syntax for brevity, suppose we apply double to (+ 1 2). This
+would substitute (+ 1 2) for each x, resulting in the following expression—(+ (+
+1 2) (+ 1 2))—for interpretation. Is this necessarily what we want?
+
+When you learned algebra in school, you may have been taught to do this
+differently: first reduce the argument to an answer (in this case, 3), then
+substitute the answer for the parameter. This notion of substitution might have
+the following type instead:
+\lsts{5/5/2.rkt}{rkt}
+Careful now: we can’t put raw numbers inside expressions, so we’d have to
+constantly wrap the number in an invocation of numC. Thus, it would make sense
+for subst to have a helper that it invokes after wrapping the first parameter.
+(In fact, our existing subst would be a perfectly good candidate: because it
+accepts any ExprC in the first parameter, it will certainly work just fine with
+a numC.)
+\note{In fact, we don’t even have substitution quite right! The version of
+substitution we have doesn’t scale past this language due to a subtle problem
+known as “name capture”. Fixing substitution is complex, subtle, and an exciting
+intellectual endeavor, but it’s not the direction I want to go in here. We’ll
+instead sidestep this problem in this book. If you’re interested, however, read
+about the lambda calculus, which provides the tools for defining substitution
+correctly.}
+
+\Exercise{
+Modify your interpreter to substitute names with answers, not expressions.
+}
+
+We’ve actually stumbled on a profound distinction in programming languages. The
+act of evaluating arguments before substituting them in functions is called
+eager application, while that of deferring evaluation is called lazy—and has
+some variations. For now, we will actually prefer the eager semantics, because
+this is what most mainstream languages adopt. Later \ref{}, we will return to
+talking about the lazy application semantics and its implications.

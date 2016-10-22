@@ -1,0 +1,144 @@
+\secrel{Extension: Unary Negation \ru{Расширение: унарный минус}}
+
+Now let’s consider another extension, which is a little more interesting: unary
+negation.
+\ru{Теперь давайте рассмотрим другое расширение, которое является немного более
+интересным: унарный минус.}
+This forces you to do a little more work in the parser because, depending on
+your surface syntax, you may need to look ahead to determine whether you’re in
+the unary or binary case.
+\ru{Оно заставит вас сделать немного больше работы в парсере, потому что, в
+зависимости от вашего frontend синтаксиса, вам требуется посмотреть вперед для
+определения, находитесь ли вы в унарном или бинарном случае.}
+But that’s not even the interesting part\,!
+\ru{Но это даже не самое интересное\,!}
+
+There are many ways we can desugar unary negation.
+\ru{Существует много способов, которыми мы можем сделать обессахаривание
+унарного минуса.}
+We can define it naturally as \ru{Мы можем определить его естественно как}
+$-b=0-b$, or we could abstract over the desugaring of binary subtraction with
+this expansion: \ru{или мы можем построить абстракцию используя обессахаривание
+бинарного вычитания через это расширение:} $-b=0+ -1 \times b$.
+
+\DoNow{
+Which one do you prefer\,? Why\,?\\
+\ru{Что вы предпочтете\,? Почему\,?}
+}
+
+It’s tempting to pick the first expansion, because it’s much simpler.
+\ru{Очень заманчиво выбрать первое расширение, потому что оно намного проще.}
+Imagine we’ve extended the \class{ArithS} datatype with a representation of
+unary negation:
+\ru{Представьте что мы расширили тип данных \class{ArithS} представлением
+унарного минуса:}
+\lst{4/p18_2.rkt}
+Now the implementation in \class{desugar} is straightforward:
+\ru{Теперь реализация \class{desugar} проста:}
+\lst{4/p18_3.rkt}
+Let’s make sure the types match up.
+\ru{Давайте удостоверимся что типы совпадают.}
+Observe that $e$ is a \class{ArithS} term, so it is valid to use as an argument
+to \class{bminusS}, and the entire term can legally be passed to \term{desugar}.
+\ru{Заметим что $e$ терм класса \class{ArithS}, так что правомерно его
+использовать как аргумент \class{bminusS}, и все выражение может быть корректно
+послано в \term{обессахариватель}.}
+It is therefore important to \emph{not} desugar $e$ but rather embed it directly
+in the generated term.
+\ru{Поэтому важно \emph{не обессахаривать} $e$, а встроить его напрямую в
+сгенерированное выражение.}
+This embedding of an input term in another one and recursively calling desugar
+is a common pattern in desugaring tools;
+\ru{Это встраивание входного терма в другой и рекурсивный вызов
+обессахирвателя\ --- типовой шаблон при использовании средств обессахаривания;}
+it is called a \termdef{macro}{macro}
+\ru{он называется \termdef{макро}{макро}}
+(specifically, the ``macro'' here is this definition of \class{uminusS}
+\ru{конкретно в этом случае \term{макро} является определение \class{uminusS}}).
+
+However, there are two problems with the definition above:
+\ru{Тем не менее, существует две проблемы, связанные с приведенным выше
+определением:}
+\begin{enumerate}
+
+\item
+The first is that the recursion is \termdef{generative}{generative
+recursion}\note{If you haven’t heard of \term{generative recursion} before, read
+the section on it in \emph{How to Design Programs}. Essentially, in generative
+recursion the sub-problem is a computed function of the input, rather than a
+structural piece of it. This is an especially simple case of generative
+recursion, because the ``function'' is simple: it’s just the \class{bminusS}
+constructor}, which forces us to take extra care. 
+\ru{Во первых, рекурсия является \termdef{генеративной}{генеративная
+рекурсия}\note{\ru{Если вы еще не слышали о \term{генеративной рекурсии},
+прочитайте раздел о ней в \emph{How to Design Programs}. По сути, при
+генеративной рекурсии подпроблемой является \emph{вычислимая функция} программно
+синтезированная из входных данных, а не рекурсивный вызов функция от структурной
+части этих данных. В нашем случае рассматривается простой вариант генеративной
+рекурсии, потому что ``функция'' проста: это просто конструктор
+\class{bminusS}}}, что заставляет нас быть особенно осторожными.}
+We might be tempted to fix this by using a different rewrite:
+\ru{Мы могли бы попытаться исправить это через следующее исправление:}
+\lst{4/p18_4.rkt}
+which does indeed eliminate the generativity.
+\ru{которое действительно устраняет генеративность.}
+
+\DoNow{
+Unfortunately, this desugaring transformation won’t work at all\,!
+Do you see why\,? If you don’t, try to run it.\\
+\ru{К сожалению, эта обессахаривающая трансформация вообще не работает\,!
+Вы видите почему\,? Если нет, попробуйте это запустить.}
+}
+
+\item
+The second is that we are implicitly depending on exactly what \class{bminusS}
+means;
+\ru{Во вторых, мы находимся в неявной зависимости от то, что точно обозначает
+\class{bminusS};}
+if its meaning changes, so will that of \class{uminusS}, even if we don’t want
+it to.
+\ru{если его \term{семантика} изменится, о же случиться и с \class{uminusS},
+даже если мы этого и не хотим.}
+In contrast, defining a functional abstraction that consumes two terms and
+generates one representing the addition of the first to $-1$ times the second,
+\ru{В противоположность этому, определение функциональной абстрации, которая
+получает два терма, и генерирует один, представляющий сложение первого терма со
+вторым, умноженным на $-1$,}
+and using this to define the desugaring of both
+\class{uminusS} and \class{bminusS}, is a little more faulttolerant.
+\ru{и использование ее для определения обессахаривания для обоих \class{uminusS}
+и \class{bminusS}, является немного более отказоустойчивой.}
+
+You might say that the meaning of subtraction is never going to change, so why
+bother\,?
+\ru{Вы можете сказать что значение вычитания никогда не изменится, так что
+почему надо беспокоиться\,?}
+Yes and no.
+\ru{Да и нет.}
+Yes, it’s \emph{meaning} is unlikely to change;
+\ru{Да, его \emph{значение} вряд ли изменится;}
+but no, its \emph{implementation} might.
+\ru{но нет, его \emph{реализация} может.}
+For instance, the developer may decide to log all uses of binary subtraction.
+\ru{Например разработчик может решить логировать все использования двухместного
+вычитания.}
+In the macro expansion, all uses of unary negation would also get logged, but
+they would not in the second expansion.
+\ru{В макроподстановке все использования унарного минуса также будут
+залогрованы, но не будут во второй подстановке.}
+
+\end{enumerate}
+
+Fortunately, in this particular case we have a much simpler option, which is to
+define
+\ru{К счастью, в этом конкретном случае мы имеем гораздо более простой вариант,
+как можно определить}
+$-b=-1\times b$.
+This expansion works with the primitives we have, and follows structural
+recursion.
+\ru{Это раскрытие макроса работает с примитивами, которые у нас есть, и следует
+структурной рекурсии.}
+The reason we took the above detour, however, is to alert you to these problems,
+and warn that you might not always be so fortunate.
+\ru{Причиной, по которой мы отклонились выше, стала необходимость предупредить
+вас об этих проблемах, и о том что вам не всегда будет так везти.}

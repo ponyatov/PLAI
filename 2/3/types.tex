@@ -1,0 +1,101 @@
+\secrel{Types for Parsing \ru{Типы для разбора}}
+
+Actually, I’ve lied a little.
+\ru{На самом деле, я немного соврал.}
+I said that \ru{я сказал что} \verb|(read)|\ --- or equivalently, using
+quotation \ru{или использование квотирования, что эквивалентно}\ --- will
+produce a \emph{list}, etc. \ru{создаст \emph{список}, блаблабла.}
+That’s true in regular \racket, but in $Typed PLAI$
+\ru{Это так для оригинального \racket, но в $Typed PLAI$} the type it
+returns a distinct type called an \ru{возвращается специальный тип, который
+называется} \termdef{s-expression}{s-expression}
+\ru{s-выражение\index{s-выражение}}, written in $Typed PLAI$ as
+\ru{который в $Typed PLAI$ записывается как}
+\verb|s-expression|:
+\begin{verbatim}
+> (read)
+- s-expression
+[type in (+ 23 (- 5 6))]
+'(+ 23 (- 5 6))
+\end{verbatim}
+\racket\ has a very rich language of s-expressions
+\ru{имеет очень богатый язык на s-выражениях}
+(it even has notation to represent cyclic structures
+\ru{он даже имеет нотацию для представления циклических структур}), 
+but we will use only the simple fragment of it.
+\ru{но мы будем использовать только простейшую часть этого синтаксиса.}
+
+In the typed language, an s-expression is treated distinctly from the other
+types, such as numbers and lists.
+\ru{В типизированном языке s-выражения обрабатыватся обособленно от других
+типов, таких как числа и списки.}
+\begin{framed}
+Underneath, an s-expression is a large
+recursive datatype that consists of all the base printable values—numbers,
+strings, symbols, and so on—and printable collections (lists, vectors, etc.) of
+s-expressions.
+\ru{Далее s-выражение рассматривается как большой рекурсивный тип данных,
+который содержит все базовые отображаемые (представимые в тексте) значения\
+--- числа, строки, символы и т.д.\ --- и коллекции (списки, вектора и т.д.)
+других s-выражений}.
+\end{framed}
+As a result, base types like numbers, symbols, and strings are
+\emph{both} their own type and an instance of s-expression.
+\ru{В результате такие базовые типы как числа, символы и строки, могут
+\emph{одновременно} являться как собственным типом (число,..), так и
+экземпляром s-выражениея}.
+Typing such data can be fairly problematic, as we will discuss later
+\ru{Типизация таких данных может быть очень проблематична, детальнее мы обсудим
+это позже} \ref{}.
+
+$Typed PLAI$ takes a simple approach.
+\ru{$Typed PLAI$ применяет более простой подход.}
+When written on their own, values like numbers are of those respective types.
+\ru{Когда значания простых типов, типа чисел, написаны сами по себе, они
+являются собственными типами (число).}
+But when written inside a complex
+s-expression—in particular, as created by read or quotation—they have type
+s-expression.
+\ru{Но когда они включены в состав сложного s-выражения\ --- в частности,
+созданы через (read) или квотацию\ --- они имеют тип s-выражения.}
+You have to then cast them to their native types.
+\ru{Вы должны привести их к нативному типу.}
+For instance \ru{Например}:
+\lstl{2/p11_1.rkt}
+This is similar to the casting that a Java programmer would have to insert.
+\ru{Это похоже на явное приведение типов, которое должен вставить программист
+на \java.}
+We will study casting itself later \ru{Мы обсудим само приведение типов позже}
+\ref{}.
+
+Observe that the first element of the list is still not treated by the
+type checker as a symbol:
+\ru{Отметим, что первый элемент списка все еще не распознается контролером
+типов как символ:}
+a list-shaped s-expression is a list of s-expressions.
+\ru{списко-образное s-выражение является списком s-выражений.}
+Thus \ru{Таким образом},
+\lst{2/p11_2.rkt}
+whereas again, casting does the trick:
+\ru{и снова приведение типов решает проблему :}
+\lst{2/p11_3.rkt}
+The need to cast s-expressions is a bit of a nuisance,
+\ru{Необходимость приведения s-выражений немного геморна,}
+but some complexity is unavoidable because of what we’re trying to accomplish:
+\ru{но некоторая сложность неизбежна из-за того что мы пытаемся достичь:}
+to convert an \emph{untyped input} stream into a \emph{typed output} stream
+\ru{преобразование \emph{нетипизированного} входного потока в
+\emph{типизированный} выходной поток}
+through robustly typed means.
+\ru{через средства робастной типизации.}
+Somehow we have to make explicit our assumptions about that input stream.
+\ru{Каким-то образом мы должны делать явные предположения об этом входном
+потоке.}
+
+Fortunately we will use s-expressions only in our parser, and our goal is to
+\emph{get away from parsing as quickly as possible\,!}
+\ru{К счастью, мы будем использовать s-выражения только в нашем парсере, и наша
+цель состоит в том, чтобы \emph{уйти от разбора как можно быстрее\,!}}
+Indeed, if anything this should be inducement to get away even quicker.
+\ru{В самом деле, все эти заморочки являются побуждением сделать этот уход еще
+быстрее.}
