@@ -1,0 +1,1 @@
+(lambda ([x : number]) : number x)
