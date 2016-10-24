@@ -1,0 +1,5 @@
+(define (function dom rng)
+(lambda (val)
+(if (procedure? val)
+(lambda (x) (rng (val (dom x))))
+(blame val))))

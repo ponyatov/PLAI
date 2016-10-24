@@ -1,1 +1,121 @@
 \secrel{16.3 Higher-Order Contracts   . 183}
+
+To determine what to do, it helps to recall what sort of guarantee contracts
+provide in the first place. In real-sqrt-1 above, we demanded that the argument
+be nonnegative. However, this is only checked if—and when—real-sqrt-1 is
+actually used, and then only on the actual values that are passed to it. For
+instance, if the program contains this fragment
+\lsts{16/3/1.rkt}{rkt}
+but this thunk is never invoked, the programmer would never see this contract
+violation. In fact, it may be that the thunk is not invoked on this run of the
+program, but in a later run it will be; thus, the program has a lurking contract
+error. For this reason, it is usually preferable to express invariants through
+static types; but where we do use contracts, we understand that it is with the
+caveat that we will only be notified of errors when the program is suitably
+exercised.
+
+This is a useful insight, because it offers a solution to our problem with
+functions. We check, immediately, that the purported function value truly is a
+function. However, instead of ignoring the domain and range contracts, we defer
+them. We check the domain contract when (and each time) the function is actually
+applied to a value, and we check the range contract when the function actually
+returns a value.
+
+This is clearly a different pattern than make-contract followed. Thus, we should
+give make-contract a more descriptive name: it checks immediate contracts (i.e.,
+those that can be checked in their entirety now).
+\note{In the Racket contract system, immediate contracts are called flat. This
+term is slightly misleading, since they can also protect data structures.}
+\lsts{16/3/2.rkt}{rkt}
+
+In contrast, a function contract takes two contracts as arguments—representing
+checks to be made on the domain and range—and returns a predicate. This is the
+predicate to apply on values purporting to satisfy that contract. First, this
+checks that the given value actually is a function: this part is still
+immediate. Then, we create a surrogate procedure that applies the “residual”
+contracts—to check the domain and range—but otherwise behaves the same as the
+original function.
+
+This creation of a surrogate represents a departure from the traditional
+assertion mechanism, which simply checks values and then leaves them alone.
+Instead, for functions we must use the created surrogate if we want contract
+checking. In general, therefore, it is useful to have a wrapper that consumes a
+contract and value, and creates a guarded version of that value:
+\lsts{16/3/3.rkt}{rkt}
+
+As a very simple example, let us suppose we want to wrap the add1 function in
+numeric contracts (with function, the constructor of function contracts, to be
+defined momentarily):
+\lsts{16/3/4.rkt}{rkt}
+We want a1 to be bound to essentially the following code:
+\lsts{16/3/5.rkt}{rkt}
+Here, the (lambda (x) ...) is the surrogate; it applies two numeric contracts
+around the invocation of add1. Recall that contracts must behave like the
+identity function in the absence of violations, so this procedure has precisely
+the same behavior as add1 on non-violating uses.
+
+To achieve this, we use the following definition of function. Remember that we
+have to also ensure that the given value is truly a function (as add1 above
+indeed is, and can be checked immediately, which is why the check has
+disappeared by the time we bind the surrogate to a1):
+\note{For simplicity we assume single-argument functions here, but the extension
+to multiple arity is straightforward. Indeed, more complex contracts can even
+check for relationships between the arguments.}
+\lsts{16/3/6.rkt}{rkt}
+
+To understand how this works, let us substitute arguments. To keep the resulting
+code readable, we will first construct the number? contract checker and give it
+a name:
+\lsts{16/3/7.rkt}{rkt}
+Now let’s return to the definition of a1. First we apply guard:
+\lsts{16/3/8.rkt}{rkt}
+Now we apply the function contract constructor:
+\lsts{16/3/9.rkt}{rkt}
+Applying the left-left-lambda gives:
+\lsts{16/3/10.rkt}{rkt}
+Notice that this immediately checks that the guarded value is indeed a function.
+Thus we get
+\lsts{16/3/11.rkt}{rkt}
+which is precisely the surrogate we desired, with the behavior of add1 on
+non-violating executions.
+
+\DoNow{
+How many ways are there to violate the above contract for add1?
+}
+
+There are three ways, corresponding to the three contract constructors:
+\begin{enumerate}[nosep]
+  \item 
+the value wrapped might not be a function;
+  \item 
+the wrapped value might be a function that is applied to a non-numeric value;
+or,
+  \item 
+the wrapped value might be a function that consumes numbers but produces values
+of non-numeric type.
+\end{enumerate}
+
+\Exercise{
+Write examples that perform each of these three violations, and observe the
+behavior of the contract system. Can you improve the error messages to better
+distinguish these cases?
+}
+
+The same wrapping technique works for d/dx as well:
+
+\lsts{16/3/12.rkt}{rkt}
+
+\Exercise{
+There are seven ways to violate this contract, corresponding to each of the
+seven contract constructors. Violate each of them by passing arguments or
+modifying code, as needed. Can you improve error reporting to correctly identify
+each kind of violation?
+}
+
+Notice that the nested function contract defers the checking of the immediate
+contracts for two applications, rather than one. This is what we should expect,
+because immediate contracts only report problems with actual values, so they
+cannot report anything until applied to actual values. However, this does mean
+that the notion of “violation”’ is subtle: the function value passed to d/dx may
+in fact truly be in violation of the contract, but this violation will not be
+observed until numeric values are passed or returned.
