@@ -1,1 +1,25 @@
 \secrel{16.7 Contracts and Mutation   . 189}
+
+We should rightly be concerned about the interaction between contracts and
+mutation, and even more so when we have contracts that are either inherently
+deferred or have been implemented in a deferred fashion. There are two things to
+be concerned about. One is storing a contracted value in mutable state. The
+other is writing a contract for mutable state.
+
+When we store a contracted value, the strategy of wrapping ensures that contract
+checking works gracefully. At each stage, a contract checks as much as it can
+with the value at hand, and creates a wrapped value embodying the residual
+check. Thus, even if this wrapped value is stored in mutable state and retrieved
+for use later, it still contains these checks, and they will be performed when
+the value is eventually used.
+
+The other issue is writing contracts for mutable data, such as boxes and
+vectors. In this case we probably have to create a wrapper for the entire
+datatype that records the intended contract. Then, when a value inside the datatype is
+replaced with a new one, the operation that performs the update—such as
+set-box!—needs to retrieve the intended contract from the wrapper, apply it to
+the value, and store the wrapped value. Therefore, this requires changing the
+behavior of the data structure mutation operators to be sensitive to contracted
+values. However, mutation does not change the point at which violations are
+caught: right away for immediate contracts, upon (in)appropriate use for
+deferred ones.
