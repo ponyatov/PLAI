@@ -10,7 +10,7 @@ interesting programs!
 \note{The presentation that follows orders the cases of the macro from what I
 believe are easiest to hardest. However, the code in the macro must avoid
 non-overlapping patterns, and hence follows a diffent order.}
-\lsts{src/14/2/1/1.rkt}{rkt}
+\lsts{14/2/1/1.rkt}{rkt}
 
 Our representation in CPS will be to turn every expression into a procedure of
 one argument, the continuation. The converted expression will eventually either
@@ -27,30 +27,30 @@ provided a guard expression that precisely defines the syntactic cases we want
 to treat as atomic. We’re playing loose here becuase our focus is on more
 interesting cases.) In the atomic case, we already have a value, so we simply
 need to supply it to the continuation:
-\lsts{src/14/2/1/2.rkt}{rkt}
+\lsts{14/2/1/2.rkt}{rkt}
 Similarly for quoted constants:
-\lsts{src/14/2/1/3.rkt}{rkt}
+\lsts{14/2/1/3.rkt}{rkt}
 
 Also, we already know, from [REF] and [REF], that we can treat with and rec as
 macros, respectively:
-\lsts{src/14/2/1/4.rkt}{rkt}
-\lsts{src/14/2/1/5.rkt}{rkt}
+\lsts{14/2/1/4.rkt}{rkt}
+\lsts{14/2/1/5.rkt}{rkt}
 
 Mutation is easy: we have to evaluate the new value, and then perform the actual
 update:
-\lsts{src/14/2/1/6.rkt}{rkt}
+\lsts{14/2/1/6.rkt}{rkt}
 
 Sequencing is also straightforward: we perform each operation in turn. Observe
 how this preserves the semantics of sequencing: not only does it obey the order
 of operations, the value of the first sub-term (e1) is not mentioned anywhere in
 the body of the second (e2), so the name given to the identifier holding its
 value is irrelevant.
-\lsts{src/14/2/1/7.rkt}{rkt}
+\lsts{14/2/1/7.rkt}{rkt}
 
 When handling conditionals, we need to create a new continuation to remember
 that we are waiting for the test expression to evaluate. Once we have its value,
 however, we can dispatch on the result and return to the existing continuations:
-\lsts{src/14/2/1/8.rkt}{rkt}
+\lsts{14/2/1/8.rkt}{rkt}
 
 When we get to applications, we have two cases to consider. We absolutely need
 to handle the treatment of procedures created in the language: those with one
@@ -66,7 +66,7 @@ interaction).
 For an application we have to evaluate both the function and argument
 expressions. Once we’ve obtained these, we are ready to apply the function.
 Therefore, it is tempting to write
-\lsts{src/14/2/1/9.rkt}{rkt}
+\lsts{14/2/1/9.rkt}{rkt}
 
 \DoNow{
 Do you see why this is wrong?
@@ -79,10 +79,10 @@ body, as well as the pending (k ...) (i.e., the rest of the program), will all
 be lost. To avoid this, we have to supply k to the function’s value, and let the
 inductive invariant ensure that k will eventually be invoked with the value of
 applying fv to av:
-\lsts{src/14/2/1/10.rkt}{rkt}
+\lsts{14/2/1/10.rkt}{rkt}
 
 Treating the special case of built-in binary operations is easier:
-\lsts{src/14/2/1/11.rkt}{rkt}
+\lsts{14/2/1/11.rkt}{rkt}
 
 The very pattern we could not use for user-defined procedures we employ here,
 because we assume that the application of f will always return without any
@@ -93,7 +93,7 @@ computation. The application case above, however, shows that we have to
 transform functions to take an extra argument, namely the continuation at the
 point of invocation. This leaves us with a quandary: which continuation do we
 supply to the body?
-\lsts{src/14/2/1/12.rkt}{rkt}
+\lsts{14/2/1/12.rkt}{rkt}
 
 That is, in place of ..., which continuation do we supply: k or dyn-k?
 
@@ -110,15 +110,15 @@ being used! This would result in seemingly very strange program behavior, so we
 wish to avoid it. Observe that we are consciously choosing the dynamic
 continuation just as, where scope was concerned, we chose the static
 environment.
-\lsts{src/14/2/1/13.rkt}{rkt}
+\lsts{14/2/1/13.rkt}{rkt}
 
 Finally, for the purpose of modeling Web programming, we can add our input and
 output procedures. Output follows the application pattern we’ve already seen:
-\lsts{src/14/2/1/14.rkt}{rkt}
+\lsts{14/2/1/14.rkt}{rkt}
 
 Finally, for input, we can use the pre-existing read-number/suspend, but this
 time generate its uses rather than force the programmer to construct them:
-\lsts{src/14/2/1/15.rkt}{rkt}
+\lsts{14/2/1/15.rkt}{rkt}
 
 Notice that the continuation bound to k is precisely the continuation that we
 need to stash at the point of a Web interaction.
@@ -130,11 +130,11 @@ consumes a value, prints it, and gets ready for another computation (as the
 prompt in the DrRacket Interactions window does). All three of these are
 effectively just the identity function in various guises. Thus, the following
 definition is helpful for testing:
-\lsts{src/14/2/1/16.rkt}{rkt}
+\lsts{14/2/1/16.rkt}{rkt}
 For instance,
-\lsts{src/14/2/1/17.rkt}{rkt}
+\lsts{14/2/1/17.rkt}{rkt}
 We can also test our old Web program:
-\lsts{src/14/2/1/18.rkt}{rkt}
+\lsts{14/2/1/18.rkt}{rkt}
 
 Lest you get lost in the myriad of code, let me highlight the important lesson
 here: We’ve recovered our code structure. That is, we can write the program in

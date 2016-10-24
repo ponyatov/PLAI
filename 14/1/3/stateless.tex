@@ -15,7 +15,7 @@ soon.
 Let’s start by eliminating the closure. Instead, let’s have each of the funtion
 arguments to be named, top-level functions (which immediately forces us to have
 only a fixed number of them, because the program’s size cannot be unbounded):
-\lsts{src/14/1/3/1.rkt}{rkt}
+\lsts{14/1/3/1.rkt}{rkt}
 Observe how each code block refers only to the name of the next, rather than to
 a real closure. The value of the argument comes from the form. There’s just one
 problem: v1 in prog2 is a free identifier!

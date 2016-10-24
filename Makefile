@@ -191,60 +191,60 @@ TEX += 12/3/meanings.tex
 TEX += 12/4/more.tex
 SRC += 12/4/1.rkt 12/4/2.rkt 12/4/3.rkt 12/4/4.rkt
 
-#TEX += 13/desugaring.tex
-#TEX += 13/1/first.tex
-#SRC += 13/1/1.rkt 13/1/2.rkt 13/1/3.rkt 13/1/4.rkt 
-#SRC += 13/1/5.rkt 13/1/6.rkt 13/1/6.err 13/1/7.rkt 
-#TEX += 13/2/syntax.tex
-#SRC += 13/2/1.rkt 13/2/2.rkt 13/2/3.rkt 
-#TEX += 13/3/guards.tex
-#SRC += 13/3/1.rkt 13/3/2.rkt
-#TEX += 13/4/smacro.tex
-#TEX += 13/4/1/fatt.tex
-#SRC += 13/4/1/1.rkt 13/4/1/2.rkt 13/4/1/3.rkt 
-#SRC += 13/4/1/4.rkt 13/4/1/5.rkt 13/4/1/6.rkt 
-#TEX += 13/4/2/guevl.tex
-#SRC += 13/4/2/1.rkt 13/4/2/2.rkt 13/4/2/3.rkt 13/4/2/4.rkt 
-#TEX += 13/4/3/hygiene.tex
-#SRC += 13/4/3/1.rkt 13/4/3/2.rkt 13/4/3/3.rkt 
-#SRC += 13/4/3/4.rkt 13/4/3/5.rkt 
-#TEX += 13/5/indent.tex
-#SRC += 13/5/1.rkt 13/5/2.rkt 13/5/3.rkt 
-#SRC += 13/5/4.rkt 13/5/5.rkt 13/5/6.rkt 
-#TEX += 13/6/influ.tex
-#TEX += 13/7/otherlangs.tex
-#
-#TEX += 14/control.tex
-#
-#TEX += 14/1/onweb.tex
-#SRC += 14/1/1.rkt 14/1/2.rkt 
-#TEX += 14/1/decomp.tex
-#SRC += 14/1/1/1.rkt 14/1/1/2.rkt 14/1/1/3.rkt 
-#TEX += 14/1/2/partial.tex
-#SRC += 14/1/2/1.rkt 14/1/2/2.rkt 14/1/2/3.rkt 14/1/2/4.rkt 
-#SRC += 14/1/2/5.rkt 14/1/2/6.rkt 14/1/2/7.rkt 14/1/2/8.rkt 
-#TEX += 14/1/3/stateless.tex
-#SRC += 14/1/3/1.rkt
-#TEX += 14/1/4/interaction.tex
-#SRC += 14/1/4/1.rkt 14/1/4/2.rkt 14/1/4/3.rkt 14/1/4/4.rkt
-#SRC += 14/1/4/5.rkt 14/1/4/6.rkt 14/1/4/7.rkt 14/1/4/8.rkt
-#SRC += 14/1/4/9.rkt 14/1/4/10.rkt
-#
-#TEX += 14/2/contpass.tex
-#TEX += 14/2/1/impl.tex
-#SRC += 14/2/1/1.rkt 14/2/1/2.rkt 14/2/1/3.rkt 14/2/1/4.rkt 
-#SRC += 14/2/1/5.rkt 14/2/1/6.rkt 14/2/1/7.rkt 14/2/1/8.rkt 
-#SRC += 14/2/1/9.rkt 14/2/1/10.rkt 14/2/1/11.rkt 14/2/1/12.rkt 
-#SRC += 14/2/1/13.rkt 14/2/1/14.rkt 14/2/1/15.rkt 14/2/1/16.rkt 
-#SRC += 14/2/1/7.rkt 14/2/1/18.rkt 
-#TEX += 14/2/conv.tex
-#TEX += 14/2/3/core.tex
-#
-#TEX += 14/3/gens.tex
-#TEX += 14/4/cont.tex
-#TEX += 14/5/tailcalls.tex
-#TEX += 14/6/contlang.tex
-#  
+TEX += 13/desugaring.tex
+TEX += 13/1/first.tex
+SRC += 13/1/1.rkt 13/1/2.rkt 13/1/3.rkt 13/1/4.rkt 
+SRC += 13/1/5.rkt 13/1/6.rkt 13/1/6.err 13/1/7.rkt 
+TEX += 13/2/syntax.tex
+SRC += 13/2/1.rkt 13/2/2.rkt 13/2/3.rkt 
+TEX += 13/3/guards.tex
+SRC += 13/3/1.rkt 13/3/2.rkt
+TEX += 13/4/smacro.tex
+TEX += 13/4/1/fatt.tex
+SRC += 13/4/1/1.rkt 13/4/1/2.rkt 13/4/1/3.rkt 
+SRC += 13/4/1/4.rkt 13/4/1/5.rkt 13/4/1/6.rkt 
+TEX += 13/4/2/guevl.tex
+SRC += 13/4/2/1.rkt 13/4/2/2.rkt 13/4/2/3.rkt 13/4/2/4.rkt 
+TEX += 13/4/3/hygiene.tex
+SRC += 13/4/3/1.rkt 13/4/3/2.rkt 13/4/3/3.rkt 
+SRC += 13/4/3/4.rkt 13/4/3/5.rkt 
+TEX += 13/5/indent.tex
+SRC += 13/5/1.rkt 13/5/2.rkt 13/5/3.rkt 
+SRC += 13/5/4.rkt 13/5/5.rkt 13/5/6.rkt 
+TEX += 13/6/influ.tex
+TEX += 13/7/otherlangs.tex
+
+TEX += 14/control.tex
+
+TEX += 14/1/onweb.tex
+SRC += 14/1/1.rkt 14/1/2.rkt 
+TEX += 14/1/1/decomp.tex
+SRC += 14/1/1/1.rkt 14/1/1/2.rkt 14/1/1/3.rkt 
+TEX += 14/1/2/partial.tex
+SRC += 14/1/2/1.rkt 14/1/2/2.rkt 14/1/2/3.rkt 14/1/2/4.rkt 
+SRC += 14/1/2/5.rkt 14/1/2/6.rkt 14/1/2/7.rkt 14/1/2/8.rkt 
+TEX += 14/1/3/stateless.tex
+SRC += 14/1/3/1.rkt
+TEX += 14/1/4/interaction.tex
+SRC += 14/1/4/1.rkt 14/1/4/2.rkt 14/1/4/3.rkt 14/1/4/4.rkt
+SRC += 14/1/4/5.rkt 14/1/4/6.rkt 14/1/4/7.rkt 14/1/4/8.rkt
+SRC += 14/1/4/9.rkt 14/1/4/10.rkt
+
+TEX += 14/2/contpass.tex
+TEX += 14/2/1/impl.tex
+SRC += 14/2/1/1.rkt 14/2/1/2.rkt 14/2/1/3.rkt 14/2/1/4.rkt 
+SRC += 14/2/1/5.rkt 14/2/1/6.rkt 14/2/1/7.rkt 14/2/1/8.rkt 
+SRC += 14/2/1/9.rkt 14/2/1/10.rkt 14/2/1/11.rkt 14/2/1/12.rkt 
+SRC += 14/2/1/13.rkt 14/2/1/14.rkt 14/2/1/15.rkt 14/2/1/16.rkt 
+SRC += 14/2/1/7.rkt 14/2/1/18.rkt 
+TEX += 14/2/2/conv.tex
+TEX += 14/2/3/core.tex
+
+TEX += 14/3/gens.tex
+TEX += 14/4/cont.tex
+TEX += 14/5/tailcalls.tex
+TEX += 14/6/contlang.tex
+  
 #MisspelledAnimal = plai.rkt cr
 #MisspelledAnimal += 1/3/p8_1.rkt cr 1/3/p8_4.rkt cr
 #MisspelledAnimal += 1/3/p9_1.rkt cr 1/3/p9_2.rkt

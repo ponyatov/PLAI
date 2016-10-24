@@ -7,7 +7,7 @@ arguments from left to right. It is instructive to divide the program into two
 parts: what happens to generate the first interaction (which can all run now),
 and what needs to happen after it (which must be “remembered” somehow). The
 former is easy:
-\lsts{src/14/1/1/1.rkt}{rkt}
+\lsts{14/1/1/1.rkt}{rkt}
 We’ve already explained in prose what’s left, but now it’s time to write it as a
 program. It seems to be something like
 \note{We’re intentionally
@@ -17,7 +17,7 @@ now, but we’ll
 return to it. For
 now, let’s pretend
 it’s built-in.}
-\lsts{src/14/1/1/2.rkt}{rkt}
+\lsts{14/1/1/2.rkt}{rkt}
 A Web server can’t execute the above, however, because it evidently isn’t a
 program. We instead need some way of writing this as one.
 
@@ -34,4 +34,4 @@ interaction.
 
 Put together these characteristics and we have a clear representation—a
 function:
-\lsts{src/14/1/1/3.rkt}{rkt}
+\lsts{14/1/1/3.rkt}{rkt}

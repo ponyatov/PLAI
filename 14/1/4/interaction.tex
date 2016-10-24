@@ -5,16 +5,16 @@ share the same cookie, but each page has its own hidden fields.
 
 First, let’s consider a sequence of interactions with the existing program that
 uses read-number/suspend (at both interaction points). It looks like this:
-\lsts{src/14/1/4/1.rkt}{rkt}
+\lsts{14/1/4/1.rkt}{rkt}
 Thus, resuming with label 2 appears to represent adding 3 to the given argument
 (i.e., form field value). To be sure,
-\lsts{src/14/1/4/2.rkt}{rkt}
+\lsts{14/1/4/2.rkt}{rkt}
 So far, so good. Now suppose we use label 1 again:
-\lsts{src/14/1/4/3.rkt}{rkt}
+\lsts{14/1/4/3.rkt}{rkt}
 Observe that this new program execution needs to be resumed by using label 3,
 not 1.
 Indeed,
-\lsts{src/14/1/4/4.rkt}{rkt}
+\lsts{14/1/4/4.rkt}{rkt}
 But we ought to ask, what happens if we reuse label 2?
 
 \DoNow{
@@ -23,14 +23,14 @@ Try (resume 2 10).
 
 Doing this is tantamount to resuming the old computation. We therefore expect it
 produce the same answer as before:
-\lsts{src/14/1/4/5.rkt}{rkt}
+\lsts{14/1/4/5.rkt}{rkt}
 
 Now let’s create a stateful implementation. We can simulate this by observing
 that each closure has its own environment, but all closures share the same
 mutable state. We can simulate this using our existing read-number/suspend by
 making sure we don’t rely on the closure behavior of lambda, i.e., by not having
 any free identifiers in the body.
-\lsts{src/14/1/4/6.rkt}{rkt}
+\lsts{14/1/4/6.rkt}{rkt}
 
 \Exercise{
 What do we expect for the same sequence as before?
@@ -41,13 +41,13 @@ What happens?
 }
 
 Initially, nothing seems different:
-\lsts{src/14/1/4/7.rkt}{rkt}
+\lsts{14/1/4/7.rkt}{rkt}
 When we reuse the initial computation, we indeed get a new resumption label:
-\lsts{src/14/1/4/8.rkt}{rkt}
+\lsts{14/1/4/8.rkt}{rkt}
 which, when used, computes what we’d expect:
-\lsts{src/14/1/4/9.rkt}{rkt}
+\lsts{14/1/4/9.rkt}{rkt}
 Now we come to the critical step:
-\lsts{src/14/1/4/10.rkt}{rkt}
+\lsts{14/1/4/10.rkt}{rkt}
 It is unsurprising that the two resumptions of label 2 would produce different
 answers, given that they rely on mutable state. The reason it’s problematic is
 because of what happens when we translate the same behavior to the Web.
