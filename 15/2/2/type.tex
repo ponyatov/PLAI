@@ -1,1 +1,31 @@
 \secrel{15.2.2 Type-Checking Conditionals  139}
+
+Suppose we extend the above language with conditionals. Even the humble if
+introduces several design decisions. We’ll discuss two here, and return to one
+of them later \ref{}.
+\begin{enumerate}
+  \item 
+What should be the type of the test expression? In some languages it must
+evaluate to a boolean value, in which case we have to enrich the type language
+to include booleans (which would probably be a good idea anyway). In other
+languages it can be any value, and some values are considered “truthy” while
+others “falsy”.
+  \item 
+What should be the relationship between the then- and else-branches? In some
+languages they must be of the same type, so that there is a single, unambiguous
+type for the overall expression (which is that one type). In other languages the
+two branches can have distinct types, which greatly changes the design of the
+type-language and -checker, but also of the nature of the programming language
+itself.
+\end{enumerate}
+
+\Exercise{
+Add booleans to the type language. What does this entail at a minimum, and what
+else might be expected in a typical language?
+}
+
+\Exercise{
+Add a type rule for conditionals, where the test expression is expected to
+evaluate to a boolean and both then- and else-branches must have the same type,
+which is the type of the overall expression.
+}
