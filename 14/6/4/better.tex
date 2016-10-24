@@ -1,1 +1,6 @@
 \secrel{14.6.4 Better Primitives for Web Programming  131}
+
+Finally, to tie the knot back to where we began, let’s return to read-number:
+observe that, if the language running the server program has call/cc, instead of
+having to CPS the entire program, we can simply capture the current continuation
+and save it in the hash table, leaving the program structure again intact.
