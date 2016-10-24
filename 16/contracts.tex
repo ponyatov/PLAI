@@ -1,12 +1,34 @@
 \secrel{16 Checking Program Invariants Dynamically: Contracts 179}\secdown
-\secrel{16.1 Contracts as Predicates   . 181}
-\secrel{16.2 Tags, Types, and Observations on Values  . 182}
-\secrel{16.3 Higher-Order Contracts   . 183}
-\secrel{16.4 Syntactic Convenience   . 187}
-\secrel{16.5 Extending to Compound Data Structures  . 188}
-\secrel{16.6 More on Contracts and Observations  189}
-\secrel{16.7 Contracts and Mutation   . 189}
-\secrel{16.8 Combining Contracts   . . 190}
-\secrel{16.9 Blame   . 191}
+
+Type systems offer rich and valuable ways to represent program invariants.
+However, they also represent an important trade-off, because not all non-trivial
+properties of programs can be verified statically. Furthermore, even if we can
+devise a method to settle a certain property statically, the burdens of
+annotation and computational complexity may be too great. Thus, it is inevitable
+that some of the properties we care about must either be ignored or settled only
+at run-time. Here, we will discuss run-time enforcement.
+\note{This is a formal property, known as
+\href{https://en.wikipedia.org/wiki/Rice's_theorem}{Rice’s Theorem}.}
+
+Virtually every programming language has some form of assertion mechanism that
+enables programmers to write properties that are richer than the language’s
+static type system permits. In languages without static types, these properties
+might start with simple type-like assertions: whether a parameter is numeric,
+for instance. However, the language of assertions is often the entire
+programming language, so any predicate can be used as an assertion: for
+instance, an implementation of a cryptography package might want to ensure
+certain parameters pass a primality test, or a balanced binary search-tree might
+want to ensure that its subtrees are indeed balanced and preserve the
+search-tree ordering.
+
+\input{16/1/contrpred}
+\input{16/2/tags}
+\input{16/3/highord}
+\input{16/4/conv}
+\input{16/5/extn}
+\input{16/6/more}
+\input{16/7/contracts}
+\input{16/8/combine}
+\input{16/9/blame}
 \secup
 

@@ -327,6 +327,15 @@ TEX += 15/3/8/objtype.tex
 SRC += 15/3/8/1.rkt 15/3/8/2.rkt 15/3/8/3.rkt
 
 TEX += 16/contracts.tex
+TEX += 16/1/contrpred.tex
+TEX += 16/2/tags.tex
+TEX += 16/3/highord.tex
+TEX += 16/4/conv.tex
+TEX += 16/5/extn.tex
+TEX += 16/6/more.tex
+TEX += 16/7/contracts.tex
+TEX += 16/8/combine.tex
+TEX += 16/9/blame.tex
 
 TEX += 17/alter.tex
 
