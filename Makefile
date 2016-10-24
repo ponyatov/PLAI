@@ -259,6 +259,7 @@ SRC += 14/6/5.rkt 14/6/6.rkt 14/6/7.rkt
 TEX += 14/6/1/present.tex
 SRC += 14/6/1/1.rkt 14/6/1/2.rkt
 TEX += 14/6/2/gens.tex
+SRC += 14/6/2/1.rkt 14/6/2/2.rkt 14/6/2/3.rkt 14/6/2/4.rkt 14/6/2/5.rkt 
 TEX += 14/6/3/threads.tex
 TEX += 14/6/4/better.tex
 

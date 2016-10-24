@@ -1,1 +1,40 @@
 \secrel{14.6.2 Defining Generators  . 126}
+
+Now we can start to create interesting abstractions. For instance, let’s build
+generators. Whereas previously we needed to both CPS expressions and pass around
+continuations, now this is done for us automatically by call/cc. Therefore,
+whenever we need the current continuation, we simply conjure it up without
+having to transform the program. Thus the extra ...-k parameters can disappear
+with a let/cc in the same place to capture the same continuation:
+\lsts{14/6/2/1.rkt}{rkt}
+
+Observe the close similarity between this code and the implementation of
+generators by desugaring into CPS code. Specifically, we can drop the extra
+continuation arguments, and replace them with invocations of let/cc that will
+capture precisely the same continuations. The rest of the code is fundamentally
+unchanged.
+
+\Exercise{
+What happens if we move the let/ccs and mutation to be the first statement
+inside the begins instead?
+}
+
+We can, for instance, write a generator that iterates from the initial value
+upward:
+\lsts{14/6/2/2.rkt}{rkt}
+whose behavior is:
+\lst{14/6/2/3.rkt}
+Because the body refers only to the initial value, ignoring that returned by
+invoking yield, the values we pass on subsequent invocations are irrelevant. In
+contrast, consider this generator:
+\lsts{14/6/2/4.rkt}{rkt}
+On its first invocation, it returns whatever value it was supplied. On
+subsequent invocations, this value is added to that provided on re-entry into
+the generator. In other words, this generator additively accumulates all values
+given to it:
+\lst{14/6/2/5.rkt}
+
+\Exercise{
+Now that you’ve seen how to implement generators using call/cc and let/cc,
+implement coroutines and threads as well.
+}
