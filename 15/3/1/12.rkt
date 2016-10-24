@@ -1,0 +1,1 @@
+(define id_num (lambda ([x : number]) : number x))

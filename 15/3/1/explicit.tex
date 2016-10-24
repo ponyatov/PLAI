@@ -1,1 +1,280 @@
 \secrel{15.3.1 Explicit Parametric Polymorphism  148}
+
+Which of these is the same?
+\begin{itemize}[nosep]
+  \item 
+\verb|List<String>|
+  \item 
+\verb|List<String>|
+  \item 
+\verb|(listof string)|
+\end{itemize}
+
+Actually, none of these is quite the same. But the first and third are very
+alike, because the first is in Java and the third in our typed language, whereas
+the second, in C++, is different. All clear? No? Good, read on!
+
+\secdown
+
+\secrel{Parameterized Types}
+
+The language we have been programming in already demonstrates the value of
+parametric polymorphism. For instance, the type of map is given as
+\lsts{15/3/1/1.rkt}{rkt}
+which says that for all types 'a and 'b, map consumes a function that generates
+'b values from 'a values, and a list of 'a values, and generates the
+corresponding list of 'b values. Here, 'a and 'b are not concrete types; rather,
+they are type variables (in our terminology, these should properly be called
+“type identifiers” because they don’t change within the course of an
+instantiation; however, we will stick to the traditional terminology).
+
+A different way to understand this is that there is actually an infinite family
+of map functions. For instance, there is a map that has this type:
+\lsts{15/3/1/2.rkt}{rkt}
+and another one of this type (nothing says the types have to be base types):
+\lsts{15/3/1/3.rkt}{rkt}
+and yet another one of this type (nothing says 'a and 'b can’t be the same):
+\lsts{15/3/1/4.rkt}{rkt}
+and so on. Because they have different types, they would need different names:
+% map_num_str, map_num_num-\>num, map_str_str, and so on. But that would make them
+different functions, so we’d have to always refer to a specific map rather than
+each of the generic ones.
+
+Obviously, it is impossible to load all these functions into our standard
+library: there’s an infinite number of these! We’d rather have a way to obtain
+each of these functions on demand. Our naming convention offers a hint: it is as
+if map takes two parameters, which are types. Given the pair of types as
+arguments, we can then obtain a map that is customized to that particular type.
+This kind of parameterization over types is called parametric polymorphism.
+\note{Not to be confused with the “polymorphism” of objects, which we will
+discuss below \ref{}.}
+
+\secrel{Making Parameters Explicit}
+
+In other words, we’re effectively saying that map is actually a function of
+perhaps four arguments, two of them types and two of them actual values (a
+function and a list). In a language with explicit types, we might try to write
+\lsts{15/3/1/5.rkt}{rkt}
+but this raises some questions. First, what goes in place of the ???? These are
+the types of a and b. But if a and b are themselves going to be replaced with
+types, then what is the type of a type? Second, do we really want to be calling
+map with four arguments on every instantiation? Third, do we really mean to take
+the type parameters first before any actual values? The answers to these
+questions actually lead to a very rich space of polymorphic type systems, most
+of which we will not explore here.
+\note{I recommend reading Pierce’s Types and Programming Languages for a modern,
+accessible introduction.}
+
+Observe that once we start parameterizing, more code than we expect ends up
+being parameterized. For instance, consider the type of the humble cons. Its
+type really is parametric over the type of values in the list (even though it
+doesn’t actually depend on those values!—more on that in a bit \ref{}) so every
+use of cons must be instantiated at the appropriate type. For that matter, even
+empty must be instantiated to create an empty list of the correct type! Of
+course, Java and C++ programmers are familiar with this pain.
+
+\secrel{Rank-1 Polymorphism}
+
+Instead, we will limit ourselves to one particularly useful and tractable point
+in this space, which is the type system of Standard ML, of the typed language of
+this book, of earlier versions of Haskell, roughly that of Java and C\# with
+generics, and roughly that obtained using templates in C++. This language
+defines what is called predicative, rank-1, or prenex polymorphism. It answers
+the above questions thus: nothing, no, and yes. Let’s explore this below.
+
+We first divide the world of types into two groups. The first group consists of
+the type language we’ve used until, but extended to include type variables;
+these are called monotypes. The second group, known as polytypes, consists of
+parameterized types; these are conventionally written with a 8 prefix, a list of
+type variables, and then a type expression that might use these variables. Thus,
+the type of map would be:
+\lsts{15/3/1/6.rkt}{rkt}
+Since “8” is the logic symbol for “for all”, you would read this as: “for all
+types 'a and 'b, the type of map is...”.
+
+In rank-1 polymorphism, the type variables can only be substituted with
+monotypes. (Furthermore, these can only be concrete types, because there would
+be nothing left to substitute any remaining type variables.) As a result, we
+obtain a clear separation between the type variable-parameters and regular
+parameters. We don’t need to provide a “type annotation” for the type variables
+because we know precisely what kind of thing they can be. This produces a
+relatively clean language that still offers considerable expressive power.
+\note{Impredicative languages erase the distinction between monotypes and
+polytypes, so a type variable can be instantiated with another polymorphic
+type.}
+
+Observe that because type variables can only be replaced with monotypes, they
+are all independent of each other. As a result, all type parameters can be
+brought to the front of the parameter list. This is what enables us to write
+types in the form 8 tv, ... : t where the tv are type variables and t is a
+monotype (that might refer to those variables). This justifies not only the
+syntax but also the name “prenex”. It will prove to also be useful in the
+implementation.
+
+\secrel{Interpreting Rank-1 Polymorphism as Desugaring}
+
+The simplest implementation of this feature is to view it as a form of
+desugaring: this is essentially the interpretation taken by C++. (Put
+differently, because C++ has a macro system in the form of templates, by a happy
+accident it obtains a form of rank-1 polymorphism through the use of templates.)
+For instance, imagine we had a new syntactic form, define-poly, which takes a
+name, a type variable, and a body. On every provision of a type to the name, it
+replaces the type variable with the given type in the body. Thus:
+\lsts{15/3/1/7.rkt}{rkt}
+defines an identity function by first defining id to be polymorphic: given a
+concrete type for t, it yields a procedure of one argument of type (t -> t)
+(where t is appropriately substituted). Thus we can instantiate id at many
+different types—
+\lsts{15/3/1/8.rkt}{rkt}
+% —thereby obtaining identity functions at each of those types: (test (id_num 5)
+% 5) (test (id_str "x") "x") In contrast, expressions like (id_num "x") (id_str 5)
+will, as we would expect, fail to type-check (rather than fail at run-time).
+
+In case you’re curious, here’s the implementation. For simplicity, we assume
+there is only one type parameter; this is easy to generalize using .... We will
+not only define a macro for define-poly, it will in turn define a macro:
+\lsts{15/3/1/9.rkt}{rkt}
+Thus, given a definition such as
+\lsts{15/3/1/10.rkt}{rkt}
+the language creates a macro named id: the part that begins with (define-syntax
+(name ...) ...) (where, in this example, name is id). An instantiation of id,
+such the language creates a macro named id: the part that begins with
+(define-syntax (name ...) ...) (where, in this example, name is id). An
+instantiation of id, such
+\lsts{15/3/1/11.rkt}{rkt}
+turns into
+\lsts{15/3/1/12.rkt}{rkt}
+
+However, this approach has two important limitations.
+\begin{enumerate}
+  \item 
+Let’s try to define a recursive polymorphic function, such as filter. Earlier we
+have said that we ought to instantiate every single polymorphic value (such as
+even cons and empty) with types, but to keep our code concise we’ll rely on the
+fact that the underlying typed language already does this, and focus just on
+type parameters for filter. Here’s the code:
+\lsts{15/3/1/13.rkt}{rkt}
+
+Observe that at the recursive uses of filter, we must instantiate it with the
+appropriate type.
+
+This is a perfectly good definition. There’s just one problem. When we try to
+use it—e.g.,
+\lsts{15/3/1/14.rkt}{rkt}
+DrRacket does not terminate. Specifically, macro expansion does not terminate,
+because it is repeatedly trying to make new copies of the code of filter. If, in
+contrast, we write the function as follows, expansion terminates—
+\lsts{15/3/1/15.rkt}{rkt}
+but this needlessly pushes pain onto the user. Indeed, some template expanders
+will cache previous values of expansion and avoid re-generating code when given
+the same parameters. (Racket cannot do this because, in general, the body of
+a macro can depend on mutable variables and values and even perform inputoutput,
+so Racket cannot guarantee that a given input will always generate the
+same output.)
+
+  \item 
+% Consider two instantiations of the identity function. We cannot compare id_num
+% and id_str because they are of different types, but even if they are of the same
+type, they are not eq?:
+\lsts{15/3/1/16.rkt}{rkt}
+This is because each use of id creates a new copy of the body. Now even if the
+optimization we mentioned above were applied, so for the same type there is only
+one code body, there would still be different code bodies for different
+types—but even this is unnecessary! There’s absolutely nothing in the body of
+id, for instance, that actually depends on the type of the argument. Indeed, the
+entire infinite family of id functions can share just one implementation. The
+simple desugaring strategy fails to provide this.
+\note{Indeed, C++ templates are notorious for creating code bloat; this is one
+of the reasons.}
+
+\end{enumerate}
+
+In other words, the desugaring based strategy, which is essentially an
+implementation by substitution, has largely the same problems we saw earlier
+with regards to substitution as an implementation of parameter instantiation.
+However, in other cases substitution also gives us a ground truth for what we
+expect as the program’s behavior. The same will be true with polymorphism, as we
+will soon see \ref{}.
+
+Observe that one virtue to the desugaring strategy is that it does not require
+our type checker to “know” about polymorphism. Rather, the core type language
+can continue to be monomorphic, and all the (rank-1) polymorphism is handled
+entirely through expansion. This offers a cheap strategy for adding polymorphism
+to a language, though—as C++ shows—it also introduces significant overheads.
+
+Finally, though we have only focused on functions, the preceding discussions
+applies equally well to data structures.
+
+\secrel{Alternate Implementations}
+
+There are other implementation strategies that don’t suffer from these problems.
+We won’t go into them here, but the essence of at least some of them is the
+“caching” approach we sketched above. Because we can be certain that, for a
+given set of type parameters, we will always get the same typed body, we never
+need to instantiate a polymorphic function at the same type twice. This avoids
+the infinite loop. If we typecheck the instantiated body once, we can avoid
+checking at other instantiations of the same type (because the body will not
+have changed). Furthermore, we do not need to retain the instantiated sources:
+once we have checked the expanded program, we can dispose of the expanded terms
+and retain just one copy at run-time. This avoids all the problems discussed in
+the pure desugaring strategy shown above, while retaining the benefits.
+
+Actually, we are being a little too glib. One of the benefits of static types is
+that they enable us to pick more precise run-time representations. For instance,
+a static type can tell us whether we have a 32-bit or 64-bit number, or for that
+matter a 32-bit value or a 1-bit value (effectively, a boolean). A compiler can
+then generate specialized code for each representation, taking advantage of how
+the bits are laid out (for example, 32 booleans can be packed into a single
+32-bit word). Thus, after type-checking at each used type, the polymorphic
+instantiator may keep track of all the special types at which a function or data
+structure was used, and provide this information to the compiler for
+code-generation. This will then result in several copies of the function, none
+of which are eq? with each other—but for good reason and, because their
+operations are truly different, rightly so.
+
+\secrel{Relational Parametricity}
+
+There’s one last detail we must address regarding polymorphism.
+
+We earlier said that a function like cons doesn’t depend on the specific values
+of its arguments. This is also true of map, filter, and so on. When map and
+filter want to operate on individual elements, they take as a parameter another
+function which in turn is responsible for making decisions about how to treat
+the elements; map and filter themselves simply obey their parameter functions.
+
+One way to “test” whether this is true is to substitute some different values in
+the argument list, and a correspondingly different parameter function. That is,
+imagine we have a relation between two sets of values; we convert the list
+elements according to the relation, and the parameter function as well. The
+question is, will the output from map and filter also be predictable by the
+relation? If, for some input, this was not true of the output of map, then it
+must be that map inspected the actual values and did something with that
+information. But in fact this won’t happen for map, or indeed most of the
+standard polymorphic functions.
+
+Functions that obey this relational rule are called relationally parametric.
+This is another very powerful property that types give us, because they tell us
+there is a strong limit on the kinds of operations such polymorphic functions
+can perform: essentially, that they can drop, duplicate, and rearrange elements,
+but not directly inspect and make decisions on them.
+\note{Read Wadler’s Theorems for Free! and Reynolds’s Types, Abstraction and
+Parametric Polymorphism.}
+
+At first this sounds very impressive (and it is!), but on inspection you might
+realize this doesn’t square with your experience. In Java, for instance, a
+polymorphic method can still use instanceof to check which particular kind of
+value it obtained at run-time, and change its behavior accordingly. Such a
+method would indeed not be relationally parametric! Indeed, relational
+parametricity can equally be viewed as a statement of the weakness of the
+language: that it permits only a very limited set of operations.
+(You could still inspect the type—but not act upon what you learned, which makes
+the inspection pointless. Therefore, a run-time system that wants to simulate
+relational parametricity would have to remove operations like instanceof as well
+as various proxies to it: for instance, adding 1 to a value and catching
+exceptions would reveal whether the value is a number.) Nevertheless, it is a
+very elegant and surprising result, and shows the power of program reasoning
+possible with rich type systems.
+\note{On the Web, you will often find this property described as the inability
+of a function to inspect the argument—which is not quite right.}
+
+\secup

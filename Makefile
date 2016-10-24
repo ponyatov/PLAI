@@ -288,6 +288,10 @@ TEX += 15/2/7/central.tex
 
 TEX += 15/3/exts.tex
 TEX += 15/3/1/explicit.tex
+SRC += 15/3/1/1.rkt 15/3/1/2.rkt 15/3/1/3.rkt 15/3/1/4.rkt
+SRC += 15/3/1/5.rkt 15/3/1/6.rkt 15/3/1/7.rkt 15/3/1/8.rkt
+SRC += 15/3/1/9.rkt 15/3/1/10.rkt 15/3/1/11.rkt 15/3/1/12.rkt
+SRC += 15/3/1/13.rkt 15/3/1/14.rkt 15/3/1/15.rkt 15/3/1/16.rkt
 TEX += 15/3/2/infer.tex
 TEX += 15/3/3/union.tex
 TEX += 15/3/4/nominal.tex
