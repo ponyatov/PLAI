@@ -261,6 +261,8 @@ SRC += 14/6/1/1.rkt 14/6/1/2.rkt
 TEX += 14/6/2/gens.tex
 SRC += 14/6/2/1.rkt 14/6/2/2.rkt 14/6/2/3.rkt 14/6/2/4.rkt 14/6/2/5.rkt 
 TEX += 14/6/3/threads.tex
+SRC += 14/6/3/1.rkt 14/6/3/2.rkt 14/6/3/3.rkt 14/6/3/4.rkt 14/6/3/5.rkt 
+SRC += 14/6/3/6.rkt 14/6/3/7.rkt 14/6/3/8.rkt 14/6/3/9.rkt 14/6/3/10.rkt 
 TEX += 14/6/4/better.tex
 
 TEX += 15/invar.tex

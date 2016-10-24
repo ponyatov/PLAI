@@ -1,1 +1,91 @@
 \secrel{14.6.3 Defining Threads   127}
+
+Having done generators, let’s do another, similar primitive: threads. That is,
+let’s assume we want to be able to write a program such as this:
+\lsts{14/6/3/1.rkt}{rkt}
+and expect the output
+\lst{14/6/3/2.rkt}
+We’ll build all the pieces necessary to achieve this.
+
+Let’s start by defining the thread scheduler. It consumes a list of “threads”,
+whose interface we assume will be a procedure that consumes a continuation to
+which it eventually yields control. Each time the scheduler reactivates the
+thread, it supplies it with a continuation. The scheduler might be choose
+between threads in a simple round-robin manner, or it might use some more
+complex algorithm; the details of how it chooses don’t concern us here.
+
+As with generators, we’ll assume that yielding is done by invoking a procedure
+named by the user: y, above. We could use name capture \ref{}\ to automatically
+bind a name like yield.
+
+More importantly, notice that the user of the thread system manually yields
+control. This is called cooperative multitasking. Instead, we could have chosen
+to have a timer or other intrinsic mechanism automtically yield without the
+user’s permission; this is called preemptive multitasking (because the system
+“pre-empts”—i.e., wrests control from—the thread). While the distinction is
+important for buildling systems, it is not interesting from the perspective of
+setting up the continuations.
+
+\Exercise{
+After we are done building cooperative multitasking, implement preemptive
+multitasking. What changes?
+}
+
+With our stated constraints, we can write a first scheduler. It consumes a lists
+of threads and continues executing so long as there are threads remaining. Each
+time, it applies the thread procedure to a continuation that represents
+returning to the scheduler and proceeding to the next thread:
+\lsts{14/6/3/3.rkt}{rkt}
+When the recipient thread invokes the continuation bound to after-thread,
+control returns to the end of the first statement in the begin sequence. As a
+result, the value supplied to the continuation is ignored (and can hence be any
+dummy value; we’ll chose 'dummy, so that we can easily spot it if it shows up in
+undesired places). Control then proceeds with the rest of the scheduler loop
+after appending the most recently invoked thread to the end of the list of
+threads (i.e., treating the list as a circular queue).
+
+Now let’s define a thread. As we’ve said, it will be a procedure of one
+argument, the scheduler’s continuation. Because the thread needs to resume,
+i.e., continue where it left off, presumably it must store where it last was:
+we’ll call this thread-resumer. Initially this is the entire thread body, but on
+subsequent instances it will be a continuation: specifically, the continuation
+of invoking yield. Thus, we obtain the following skeleton:
+\lsts{14/6/3/4.rkt}{rkt}
+That still leaves the yielder. It needs to be a procedure of no arguments that
+stores the thread’s continuation in thread-resumer, and then invoke the
+scheduler continuation with 'dummy. However, which scheduler continuation does
+it need to invoke? Not the one provided on thread initiation, but rather the
+most recent one. Thus, we must somehow “thread” the value in sched-k to the
+yielder. There are many ways to accomplish it, but the simplest, perhaps most
+brutal, way is to simply reconstruct the yielder on each thread resumption,
+always closed over the most recent value of sched-k:
+\lsts{14/6/3/5.rkt}{rkt}
+When we run this ensemble, we get:
+\lst{14/6/3/6.rkt}
+Hey, that’s what we wanted! But it continues:
+\lst{14/6/3/7.rkt}
+Hmmm.
+
+What’s happening? Well, we’ve been quiet all along about what needs to happen
+when a thread reaches its end. In fact, control just returns to the thread
+scheduler, which appends the thread to the end of the queue, and when the thread
+comes to the head of the queue again, control resumes from the same previously
+stored continuation: the one corresponding to printing the third value. This
+prints, control returns, the thread is appended...ad infinitum.
+
+Clearly, we need the thread scheduler to be notified when a thread has
+terminated, so that the scheduler can remove it from the thread queue. We’ll
+create a simple datatype to represent this signal:
+\lsts{14/6/3/8.rkt}{rkt}
+(In a real system, of course, these status messages might also carry informative
+values from the computation.) We must now modify our scheduler to actually check
+for and use these values:
+\lsts{14/6/3/9.rkt}{rkt}
+We have to now modify our thread representation in two ways: it must provide
+Tsus- pended to the scheduler’s continuation on intermediate returns, and
+provide Tdone when it terminates. Where does it terminate? After executing the
+code in the body, b .... Observe, finally, that the termination process must be
+sure to use the latest scheduler continuation, just as yielding does. Thus:
+\lsts{14/6/3/10.rkt}{rkt}
+If we now replace scheduler-loop-0 with scheduler-loop-1 and thread-0 with
+thread-1 and re-run our example program above, we get just the output we desire.
