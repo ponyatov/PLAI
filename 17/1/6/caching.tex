@@ -1,1 +1,14 @@
-\secrel{17.1.6 Caching Computation . . . . . . . . . . . . . . . . . . . . . 201}
+\secrel{17.1.6 Caching Computation . 201}
+
+Now that we’ve concluded that lazy computation has to have no mutations, we
+observe a pleasant consequence (dare we say, side-effect?): given a fixed an
+environment, an expression always produces the same answer. As a result, the
+run-time system can cache the value of an expression when it is first forced to
+an answer by strictness, and return this cached value on subsequent attempts to
+compute it. Of course, this caching—which is a form of memoization—is only sound
+when the expression returns the same value every time, which we have assumed. In
+fact, the compiler and runtime system can aggressively hunt for uses of the same
+expression in different parts of the program and, if the relevant parts of their
+environment are the same, conflate their evaluation. The strategy of evaluating
+the suspended computation every time it is needed is called call-by-name; that
+of caching its result, call-by-need.
