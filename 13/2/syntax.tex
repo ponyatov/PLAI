@@ -49,7 +49,7 @@ With that prelude, let’s now introduce syntax-case. We’ll begin by simply
 rewriting my-let-1 (under the name my-let-3) using this new notation. First, we
 have to write a header for the definition; notice already the explicit
 parameter:
-\lsts{src/13/2/1.rkt}{rkt}
+\lsts{13/2/1.rkt}{rkt}
 
 This binds x to the entire (my-let-3 ...) expression.
 
@@ -58,13 +58,13 @@ new macro. It does not pick precisely how you want to implement it, leaving you
 free to use any mechanism that’s convenient. Earlier we used syntax-rules; now
 we’re going to use syntax-case. In particular, syntax-case needs to explicitly
 be given access to the expression to pattern-match:
-\lsts{src/13/2/2.rkt}{rkt}
+\lsts{13/2/2.rkt}{rkt}
 
 Now we’re ready to express the rewrite we wanted. Previously a rewriting rule
 had two parts: the structure of the input and the corresponding output. The same
 holds here. The first (matching the input) is the same as before, but the second
 (the output) is a little different:
-\lsts{src/13/2/3.rkt}{rkt}
+\lsts{13/2/3.rkt}{rkt}
 
 Observe the crucial extra characters: \#'. Let’s examine what that means.
 

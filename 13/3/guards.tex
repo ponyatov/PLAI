@@ -17,9 +17,9 @@ Hopefully you stumbled on a subtlety: the argument to identifier? is of type
 syntax. It needs to refer to the actual fragment of syntax bound to var. Recall
 that var is bound in the syntax space, and \#' substitutes identifiers bound
 there. Therefore, the correct way to write the guard is:
-\lsts{src/13/3/1.rkt}{rkt}
+\lsts{13/3/1.rkt}{rkt}
 With this information, we can now write the entire rule:
-\lsts{src/13/3/2.rkt}{rkt}
+\lsts{13/3/2.rkt}{rkt}
 
 \DoNow{
 Now that you have a guarded rule definition, try to use the macro with a

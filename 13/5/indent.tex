@@ -3,11 +3,11 @@
 Hygienic macros address a routine and important pain that creators of syntactic
 sugar confront. On rare instances, however, a developer wants to intentionally
 break hygiene. Returning to objects, consider this input program:
-\lsts{src/13/5/1.rkt}{rkt}
+\lsts{13/5/1.rkt}{rkt}
 What does the macro look like? Here’s an obvious candidate:
-\lsts{src/13/5/2.rkt}{rkt}
+\lsts{13/5/2.rkt}{rkt}
 Unfortunately, this macro produces the following error:
-\lst{src/13/5/2.err}
+\lst{13/5/2.err}
 which is referring to the self in the body of the method bound to first.
 
 \Exercise{
@@ -17,9 +17,9 @@ expected outcome.
 
 Before we jump to the richer macro, let’s consider a variant of the input term
 that makes the binding explicit:
-\lsts{src/13/5/3.rkt}{rkt}
+\lsts{13/5/3.rkt}{rkt}
 The corresponding macro is a small variation on what we had before:
-\lsts{src/13/5/4.rkt}{rkt}
+\lsts{13/5/4.rkt}{rkt}
 This macro expands without difficulty.
 
 \Exercise{
@@ -34,7 +34,7 @@ second argument; its first argument is which syntax to pretend it was a part of
 (in our case, the original macro use, which is bound to x). To introduce the
 result into the environment used for expansion, we use with-syntax to bind it in
 that environment:
-\lsts{src/13/5/5.rkt}{rkt}
+\lsts{13/5/5.rkt}{rkt}
 
 With this, we can go back to having self be implicit:
-\lsts{src/13/5/6.rkt}{rkt}
+\lsts{13/5/6.rkt}{rkt}
