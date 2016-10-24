@@ -1,1 +1,20 @@
-\secrel{17.1.5 Laziness and Mutation . . . . . . . . . . . . . . . . . . . . . 201}
+\secrel{17.1.5 Laziness and Mutation . 201}
+
+One of the virtues of lazy evaluation is that it defers execution. Usually this
+is a good thing: it enables us to build infinite data structures and avoids
+computation until necessary. Unfortunately, it also changes when computations
+occur, and in particular, changes the order of when computations evaluate
+relative to each other, depending on what strictness points are encountered
+when. As a result, programmers greatly lose predictability of ordering. This is
+of course a problem when expressions perform mutation operations, because now it
+becomes extremely difficult to predict what value a program will compute
+(relative to the eager version).
+
+As a result, the core of every lazy language is free of mutation. In Haskell,
+mutation and other state operations are introduced through a variety of
+mechanisms such as monads and arrows that ultimately introduce the ability to
+(strictly) sequentialize code; this sequentiality is essential to being able to
+predict the order of execution and thus the result of operations. If programs
+are structured well the number of these dependencies should be small;
+furthermore, the Haskell type system attempts to reflect these operations in the
+types themselves, so programmers can more easily about their effects.

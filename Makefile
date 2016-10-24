@@ -363,6 +363,8 @@ SRC += 17/1/2/1.rkt 17/1/2/2.rkt 17/1/2/3.rkt 17/1/2/4.rkt
 TEX += 17/1/3/eval.tex
 SRC += 17/1/3/1.rkt
 TEX += 17/1/4/interp.tex
+SRC += 17/1/4/1.rkt 17/1/4/2.rkt 17/1/4/3.rkt
+SRC += 17/1/4/4.rkt 17/1/4/5.rkt 17/1/4/6.rkt 
 TEX += 17/1/5/muta.tex
 TEX += 17/1/6/caching.tex
 
