@@ -1,1 +1,52 @@
-\secrel{17.1.4 An Interpreter . . . . . . . . . . . . . . . . . . . . . . . . . . 199}
+\secrel{17.1.4 An Interpreter 199}
+
+As usual, we will define the interpreter in cases.
+\lsts{17/1/4/1.rkt}{rkt}
+
+Numbers are easy: they are already values, so there is no point needlessly
+suspending them:
+\lsts{17/1/4/2.rkt}{rkt}
+
+Closures, similarly, remain the same:
+\lsts{17/1/4/3.rkt}{rkt}
+
+Identifiers should just return whatever they are bound to:
+\lsts{17/1/4/4.rkt}{rkt}
+
+The arguments of arithmetic expressions are usually defined as strictness
+points, because otherwise we would simply have to implement the actual
+arithmetic elsewhere:
+\lsts{17/1/4/5.rkt}{rkt}
+
+Finally, we have application. Here, instead of evaluating the argument position,
+we suspend it. The function position has to be a strictness point, however,
+otherwise we wouldn’t know what function to apply and hence how to continue the
+computation:
+\lsts{17/1/4/6.rkt}{rkt}
+
+And that’s it! By adding a new kind of answer, inserting a few calls to strict,
+and replacing interp with suspendV in the argument position of application, we
+have turned our eager application interpreter into one with lazy application.
+Yet this small change has such enormous impact on the programs we write! For a
+more thorough examination of this impact, study Haskell or the \#lang lazy
+language in Racket.
+
+\Exercise{
+If we instead replace the identifier case with (strict (lookup n env)) (i.e.,
+wrapped strict around the result of looking up an identifier), what impact would
+it have on the language? Consider richer languages with data structures, etc.
+}
+
+\Exercise{
+Construct programs that produce different results in a lazy evaluation than an
+eager evaluation (i.e., the same program text with different answers in the two
+cases). Try to make the differences interesting, i.e., beyond whether one
+returns a suspendV while the other doesn’t. For instance, does one terminate or
+produce an error while the other one doesn’t?
+}
+
+\Exercise{
+Instrument both interpreters to count the number of steps they take to return
+answers. For programs that produce the same answer under both evaluation
+strategies, does one strategy always take more steps than the other?
+}
