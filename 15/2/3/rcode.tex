@@ -1,1 +1,138 @@
 \secrel{15.2.3 Recursion in Code  . . 139}
+
+Now that we’ve obtained a basic programming language, let’s add recursion to it.
+We saw earlier \ref{}\ that this could be done easily through desugaring. It’ll
+prove to be a more complex story here.
+
+\secdown
+\secrel{A First Attempt at Typing Recursion}
+
+Let’s now try to express a simple recursive function. The simplest is, of
+course, one that loops forever. Can we write an infinite loop with just
+functions? We already could simply with this program\ ---
+\lsts{15/2/3/1.rkt}{rkt}
+--- which we know we can represent in our language with functions as values.
+
+\Exercise{
+Why does this construct an infinite loop? What subtle dependency is it
+making about the nature of function calls?
+}
+
+Now that we have a typed language, and one that forces us to annotate all
+functions, let’s annotate it. For simplicity, from now on we’ll assume we’re
+writing programs in a typed surface syntax, and that desugaring takes care of
+constructing core language terms.
+
+Observe, first, that we have two identical terms being applied to each other.
+Historically, the overall term is called (capital omega in Greek) and each of
+the identical sub-terms is called ! (lower-case omega in Greek). It is not a
+given that identical terms must have precisely the same type, because it depends
+on what invariants we want to assert of the context of use. In this case,
+however, observe that x binds to !, so the second ! goes into both the first and
+second positions. As a result, typing one effectively types both.
+
+Therefore, let’s try to type !; let’s call this type 
+. It’s clearly a function type, and
+the function takes one argument, so it must be of the form. Now what is
+% that argument? It’s ! itself. That is, the type of the value going into  is itself 
+% . Thus, the
+% type of ! is 
+% , which is  ->  , which expands into ( ->  ) ->  , which further
+% expands to (( ->  ) ->  ) ->  , and so on. In other words, this type cannot be
+written as any finite string!
+
+\DoNow{
+Did you notice the subtle but important leap we just made?
+}
+
+\secrel{Program Termination}
+
+We observed that the obvious typing of , which entails typing , seems to run
+into serious problems. From that, however, we jumped to the conclusion that this
+type cannot be written as any finite string, for which we’ve given only an
+intuition, not a proof. In fact, something even stranger is true: in the type
+system we’ve defined so far, we cannot type at all!
+ 
+This is a strong statement, but we can actually say something much stronger. The
+typed language we have so far has a property called strong normalization: every
+expression that has a type will terminate computation after a finite number of
+steps. In other words, this special (and peculiar) infinite loop program isn’t
+the only one we can’t type; we can’t type any infinite loop (or even potential
+infinite loop). A rough intuition that might help is that any type—which must be
+a finite string—can have only a finite number of ->’s in it, and each
+application discharges one, so we can perform only a finite number of
+applications.
+
+If our language permitted only straight-line programs, this would be
+unsurprising. However, we have conditionals and even functions being passed
+around as values, and with those we can encode any datatype we want. Yet, we
+still get this guarantee! That makes this a somewhat astonishing result.
+
+\Exercise{
+Try to encode lists using functions in the untyped and then in the typed
+language. What do you see? And what does that tell you about the impact of this
+type system on the encoding?
+}
+
+This result also says something deeper. It shows that, contrary to what you may
+believe—that a type system only prevents a few buggy programs from running—a
+type system can change the semantics of a language. Whereas previously we could
+write an infinite loop in just one to two lines, now we cannot write one at all.
+It also shows that the type system can establish invariants not just about a
+particular program, but about the language itself. If we want to absolutely
+ensure that a program will terminate, we simply need to write it in this
+language and pass the type checker, and the guarantee is ours!
+
+What possible use is a language in which all programs terminate? For
+generalpurpose programming, none, of course. But in many specialized domains,
+it’s a tremendously useful guarantee to have. For instance, suppose you are
+implementing a complex scheduling algorithm; you would like to know that your
+scheduler is guaranteed to terminate so that the tasks being scheduled will
+actually run. There are many other domains, too, where we would benefit from
+such a guarantee: a packet-filter in a router; a real-time event processor; a
+device initializer; a configuration file; the callbacks in single-threaded
+JavaScript; and even a compiler or linker. In each case, we have an almost
+unstated expectation that these programs will always terminate. And now we have
+a language that can offer this guarantee—something it is impossible to test for,
+no less!
+\note{These are not hypothetical examples. In the Standard ML language, the
+language for linking modules uses essentially this typed language for writing
+module linking specifications. This means developers can write quite
+sophisticated abstractions—they have functions-as-values, after all!—while still
+being guaranteed that linking will always terminate, producing a program.}
+
+\secrel{Typing Recursion}
+
+What this says is, whereas before we were able to handle rec entirely through
+desugaring, now we must make it an explicit part of the typed language. For
+simplicity, we will consider a special case of rec—which nevertheless covers the
+common uses— whereby the recursive identifier is bound to a function. Thus, in
+the surface syntax, one might write
+\lsts{15/2/3/2.rkt}{rkt}
+for a summation function, where $\Sigma$ is the name of the function, n its
+argument, and num the type consumed by and returned from the function. The expression
+($\Sigma\ 10$) represents the use of this function to sum the number from 10
+until 0.
+
+How do we type such an expression? Clearly, we must have n bound in the body of
+the function as we type it (but not of course, in the use of the function); this
+much we know from typing functions. But what about $\Sigma$? Obviously it must
+be bound in the type environment when checking the use (($\Sigma\ 10$)), and its
+type must be num
+% ->
+num. But it must also be bound, to the same type, when checking the body of the
+function. (Observe, too, that the type returned by the body must match its
+declared return type.)
+
+Now we can see how to break the shackles of the finiteness of the type. It is
+certainly true that we can write only a finite number of ->’s in types in the
+program source. However, this rule for typing recursion duplicates the -> in the
+body that refers to itself, thereby ensuring that there is an inexhaustible
+supply of applications. It’s our infinite quiver of arrows.
+
+The code to implement this rule would be as follows. Assuming f is bound to the
+function’s name, aT is the function’s argument type and rT is its return type, b
+is the function’s body, and u is the function’s use:
+\lsts{15/2/3/3.rkt}{rkt}
+
+\secup

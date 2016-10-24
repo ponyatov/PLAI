@@ -277,6 +277,7 @@ SRC += 15/2/1/6.rkt 15/2/1/7.rkt 15/2/1/8.rkt 15/2/1/9.rkt 15/2/1/10.rkt
 SRC += 15/2/1/11.rkt 15/2/1/12.rkt 15/2/1/13.rkt 15/2/1/14.rkt 
 TEX += 15/2/2/type.tex
 TEX += 15/2/3/rcode.tex
+SRC += 15/2/3/1.rkt 15/2/3/2.rkt 15/2/3/3.rkt 
 TEX += 15/2/4/rdata.tex
 TEX += 15/2/5/time.tex
 TEX += 15/2/6/muta.tex
