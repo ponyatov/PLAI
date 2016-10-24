@@ -257,6 +257,7 @@ TEX += 14/6/contlang.tex
 SRC += 14/6/1.rkt 14/6/2.rkt 14/6/3.rkt 14/6/4.rkt
 SRC += 14/6/5.rkt 14/6/6.rkt 14/6/7.rkt 
 TEX += 14/6/1/present.tex
+SRC += 14/6/1/1.rkt 14/6/1/2.rkt
 TEX += 14/6/2/gens.tex
 TEX += 14/6/3/threads.tex
 TEX += 14/6/4/better.tex

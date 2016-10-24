@@ -1,1 +1,13 @@
 \secrel{14.6.1 Presentation in the Language  125}
+
+Writing programs in our little toy languages can soon become frustrating.
+Fortunately, Racket already provides a construct called call/cc that reifies
+continuations. call/cc is a procedure of one argument, which is itself a
+procedure of one argument, which Racket applies to the current
+continuation—which is a procedure of one argument. Got that?
+
+Fortunately, we can easily write let/cc as a macro over call/cc and program with
+that instead. Here it is:
+\lsts{14/6/1/1.rkt}{rkt}
+To be sure, all our old tests still pass:
+\lsts{14/6/1/2.rkt}{rkt}

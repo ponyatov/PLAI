@@ -1,0 +1,5 @@
+(test (let/cc esc 3) 3)
+(test (let/cc esc (esc 3)) 3)
+(test (+ 1 (let/cc esc (esc 3))) 4)
+(test (let/cc esc (+ 2 (esc 3))) 3)
+(test (+ 1 (let/cc esc (+ 2 (esc 3)))) 4)
