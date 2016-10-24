@@ -369,8 +369,11 @@ TEX += 17/1/5/muta.tex
 TEX += 17/1/6/caching.tex
 
 TEX += 17/2/reactive.tex
+SRC += 17/2/1.rkt
 TEX += 17/2/1/timer.tex
+SRC += 17/2/1/1.rkt 17/2/1/2.java 17/2/1/3.java
 TEX += 17/2/2/callback.tex
+SRC += 17/2/2/1.java 17/2/2/2.caml 17/2/2/3.hs
 TEX += 17/2/3/alt.tex
 TEX += 17/2/4/trans.tex
   

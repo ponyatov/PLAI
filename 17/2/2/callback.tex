@@ -1,1 +1,29 @@
-\secrel{17.2.2 Callback Types are Four-Letter Words . . . . . . . . . . . . . 203}
+\secrel{17.2.2 Callback Types are Four-Letter Words . 203}
+
+The characteristic signature (so to speak) of this pattern is manifest in the
+types. Because the operating system is agnostic to the program’s values, the
+callback usually has no return type at all, or it is a generic status indicator,
+not an application-specific value. Therefore, in typed languages, the type is
+usually some four-letter word. For instance, here is a fragment of a GUI library
+in Java:
+\lsts{17/2/2/1.java}{java}
+And here’s one in OCaml:
+\lst{17/2/2/2.caml}
+In Haskell, the four letters have an extra space in them:
+\lst{17/2/2/3.hs}
+and so on. In all these cases, the presence of a “void”-like type clearly
+indicates that the functions do not return any interesting value, so their only
+purpose must be to mutate the store or have some other side-effect. This also
+means that no rich means of composition—such as the nesting of expressions—is
+possible: the only composition operator for void-typed statements is sequencing.
+Thus the types reveal that we will be forced away from being able to write
+nested expressions.
+
+Readers will, of course, be familiar with this problem from our earlier
+discussion of Web programming. This problem occurs on the server due to
+statelessness \ref{}, and also on the client due to single-threading \ref{}. On
+the server, at least, we were able to use continuations to address this problem.
+However, continuations are not available in all languages, and implementing them
+can be onerous. Furthermore, it can be tricky to set up just the right
+continuation to pass as a callback. Instead, we will explore an alternate
+solution.

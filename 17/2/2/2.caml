@@ -1,0 +1,8 @@
+mainLoop : unit -> unit
+closeTk : unit -> unit
+
+destroy : 'a Widget.widget -> unit
+update : unit -> unit
+
+pack : ... -> 'd Widget.widget list -> unit
+grid : ... -> 'b Widget.widget list -> unit

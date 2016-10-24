@@ -1,0 +1,6 @@
+select :: Selecting w => Event w (IO ())
+mouse :: Reactive w => Event w (EventMouse -> IO ())
+keyboard :: Reactive w => Event w (EventKey -> IO ())
+resize :: Reactive w => Event w (IO ())
+focus :: Reactive w => Event w (Bool -> IO ())
+activate :: Reactive w => Event w (Bool -> IO ())
