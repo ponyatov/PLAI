@@ -168,21 +168,21 @@ TEX += 10/3/5/mixins.tex
 SRC += 10/3/5/1.rkt 10/3/5/2.rkt 10/3/5/3.rkt
 SRC += 10/3/5/4.rkt 10/3/5/5.rkt
 
-#TEX += 11/memory.tex
-#TEX += 11/1/garbage.tex
-#TEX += 11/2/recovery.tex
-#TEX += 11/3/reclamation.tex
-#TEX += 11/3/1/cost.tex
-#TEX += 11/3/2/refcount.tex
-#SRC += 11/3/2/1.rkt
-#TEX += 11/4/automated.tex
-#TEX += 11/4/1/overview.tex
-#TEX += 11/4/2/truth.tex
-#TEX += 11/4/3/central.tex
-#
-#TEX += 11/5/conserva.tex
-#TEX += 11/6/precise.tex
-#
+TEX += 11/memory.tex
+TEX += 11/1/garbage.tex
+TEX += 11/2/recovery.tex
+TEX += 11/3/reclamation.tex
+TEX += 11/3/1/cost.tex
+TEX += 11/3/2/refcount.tex
+SRC += 11/3/2/1.rkt
+TEX += 11/4/automated.tex
+TEX += 11/4/1/overview.tex
+TEX += 11/4/2/truth.tex
+TEX += 11/4/3/central.tex
+
+TEX += 11/5/conserva.tex
+TEX += 11/6/precise.tex
+
 #TEX += 12/repr.tex
 #TEX += 12/1/changing.tex
 #SRC += 12/1/1.rkt
