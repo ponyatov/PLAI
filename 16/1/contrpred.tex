@@ -1,1 +1,35 @@
 \secrel{16.1 Contracts as Predicates   . 181}
+
+It is therefore easy to see how to implement simple contracts. A contract
+embodies a predicate. It consumes a value and applies the predicate to the
+value. If the value passes the predicate, the contract returns the value
+unmolested; if the value fails, the contract reports an error. Its only
+behaviors are to return the supplied value or to error: it should not change the
+value in any way. In short, on values that pass the predicate, the contact
+itself acts as the identity function.
+\note{In what follows we will use the language \#lang plai, for two reasons.
+First, this better simulates programming in an untyped language.
+Second, for simplicity we will write type-like assertions as contracts, but in
+the typed language these will be flagged by the type-checker itself, not letting
+us see the run-time behavior. In effect, it is easier to “turn off” the type
+checker. However, contracts make perfect sense even in a typed world, because
+they enhance the set of invariants that a programmer can express.}
+
+We can encode this essence in the following function:
+\lsts{16/1/1.rkt}{rkt}
+Here’s an example contract:
+\lsts{16/1/2.rkt}{rkt}
+(In a typed language, the number? check would of course be unnecessary because
+it can be encoded—and statically checked!—in the type of the function using the
+contract.) Suppose we want to make sure we don’t get imaginary numbers when
+computing square roots; we might write
+\lsts{16/1/3.rkt}{rkt}
+In many languages assertions are written as statements rather than as
+expressions, so an alternate way to write this would be:
+\lsts{16/1/4.rkt}{rkt}
+(In some cases this form is clearer because it states crisply at the beginning
+of the function what is expected of the parameters. It also enables parameters
+to be checked just once. Indeed, in some languages the contract can be written
+in the function header itself, thereby improving the information given in the
+interface.) Now if real-sqrt- 1 or real-sqrt-2 are applied to 4 they produce 2,
+but if applied to -1 they raise a contract violation error.
