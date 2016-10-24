@@ -1,5 +1,12 @@
-\secrel{17.2 Reactive Application . . . . . . . . . . . . . . . . . . . . . . . . . . 201}
-\secdown
+\secrel{17.2 Reactive Application 201}\secdown
+
+Now consider an expression like (current-seconds). When we evaluate it, it
+returns a single number representing the current time. For instance,
+\lst{17/2/1.rkt}
+However, even as we stare at this value, it is already out-of-date! It
+represents the time when the function application occurred, but does not stay
+current.
+
 \input{17/2/1/timer}
 \input{17/2/2/callback}
 \input{17/2/3/alt}

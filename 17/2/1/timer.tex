@@ -1,1 +1,49 @@
-\secrel{17.2.1 Motivating Example: A Timer . . . . . . . . . . . . . . . . . 202}
+\secrel{17.2.1 Motivating Example: A Timer . 202}
+
+Suppose we were trying to implement a timer that measures elapsed time. Ideally,
+we would like to write a program such as this:
+\lsts{17/2/1/1.rkt}{rkt}
+In JavaScript, we might write:
+\lsts{17/2/1/2.java}{java}
+On most machines this Racket expression, or the value of elapsed in JavaScript,
+will evaluate to 0 or some other very small number. This is because these
+programs represent one measure of the elapsed time: that at the second
+invocation of the procedure that gets the current time. This gives us an
+instanteous time split, but not an actual timer.
+
+In most languages, to build an actual timer, we would have to create an instance
+of some sort of timer object, and install a callback. Every time the clock
+ticks, the timer object—representing the operating system—invokes the callback.
+The callback is then responsible for updating values in the rest of the system,
+and hopefully doing so globally and consistently. However, it cannot do so by
+returning values, because it would return to the operating system, which is
+agnostic to and does not care about our application; therefore, the callback is
+forced to perform its action through mutation. In JavaScript, for instance:
+\lsts{17/2/1/3.java}{java}
+assuming we have an HTML page with an id named curTime, and that the onload or
+other callback invokes startTimer.
+
+One alternative to this spaghetti code is for the application program to
+repeatedly poll the operating system for the current time. However:
+\begin{itemize}
+  \item 
+Calling too frequently wastes resources, while calling too infrequently results
+in incorrect answers. However, to call at just the right resolution, we would
+need a timer signal in the first place!
+  \item 
+While it may be possible to create such a polling loop for regular events such
+as timers, it is impossible to do so accurately for unpredictable behaviors such
+as user input (whose frequency cannot, in general, be predicted).
+  \item 
+On top of all this, writing this loop pollutes the program’s structure and
+forces the developer to sustain this extra burden.
+\end{itemize}
+
+The callback-based solution, however, demonstrates an inversion of control.
+Instead of the application program calling the operating system, the operating
+system has now been charged with calling (into) the application program. The
+reactive behavior that should have been deeply nested, inside the display
+expression, has instead been brought to the top-level, and its value drives the
+other computations. The fundamental cause for this is that the world is in
+control, not the program, so external stimuli determine when and how the program
+should next run, not intrinsic program expressions.
