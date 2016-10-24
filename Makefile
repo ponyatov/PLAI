@@ -357,6 +357,7 @@ TEX += 17/alter.tex
 
 TEX += 17/1/lazy.tex
 TEX += 17/1/1/lazy.tex
+SRC += 17/1/1/1.rkt
 TEX += 17/1/2/vals.tex
 TEX += 17/1/3/eval.tex
 TEX += 17/1/4/interp.tex
