@@ -1,1 +1,109 @@
-\secrel{17.2.4 Implementing Transparent Reactivity . . . . . . . . . . . . . 205}
+\secrel{17.2.4 Implementing Transparent Reactivity . 205}
+
+To make an existing language implement transparent reactivity, we have to
+(naturally) alter the semantics of function application. We will do this in two
+steps. First we will rewrite reactive function applications into a more complex
+form, then we will show how this more complex form enables reactive updates.
+
+\secdown
+
+\secrel{Dataflow Graph Construction}
+
+The essence of making an application reactive is simple to explain through
+desguaring. Assume we have defined a new constructor behavior. The constructor
+takes a thunk that represents what computation to perform every time an argument
+updates, and all the values that the expression depends on. The value it
+produces stores the current value of the behavior. Then an expression like (f x
+y) turns into
+\lsts{17/2/4/1.rkt}{rkt}
+where we assume, given a non-behavior constant, current-value behaves as the
+identity function.
+
+Let us look at two examples of using the above definition. Consider the trivial
+case where neither parameter is a behavior, e.g., (+ 3 4). This desugars to
+\lsts{17/2/4/2.rkt}{rkt}
+Since both 3 and 4 are numbers, not behaviors, this reduces to (+ 3 4), which is
+precisely what we would like. This reflects an important principle: when no
+behaviors are present, programs behave exactly as they did in the non-reactive
+version of the language.
+
+If we compute (+ 1 seconds), this expands to
+\lsts{17/2/4/3.rkt}{rkt}
+Because seconds is a behavior, this reduces to
+\lsts{17/2/4/4.rkt}{rkt}
+Any expression that depends on this now sees its argument also become a
+behavior, making the property “sticky” as we argued before.
+
+\Exercise{
+In what way, if any, did the above desugaring depend on eager evaluation?
+}
+
+\secrel{Dataflow Graph Update}
+
+Of course, simply constructing behavior values is not enough. The key additional
+information is in the extra arguments to behavior. The language filters out
+those arguments that are themselves behaviors (e.g., seconds, above) and
+registers this new behavior as one of that depends on those existing ones. This
+registration process creates a graph of behavior expression dependencies, known
+as a dataflow graph (since it reflects the paths along which data need to flow).
+
+If the program did not evaluate to any behaviors, then evaluation simply
+produces an answer, and there are no graphs created. If, however, there are
+behavior dependencies, then evaluation produces not a traditional answer but a
+behavior value, with dependencies already recorded. (In practice, it is useful
+to also track which primitive behaviors are actually necessary, to avoid
+unnecessarily evaluating primitives that no other behavior in the program refers
+to.) In short, program execution generates a dataflow graph. Thus, we do not
+need a special, new evaluator for the language; we instead embed the
+graph-construction semantics in traditional evaluation.
+
+Now a dataflow propagation algorithm begins to execute. Every time a primitive
+behavior changes, the algorithm applies its stored thunk, obtains its new value,
+stores it, and then signals each behavior dependent on it. For instance, if
+seconds updates, it notifies the (+ 1 seconds) expression’s behavior. The latter
+behavior now evaluates its thunk, ($\lambda$ () (+ (current-value 1)
+(current-value seconds))). This adds 1 to the newest value of seconds, making
+that the new value of this behavior—just as we would expect.
+
+\secrel{Evaluation Order}
+
+The discussion above presents too simple a view of graph update. Consider the
+following program:
+\lsts{17/2/4/5.rkt}{rkt}
+This program has one primitive behavior, seconds, and constructs two more: one
+for (add1 seconds) and one more for the entire expression.
+
+We would expect this expression to always be true. However, when seconds
+updates, depending on the order in which it handles updates, it might update the
+whole expression before it does (add1 seconds). Suppose the old value of seconds
+was 100, so the new one is 101. However, the node for (add1 seconds) is still
+storing its old value (because it has not yet been updated), so it holds (add1
+100) or 101. That means the > compares 101 with 1, which is false, making this
+expression return a value that should simply never have ensued from its static
+description. This situation is called a glitch.
+
+There is an easy solution to avoiding glitches, which the above example
+illustrates (and that a theorem can show is sufficient). This is to
+topologically sort the nodes. Then, every node is only processed after it
+depends on have been, so there is no danger of seeing outdated or inconsistent
+values.
+
+The problem becomes more difficult in the presence of cycles in the graph. In
+those cases, we need special recursion operators that can take an initial value
+for the cyclic behavior. This makes it possible to break the cyclic dependency,
+reducing evaluation to the process that has already been defined.
+
+There is much more to say about the evaluation of dataflow languages, such as
+the treatment of conditionals and a dual notion to behaviors that is discrete
+and streamlike. I hope you will read the literature on reactive languages to
+learn more about these topics.
+
+\Exercise{
+Earlier we picked on a Haskell library. To be fair, however, the reactive
+solution we have shown was enunciated in Haskell, whose lazy evaluation
+makes this form of evaluation relatively easy to support.
+
+Implement reactive evaluation using laziness.
+}
+
+\secup

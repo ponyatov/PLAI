@@ -1,0 +1,1 @@
+(behavior (lambda () (+ (current-value 1) (current-value seconds))) 1 seconds)
