@@ -1,1 +1,176 @@
 \secrel{16.9 Blame   . 191}
+
+Let’s now return to the issue of reporting contract violations. By this I don’t
+mean what string to we print, but the much more important question of what to
+report, which as we are about to see is really a semantic consideration.
+
+To illustrate the problem recall our definition of d/dx above, and assume we
+were running it without any contract checking. Suppose now that we apply this
+function to the entirely inappropriate string-append (which neither consumes nor
+produces numbers). This simply produces a value:
+\lst{16/9/1.rkt}
+(Observe that this would succeed even if contract checking were on, because the
+immediate portion of the function contract recognizes string-append to be a
+function.) Now suppose we apply d/dx-sa to a number, as we ought to be able to
+do:
+\lst{16/9/2.rkt}
+Notice that the error report is deep inside the body of d/dx. On the one hand,
+this is entirely legitimate: that is where the improper application of
+string-append occurred. However, the fault is not that of d/dx at all—rather, it
+is the fault of whatever body of code supplied string-append as a purportedly
+legitimate function from numbers to numbers. Except, however, the code that did
+so has long since fled the scene; it is no longer on the stack, and is hence
+outside the ambit of traditional error-reporting mechanisms.
+
+This problem is not a peculiarity of d/dx; in fact, it routinely occurs in large
+systems. This is because systems, especially with graphical, network, and other
+external interfaces, make heavy use of callbacks: functions (or methods) that
+register interest in some entity and are invoked to signal some status or value.
+(Here, d/dx is the moral equivalent of the graphics layer, and string-append is
+the callback that has been supplied to (and stored by) it.) Eventually, the
+system layer invokes the callback. If this results in an error, it is the fault
+of neither the system layer—which was given a callback of purportedly the right
+contract—nor of the callback itself, which presumably has legitimate uses but
+was improperly supplied to the function. Rather, the fault is of the entity that
+introduced these two entities. However, at this point the call stack contains
+only the callback (on top) and the system (below it)—and the only guilty party
+is no longer present. These kinds of errors can therefore be extremely difficult
+to debug.
+
+The solution is to extend the contract system to incorporate a notion of blame.
+The idea is to effectively record the introduction that resulted in a pair of
+components coming together, so that if a contract violation occurs between them,
+we can ascribe the failure to the expression that did the introduction. Observe
+that this is only really interesting in the context of functions, but for
+consistency we will extend blame to immediate contracts as well in a natural
+way.
+
+For a function, notice that there are two possible points of failure: either it
+was given the wrong kind of value (the pre-condition), or it produced the wrong
+kind of value (the post-condition). It is important to distinguish these two
+cases because in the former case we should blame the environment—in particular,
+the actual parameter expression—whereas in the latter case (assuming the
+parameter has passed muster) we should blame the function itself. (The natural
+extension to immediate values is that we can only blame the value itself for not
+satisfying the contract, which is akin to the “post-condition”.)
+
+For contracts, we will introduce the terms positive and negative position. For a
+first-order function, the negative position is the pre-condition and the
+positive one the post-condition. Therefore, this might appear to be needless
+extra terminology. As we will soon see, however, these terms have a more general
+meaning.
+
+We will now generalize the parameters consumed by contracts. Previously,
+immediate contracts consumed a predicate and function contracts consumed domain
+and range contracts. This will still be the case. However, what they each return
+will be a function of two arguments: labels for the positive and negative
+positions. (These labels can be drawn from any reasonable datatype: abstract
+syntax nodes, buffer offsets, or other descriptions. For simplicity, we will use
+strings.) Thus function contracts will close over the labels of these program
+positions, to later blame the provider of an invalid function.
+
+The guard function is now responsible for passing through the labels of the
+contract application locations:
+\lst{16/9/3.rkt}
+and let us also have blame display the appropriate label (which we will pass to
+it from the contract implementations):
+\lst{16/9/4.rkt}
+
+Suppose we are guarding the use of add1, as before. What are useful names for
+the positive and negative positions? The positive position is post-condition:
+i.e., any failure here must be blamed on the body of add1. The negative position
+is the pre-condition: i.e., any failure here must be blamed on the parameter to
+add1. Thus:
+\lst{16/9/5.rkt}
+Had we provided a non-function to guard, we would expect an error at the
+“postcondition” location: this is not really a failure of the post-condition,
+but surely the parameter cannot be blamed if the application failed to be a
+function. (However, this shows that we are really stretching the term
+“post-condition”, and the terms “positive” provides a useful alternative.)
+Because we trust the implementation of add1 to only produce numbers, we would
+expect it is impossible to fail the post-condition. However, we would expect an
+expression like (a1 "x") to trigger a pre-condition error, presumably signaling
+a contract error at the location "add1 input". In contrast, had we guarded a
+function that violates the post-condition, such as this,
+\lst{16/9/6.rkt}
+we would expect blame to be ascribed to "bad-add1 body".
+
+Let us now see how to implement these contract constructors. For immediate
+contracts, we have seen that blame should be ascribed to the positive position:
+\lst{16/9/7.rkt}
+For functions, we might be tempted to write
+\lst{16/9/8.rkt}
+but this fails to work in a very fundamental way: it violates the expected
+signature on contracts. That is because all contracts now expect to be given the
+labels of positive and negative positions, which means dom and rng cannot be
+used as above. (As another hint, we are using pos but not neg anywhere in the
+body, even though we have seen examples where we expect the position bound to
+neg to be blamed.) Instead, clearly, we somehow instantiate the domain and range
+contracts using pos and neg, so that they “know” and “remember” where a
+potentially violating function was applied.
+
+The most obvious reaction would be to instantiate these contract constructors
+with the same values of dom and rng:
+\lst{16/9/9.rkt}
+Now all the signatures match up, and we can run our contracts. But when we do
+so, the answers are a little strange. For instance, on our simplest contract
+violation example, we get
+\lst{16/9/10.rkt}
+Huh? Maybe we should expand out the code of a1 to see what happened.
+\lst{16/9/11.rkt}
+Poor add1: it never stood a chance! The only blame label left is "add1 body", so
+it was the only thing that could ever be blamed.
+
+We will return to this problem in a moment, but observe how in the above code,
+there are no real traces of the function contract left. All we have are
+immediate contracts, ready to blame actual values if and when they occur. This
+is perfectly consistent with what we said earlier \ref{}\ about being able to
+observe only immediate values. Of course, this is only true for first-order
+functions; when we get to higher-order functions, this will no longer be true.
+
+What went wrong? Notice that only the contract bound to rng-c ought to be
+blaming the body of add1. In contrast, the contract bound to dom-c ought to be
+blaming the input to add1. It’s almost as if, in the domain position of a
+function contract, the positive and negative labels should be...swapped.
+
+If we consider the contract-guarded d/dx, we see that this is indeed the case.
+The key insight is that, when applying a function taken as a parameter, the
+“outside” becomes the “inside” and vice versa. That is, the body of d/dx—which
+was in positive position—is now the caller of the function to differentiate,
+putting that function’s body in positive position and the caller—the body of
+d/dx—in negative position. Thus, on the domain side of the contract, every
+nested function contract causes positive and negative positions to swap.
+
+On the range side, there is no need to swap. Consider again d/dx. The function
+it returns represents the derivative, so it should be given a number
+(representing the point at which to calculate the derivative) and it should
+return a number (the derivative at that point). The negative position of this
+function is indeed the client who uses the derivative function—the
+pre-condition—and the positive position is indeed the body of d/dx itself—the
+post-condition—since it is responsible for generating the derivative.
+
+As a result, we obtain an updated, and correct, definition for the function
+constructor:
+\lst{16/9/12.rkt}
+
+\Exercise{
+Apply this to our earlier example and confirm that we get the expected blame.
+Also expand the code manually to see why this happens.
+}
+
+Suppose, further, we define d/dx with the labels "d/dx body" for its positive
+position and "d/dx input" for its negative. Say we supply the function number-
+>string, which patently does not compute derivatives, and apply the result to
+10:
+\lst{16/9/13.rkt}
+
+This correctly indicates that the blame should be ascribed to the expression
+that fed number->string as a supposed numeric function to d/dx—not to d/dx
+itself.
+
+\Exercise{
+Hand-evaluate d/dx, apply it to all the relevant violation examples, and confirm
+that the resulting blame is accurate. What happens if you supply d/dx with
+string->number with a function contract indicating it maps strings to numbers?
+What if you supply the same function with no contract at all?
+}

@@ -346,7 +346,12 @@ TEX += 16/5/extn.tex
 TEX += 16/6/more.tex
 TEX += 16/7/contracts.tex
 TEX += 16/8/combine.tex
+
 TEX += 16/9/blame.tex
+SRC += 16/9/1.rkt 16/9/2.rkt 16/9/3.rkt 16/9/4.rkt 
+SRC += 16/9/5.rkt 16/9/6.rkt 16/9/7.rkt 16/9/8.rkt 
+SRC += 16/9/9.rkt 16/9/10.rkt 16/9/11.rkt 16/9/12.rkt 
+SRC += 16/9/13.rkt 
 
 TEX += 17/alter.tex
 

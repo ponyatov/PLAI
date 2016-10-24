@@ -1,0 +1,1 @@
+> (define d/dx-sa (d/dx string-append))

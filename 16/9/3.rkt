@@ -1,0 +1,1 @@
+(define (guard ctc val pos neg) ((ctc pos neg) val))

@@ -1,0 +1,1 @@
+(define (blame s) (error 'contract s))
