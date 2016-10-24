@@ -1,1 +1,32 @@
 \secrel{15.1 Types as Static Disciplines  . . 133}
+
+In this chapter, we will focus especially on static type checking: that is,
+checking (declared) types before the program even executes. We have already
+experienced a form of this in our programs by virtue of using a typed
+programming language. We will explore some of the design space of types and
+their trade-offs. Finally, though static typing is an especially powerful and
+important form of invariant enforcement, we will also examine some other
+techniques that we have available.
+
+Consider this program in our typed language:
+\lsts{15/1/1.rkt}{rkt}
+We get a static type error before the program begins execution. The same program
+(without the type annotations) in ordinary Racket fails only at runtime:
+\lsts{15/1/2.rkt}{rkt}
+
+\Exercise{
+How would you test the assertions that one fails before the program executes
+while the other fails during execution?
+}
+
+Now consider the following Racket program:
+\lsts{15/1/3.rkt}{rkt}
+
+This too fails before program execution begins, with a parse error. Though we
+think of parsing as being somehow distinct from type-checking—usually because
+the type-checker assumes it has a parsed program to begin with—it can be useful
+to think of parsing as being simply the very simplest kind of type-checking:
+determining (typically) whether the program obeys a context-free syntax.
+Type-checking then asks whether it obeys a context-sensitive (or richer) syntax.
+In short, type-checking is a generalization of parsing, in that both are
+concerned with syntactic methods for enforcing disciplines on programs.

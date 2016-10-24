@@ -268,6 +268,7 @@ TEX += 14/6/4/better.tex
 TEX += 15/invar.tex
 
 TEX += 15/1/types.tex
+SRC += 15/1/1.rkt 15/1/2.rkt 15/1/3.rkt 
 
 TEX += 15/2/classview.tex
 TEX += 15/2/1/simple.tex
