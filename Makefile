@@ -320,6 +320,9 @@ SRC += 15/3/6/1.rkt 15/3/6/2.rkt 15/3/6/3.rkt 15/3/6/4.rkt
 SRC += 15/3/6/5.rkt 15/3/6/6.rkt 15/3/6/7.rkt
 
 TEX += 15/3/7/subtype.tex
+SRC += 15/3/7/1.rkt 15/3/7/2.rkt 15/3/7/3.rkt 15/3/7/4.rkt 
+SRC += 15/3/7/5.rkt 15/3/7/6.rkt 15/3/7/7.rkt 15/3/7/8.rkt
+ 
 TEX += 15/3/8/objtype.tex
 
 TEX += 16/contracts.tex

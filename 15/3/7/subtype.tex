@@ -1,1 +1,160 @@
 \secrel{15.3.7 Subtyping   . 173}
+
+Imagine we have a typical binary tree definition; for simplicity, we’ll assume
+that all the values are numbers. We will write this in Typed Racket to
+illustrate a point:
+\lsts{15/3/7/1.rkt}{rkt}
+Now consider some concrete tree values:
+\lst{15/3/7/2.rkt}
+Observe that each structure constructor makes a value of its own type, not a
+value of type BT. But consider the expression (nd 5 (mt) (mt)): the definition
+of nd declares that the sub-trees must be of type BT, and yet we are able to
+successfully give it values of type mt.
+
+Obviously, it is not coincidental that we have defined BT in terms of mt and nd.
+However, it does indicate that when type-checking, we cannot simply be checking
+for function equality, at least not as we have so far. Instead, we must be
+checking that one type “fits into” the other. This notion of fitting is called
+subtyping (and the act of being fit, subsumption).
+
+The essence of subtyping is to define a relation, usually denoted by <:, that
+relates pairs of types. We say S <: T if a value of type S can be given where a
+value of type T is expected: in other words, subtyping formalizes the notion of
+substitutability (i.e., anywhere a value of type T was expected, it can be
+replaced with—substituted by—a value of type S). When this holds, S is called
+the subtype and T the supertype. It is useful (and usually accurate) to take a
+subset interpretation: if the values of S are a subset of T, then an expression
+expecting T values will not be unpleasantly surprised to receive only S values.
+
+Subtyping has a pervasive effect on the type system. We have to reexamine every
+kind of type and understand its interaction with subtyping. For base types, this
+is usually quite obvious: disjoint types like number, string, etc., are all
+unrelated to each other. (In languages where one base type is used to represent
+another—for instance, in some scripting languages numbers are merely strings
+written with a special syntax, and in other languages, booleans are merely
+numbers—there might be subtyping relationships even between base types, but
+these are not common.) However, we do have to consider how subtyping interacts
+with every single compound type constructor
+
+In fact, even our very diction about types has to change. Suppose we have an
+expression of type T. Normally, we would say that it produces values of type T.
+Now, we should be careful to say that it produces values of up to or at most T,
+because it may only produce values of a subtype of T. Thus every reference to a
+type should implicitly be cloaked in a reference to the potential for subtyping.
+To avoid pestering you I will refrain from doing this, but be wary that it is
+possible to make reasoning errors by not keeping this implicit interpretation in
+mind.
+
+\secdown
+
+\secrel{Unions}
+
+Let us see how unions interact with subtyping. Clearly, every sub-union is a
+subtype of the entire union. In our running example, clearly every mt value is
+also a BT; likewise for nd. Thus,
+\lsts{15/3/7/3.rkt}{rkt}
+As a result, (mt) also has type BT, thus enabling the expression (nd 5 (mt)
+(mt)) to itself type, and to have the type nd—and hence, also the type BT. In
+general,
+\lsts{15/3/7/4.rkt}{rkt}
+(we write what seems to be the same rule twice just to make clear it doesn’t
+matter which “side” of the union the subtype is on). This says that a value of S
+can be thought of as a value of S U T, because any expression of type S U T can
+indeed contain a value of type S.
+
+\secrel{Intersections}
+
+While we’re at it, we should also briefly visit intersections. As you might
+imagine, intersections behave dually:
+\lsts{15/3/7/5.rkt}{rkt}
+To convince yourself of this, take the subset interpretation: if a value is both
+S and T, then clearly it is either one of them.
+
+\DoNow{
+Why are the following two not valid subsumptions?
+\lsts{15/3/7/6.rkt}{rkt}
+}
+
+The first is not valid because a value of type T is a perfectly valid element of
+type (S U T). For instance, a number is a member of type (string U number).
+However, a number cannot be supplied where a value of type string is expected.
+
+As for the second, in general, a value of type T is not also a value of type S.
+% Any consumer of a ($S\ \Alpha\ T$) value is expecting to be able to treat it
+% as both a T and a S, and the latter is not justified. For instance, given our
+% overloaded + from before, if T is (number number -> number), then a function
+% of this type
+will not know how to operate on strings.
+
+\secrel{Functions}
+
+We have seen one more constructor: functions. We must therefore determine the
+rules for subtyping when either type can be a function. Since we usually assume
+functions are disjoint from all other types, we therefore only need to consider
+when one function type is a subtype of another: i.e., when is
+\note{We have also seen parametric datatypes. In this edition, exploring
+subtyping for them is left as an exercise for the reader.}
+\lsts{15/3/7/7.rkt}{rkt}
+? For convenience, let us call the type (S1 -> T1) as f1, and (S2 -> T2) as f2.
+The question then is, if an expression is expecting functions of the f2 type,
+when can we safely give it functions with the f1 type? It is easiest to think
+through this using the subset interpretation.
+
+Consider a use of the f2 type. It returns values of type T2. Thus, the context
+surrounding the function application is satisfied with values of type T2.
+Clearly, if T1 is the same as T2, the use of f2 would continue to type;
+similarly, if T1 consists of a subset of T2 values, it would still be fine. The
+only problem is if T1 has more values than T2, because the context would then
+encounter unexpected values that would result in undefined behavior. In other
+words, we need that T1 <: T2. Observe that the “direction” of containment is the
+same as that for the entire function type; this is called covariance (both vary
+in the same direction). This is perhaps precisely what you expected.
+
+By the same token, you might expect covariance in the argument position as well:
+namely, that S1 <: S2. This would be predictable, and wrong. Let’s see why.
+
+An application of a function with f2 type is providing parameter values of type
+S2.
+Suppose we instead substitute the function with one of type f1. If we had that
+S1 <:
+S2, that would mean that the new function accepts only values of typeS1—a
+strictly smaller set. That means there may be some inputs—specifically those in
+S2 that are not in S1—that the application is free to provide on which the
+substituted function is not defined, again resulting in undefined behavior. To
+avoid this, we have to make the subsumption go in the other direction: the
+substituting function should accept at least as many inputs as the one it
+replaces. Thus we need S2 <: S1, and say the function position is contravariant:
+it goes against the direction of subtyping.
+
+Putting together these two observations, we obtain a subtyping rule for
+functions (and hence also methods):
+\lsts{15/3/7/8.rkt}{rkt}
+
+\secrel{Implementing Subtyping}
+
+Of course, these rules assume that we have modified the type-checker to respect
+subtyping. The essence of subtyping is a rule that says, if an expression e is
+of type S, and S <: T, then e also has type T. While this sounds intuitive, it
+is also immediately problematic for two reasons:
+\begin{itemize}
+  \item 
+Until now all of our type rules have been syntax-driven, which is what enabled
+us to write a recursive-descent type-checker. Now, however, we have a rule that
+applies to all expressions, so we can no longer be sure when to apply it.
+  \item 
+There could be many levels of subtyping. As a result, it is no longer obvious
+when to “stop” subtyping. In particular, whereas before type-checking was able
+to calculate the type of an expression, now we have many possible types for each
+expression; if we return the “wrong” one, we might get a type error (due to that
+not being the type expected by the context) even though there exists some other
+type that was the one expected by the context.
+\end{itemize}
+What these two issues point to is that the description of subtyping we are
+giving here is fundamentally declarative: we are saying what must be true, but
+not showing how to turn it into an algorithm. For each actual type language,
+there is a less or more interesting problem in turning this into algorithmic
+subtyping: an actual algorithm that realizes a type-checker (ideally one that
+types exactly those programs that would have typed under the declarative regime,
+i.e., one that is both sound and complete).
+
+\secup
