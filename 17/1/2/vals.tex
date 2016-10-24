@@ -1,1 +1,75 @@
-\secrel{17.1.2 What Are Values? . . . . . . . . . . . . . . . . . . . . . . . 197}
+\secrel{17.1.2 What Are Values? . 197}
+
+If we return to our core higher-order function interpreter \ref{}, we recall
+that we have two kinds of values: numbers and closures. If we want to support
+lazy evaluation instead, we need to ask what happens at function application.
+What exactly are we passing?
+
+This seems obvious enough: in a lazy application semantics, we need to pass
+expressions. But a moment’s thought shows that this can be problematic.
+Expressions contain identifier names, and we don’t want them to be accidentally
+bound.
+\note{And now these truly will be identifiers, not variables, as we will see
+\ref{}.}
+
+For instance, suppose we have
+\lsts{17/1/2/1.rkt}{rkt}
+and apply it as follows:
+\lsts{17/1/2/2.rkt}{rkt}
+
+\DoNow{
+What should this produce?
+}
+Clearly, we should get an error reporting x as not being bound.
+
+Now let’s trace it. The first application creates a closure where x is bound to
+3. If we now bind y to (+ x 4), this results in the expression (+ x (+ x 4)) in
+an environment where x is bound. As a result we get the answer 10, not an error.
+
+\DoNow{
+Have we made a subtle assumption above?
+}
+
+Yes we have: we’ve assumed that + evaluates arguments and returns numeric
+answers. Perhaps + also behaves lazily; we will study this issue in a moment.
+Nevertheless, the central point remains: if we are not careful, this erroneous
+expression will produce some kind of valid answer, not an error.
+
+In case you think this is entirely a problem with erroneous programs, and can
+hence be treated specially (e.g., first scan the program source for free
+identifiers), here is another use of the same f:
+\lsts{17/1/2/3.rkt}{rkt}
+
+\DoNow{
+What should this produce?
+}
+We would expect this to produce the result of (+ 3 5) (probably 8). However, if
+we substitute x inside the arithmetic expression, we would get (+ 3 3) instead.
+
+This latter example holds the key to our solution. In the latter example, the
+problem ostensibly arises only when we use environments; if instead we use
+substitution, x in the application is substituted as soon as we encounter the
+let, and the result is what we expect. In fact, note that the same argument
+holds earlier: if we had used substitution, the very occurrence of x would have
+signaled an error. In short, we have to make sure our environment-based
+implementation matches what substitution would have done.
+Doesn’t that sound familiar!
+
+In other words, the solution is to bundle the argument expression with its
+environment: i.e., create a closure. This closure has no parameters, so it is
+effectively a thunk. We could use existing functions to represent these thunks,
+but our instinct should tell us that it is better to use different data
+representations for logically different purposes: closV for user-created
+closures, and something else for internally-created ones. Indeed, as we will
+see, it will have been wise to keep them separate because there is one place
+where it is critical we can tell them apart.
+\note{Indeed, this demonstrates that functions have two uses: to substitute
+names with values, and also to defer substitution. let is the former without the
+latter; thunks are the latter without the former. We have already established
+that the former is valuable in its own right; this section shows that the same
+is true of the latter.}
+
+To conclude this discussion, here is our new set of values:
+\lsts{17/1/2/4.rkt}{rkt}
+The first two variants are exactly the same; the third is new, and as we
+discussed, is effectively a parameter-less procedure, as its type suggests.
