@@ -9,7 +9,7 @@ SRC += 1/3/p9_1.rkt 1/3/p9_2.rkt 1/3/p9_3.rkt 1/3/p9_4.rkt
 
 TEX += 2/parsing.tex 2/1/lwtparser.tex
 
-#FIG = tmp/2/p10/L.pdf tmp/2/p10/R.pdf tmp/2/1.pdf
+FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
 
 SRC += 2/p10_1.rkt
 
@@ -22,7 +22,8 @@ TEX += 2/4/completing.tex
 ArithC = src/plai.rkt src/cr \
 	2/p12_1.rkt src/cr 2/p12_2.rkt src/cr \
 	2/p12_3.rkt src/cr 3/p15_3.rkt src/cr 3/arCtest.rkt
-SRC += tmp/ArithC.rkt $(ArithC) 3/p14_1.rkt 3/p14_2.rkt 3/p15_2.rkt
+#SRC += tmp/ArithC.rkt $(ArithC) 
+SRC += 3/p14_1.rkt 3/p14_2.rkt 3/p15_2.rkt
 SRC += 2/v1.rkt 2/v2.rkt
 
 TEX += 2/5/coda.tex
