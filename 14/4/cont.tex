@@ -1,1 +1,89 @@
 \secrel{14.4 Continuations and Stacks   121}
+
+Surprising as it may seem, CPS conversion actually provides tremendous insight
+into the nature of the program execution stack. The first thing to understand is
+that every continuation is actually the stack itself. This might seem odd, given
+that stacks are low-level machine primitives while continuations are seemingly
+complex procedures. But what is the stack, really?
+\begin{itemize}
+  \item 
+It’s a record of what remains to be done in the computation. So is the
+continuation.
+  \item 
+It’s traditionally thought of as a list of stack frames. That is, each frame has
+a reference to the frames remaining after it finishes. Similarly, each
+continuation is a small procedure that refers to—and hence closes over—its own
+continuation. If we had chosen a different representation for program
+instructions, combining this with the data structure representation of closures,
+we would obtain a continuation representation that is essentially the same as
+the machine stack.
+  \item 
+Each stack frame also stores procedure parameters. This is implicitly managed by
+the procedural representation of continuations, whereas this was done explicitly
+in the data stucture representation (using bind).
+  \item 
+Each frame also has space for “local variables”. In principle so does the
+continuation, though by using the macro implementation of local binding, we’ve
+effectively reduced everything to procedure parameters. Conceptually, however,
+some of these are “true” procedure parameters while others are local bindings
+turned into procedure parameters by a macro.
+  \item 
+The stack has references to, but does not close over, the heap. Thus changes to
+the heap are visible across stack frames. In precisely the same way, closures
+refer to, but do not close over, the store, so changes to the store are visible
+across closures.
+\end{itemize}
+Therefore, traditionally the stack is responsible for maintaining lexical scope,
+which we get automatically because we are using closures in a statically-scoped
+language.
+
+Now we can study the conversion of various terms to understand the mapping to
+stacks. For instance, consider the conversion of a function application \ref{}:
+\lsts{14/4/1.rkt}{rkt}
+How do we ``read'' this? As follows:
+\begin{itemize}
+  \item 
+Let’s use k to refer to the stack present before the function application begins
+to evaluate.
+  \item 
+When we begin to evaluate the function position (f), create a new stack frame
+((lambda (fv) ...)). This frame has one free identifier: k. Thus its closure
+needs to record one element of the environment, namely the rest of the stack.
+  \item 
+The code portion of the stack frame represents what is left to be done once we
+obtain a value for the function: evaluate the argument, and perform the
+application, and return the result to the stack expecting the result of the
+application: k.
+  \item 
+When evaluation of f completes, we begin to evaluate a, which also creates a
+stack frame: (lambda (av) ...). This frame has two free identifiers: k and fv.
+This tells us:
+\begin{itemize}
+  \item 
+We no longer need the stack frame for evaluating the function position, but
+  \item 
+we now need a temporary that records the value—hopefully a function value—of
+evaluating the function position.
+\end{itemize}
+  \item 
+The code portion of this second frame also represents what is left to be done:
+invoke the function value with the argument, in the stack expecting the value of
+the application.
+\end{itemize}
+Let us apply similar reasoning to conditionals:
+\lsts{14/4/2.rkt}{rkt}
+It says that to evaluate the conditional expression we have to create a new
+stack frame. This frame closes over the stack expecting the value of the entire
+conditional. This frame makes a decision based on the value of the conditional
+expression, and invokes one of the other expressions. Once we have examined this
+value the frame created to evaluate the conditional expression is no longer
+necessary, so evaluation can proceed in k.
+
+Viewed through this lens, we can more easily provide an operational explanation
+for generators. Each generator has its own private stack, and when execution
+attempts to return past its end, our implementation raises an error. On
+invocation, a generator stores a reference to the stack of the “rest of the
+program” in where-to-go, and resumes its own stack, which is referred to by
+resumer. On yielding, the system swaps references to stacks. Coroutines,
+threads, and generators are all conceptually similar: they are all mechanisms to
+create “many little stacks” instead of having a single, global stack.
