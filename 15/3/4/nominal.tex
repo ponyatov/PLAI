@@ -1,1 +1,43 @@
 \secrel{15.3.4 Nominal Versus Structural Systems  . . 170}
+
+In our initial type-checker, two types were considered equivalent if they had
+the same structure. In fact, we offered no mechanism for naming types at all, so
+it is not clear what alternative we had.
+
+Now consider Typed Racket. A developer can write
+\lsts{15/3/4/1.rkt}{rkt}
+followed by
+\lsts{15/3/4/2.rkt}{rkt}
+Suppose the developer also defines the function
+\lsts{15/3/4/3.rkt}{rkt}
+and tries to apply f to v, i.e., (f v): should this application type or not?
+
+There are two perfectly reasonable interpretations. One is to say that v was
+declared to be of type NB1, which is a different name than NB2, and hence should
+be considered a different type, so the above application should result in an
+error. Such a system is called nominal, because the name of a type is paramount
+for determining type equality.
+
+In contrast, another interpretation is that because the structure of NB1 and NB2
+are identical, there is no way for a developer to write a program that behaves
+differently on values of these two types, so these two types should be
+considered identical. Such a type system is called structural, and would
+successfully type the above expression. (Typed Racket follows a structural
+discipline, again to reduce the burden of importing existing untyped code,
+which—in Racket—is usually written with a structural interpretation in mind. In
+fact, Typed Racket not only types (f v), it prints the result as having type
+NB1, despite the return type annotation on f!)
+\note{If you want to get especially careful, you would note that there is a
+difference between being considered the same and actually being the same. We
+won’t go into this issue here, but consider the implication for a compiler
+writer choosing representations of values, especially in a language that allows
+run-time inspection of the static types of values.}
+
+The difference between nominal and structural typing is most commonly
+contentious in object-oriented languages, and we will return to this issue
+briefly later \ref{}. However, the point of this section is to illustrate that
+these questions are not intrinsically about “objects”. Any language that permits
+types to be named—as all must, for programmer sanity—must contend with this
+question: is naming merely a convenience, or are the choices of names intended
+to be meaningful? Choosing the former answer leads to structural typing, while
+choosing the latter leads down the nominal path.

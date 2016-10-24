@@ -310,6 +310,8 @@ SRC += 15/3/3/15.rkt 15/3/3/16.rkt 15/3/3/17.rkt 15/3/3/18.rkt 15/3/3/19.java
 SRC += 15/3/3/20.java 15/3/3/21.rkt 15/3/3/22.rkt 15/3/3/23.rkt
  
 TEX += 15/3/4/nominal.tex
+SRC += 15/3/4/1.rkt 15/3/4/2.rkt 15/3/4/3.rkt
+
 TEX += 15/3/5/intersec.tex
 TEX += 15/3/6/rectype.tex
 TEX += 15/3/7/subtype.tex

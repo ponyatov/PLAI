@@ -1,0 +1,1 @@
+(define: (f [x : NB2]) : NB2 x)
