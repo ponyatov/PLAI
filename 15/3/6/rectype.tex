@@ -1,1 +1,55 @@
 \secrel{15.3.6 Recursive Types   172}
+
+Now that we’ve seen union types, it pays to return to our original recursive
+datatype formulation. If we accept the variants as type constructors, can we
+write the recursive type as a union over these? For instance, returning to
+BTnum, shouldn’t we be able to describe it as equivalent to
+\lsts{15/3/6/1.rkt}{rkt}
+thereby showing that BTmt is a zero-ary constructor, and BTnd takes three
+parameters? Except, what are the types of those three parameters? In the type
+we’ve written above, BTnum is either built into the type language (which is
+unsatisfactory) or unbound. Perhaps we mean
+\lsts{15/3/6/2.rkt}{rkt}
+Except now we have an equation that has no obvious solution (remember !?).
+
+This situation should be familiar from recursion in values \ref{}. Then, we
+invented a recursive function constructor (and showed its implementation) to
+circumvent this problem. We similarly need a recursive type constructor. This is
+conventionally called $\mu$ (the Greek letter “mu”). With it, we would write the
+above type as
+\lsts{15/3/6/3.rkt}{rkt}
+$\mu$ is a binding construct; it binds BTnum to the entire type written after
+it, including the recursive binding of BTnum itself. In practice, of course,
+this entire recursive type is the one we wish to call BTnum:
+\lsts{15/3/6/4.rkt}{rkt}
+Though this looks like a circular definition, notice that the name BTnum on the
+right does not depend on the one to the left of the equation: i.e., we could
+rewrite this as
+\lsts{15/3/6/5.rkt}{rkt}
+In other words, this definition of BTnum truly can be thought of as syntactic
+sugar and replaced everywhere in the program without fear of infinite regress.
+
+At a semantic level, there are usually two very different ways of thinking about
+the meaning of types bound by $mu$: they can be interpreted as isorecursive or
+equirecursive. The distinction between these is, however, subtle and beyond the
+scope of this chapter. It suffices to note that a recursive type can be treated
+as equivalent to its unfolding. For instance, if we define a numeric list type
+as
+\note{This material is covered especially well in Pierce’s book.}
+\lsts{15/3/6/6.rkt}{rkt}
+then
+\lsts{15/3/6/7.rkt}{rkt}
+and so on (iso- and equi-recursiveness differ in precisely what the notion of
+equality is: definitional equality or isomorphism). At each step we simply
+replace the T parameter with the entire type. As with value recursion, this
+means we can “get another” ConsL constructor upon demand. Put differently, the
+type of a list can be written as the union of zero or arbitrarily many elements;
+this is the same as the type that consists of zero, one, or arbitrarily many
+elements; and so on. Any lists of numbers fits all (and precisely) these types.
+
+Observe that even with this informal understanding of $\mu$, we can now provide
+a type to $\omega$, and hence to $\Omega$. 
+
+\Exercise{
+Ascribe types to $\omega$ and $\Omega$ 
+}

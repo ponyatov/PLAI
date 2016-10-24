@@ -316,6 +316,9 @@ TEX += 15/3/5/intersec.tex
 SRC += 15/3/5/1.rkt 15/3/5/2.rkt 15/3/5/3.rkt
 
 TEX += 15/3/6/rectype.tex
+SRC += 15/3/6/1.rkt 15/3/6/2.rkt 15/3/6/3.rkt 15/3/6/4.rkt
+SRC += 15/3/6/5.rkt 15/3/6/6.rkt 15/3/6/7.rkt
+
 TEX += 15/3/7/subtype.tex
 TEX += 15/3/8/objtype.tex
 
