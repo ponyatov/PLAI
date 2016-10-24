@@ -1,24 +1,24 @@
 \secrel{10.3.1 Classes   . . 76}
 
 Immediately we see a difficulty. Is this the constructor pattern?
-\lsts{src/10/3/1/1.rkt}{rkt}
+\lsts{10/3/1/1.rkt}{rkt}
 That suggests that the parent is at the “same level” as the object’s constructor
 fields. That seems reasonable, in that once all these parameters are given, the
 object is “fully defined”. However, we also still have
-\lsts{src/10/3/1/2.rkt}{rkt}
+\lsts{10/3/1/2.rkt}{rkt}
 Are we going to write all the parameters twice? (Whenever we write something
 twice, we should worry that we may not do so consistently, thereby inducing
 subtle errors.) Here’s an alternative: node/size can construct the instance of
 node that is its parent. That is, node/size’s parent parameter is not the parent
 object but rather the parent’s object maker.
-\lsts{src/10/3/1/3.rkt}{rkt}
-\lsts{src/10/3/1/4.rkt}{rkt}
+\lsts{10/3/1/3.rkt}{rkt}
+\lsts{10/3/1/4.rkt}{rkt}
 Then the object constructor must remember to pass the parent-object maker on
 every invocation:
-\lsts{src/10/3/1/5.rkt}{rkt}
+\lsts{10/3/1/5.rkt}{rkt}
 Obviously, this is something we might simplify with appropriate syntactic sugar.
 We can confirm that both the old and new tests still work:
-\lsts{src/10/3/1/6.rkt}{rkt}
+\lsts{10/3/1/6.rkt}{rkt}
 
 \Exercise{
 Rewrite this block of code using self-application instead of mutation.
@@ -28,7 +28,7 @@ What we have done is capture the essence of a class. Each function parameterized
 over a parent is...well, it’s a bit tricky, really. Let’s call it a blob for
 now. A blob corresponds to what a Java programmer defines when they write a
 class:
-\lsts{src/10/3/1/7.rkt}{rkt}
+\lsts{10/3/1/7.rkt}{rkt}
 
 \DoNow{
 So why are we going out of the way to not call it a “class”?

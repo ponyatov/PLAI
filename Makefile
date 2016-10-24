@@ -9,7 +9,7 @@ SRC += 1/3/p9_1.rkt 1/3/p9_2.rkt 1/3/p9_3.rkt 1/3/p9_4.rkt
 
 TEX += 2/parsing.tex 2/1/lwtparser.tex
 
-#FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
+#FIG = tmp/2/p10/L.pdf tmp/2/p10/R.pdf tmp/2/1.pdf
 
 SRC += 2/p10_1.rkt
 
@@ -118,101 +118,101 @@ SRC += 9/3/1.rkt 9/3/2.rkt 9/3/3.rkt
 SRC += 9/3/4.rkt 9/3/5.rkt 9/3/6.rkt  
 TEX += 9/4/wostate.tex
 
-#TEX += 10/objects.tex
-#TEX += 10/1_woinher.tex
-#
-#TEX += 10/1_1_core.tex
-#SRC += 10/1/1/1.rkt 10/1/1/2.rkt 10/1/1/3.rkt 
-#SRC += 10/1/1/4.rkt 10/1/1/5.rkt 10/1/1/6.rkt 
-#SRC += 10/1/1/7.rkt 10/1/1/8.rkt 10/1/1/9.rkt 
-#
-#TEX += 10/1_2_desugar.tex
-#
-#TEX += 10/1_3_collect.tex
-#SRC += 10/1/3/1.rkt 10/1/3/2.rkt 10/1/3/3.rkt 
-#SRC += 10/1/3/4.rkt 10/1/3/5.rkt 10/1/3/6.rkt 
-#
-#TEX += 10/1_4_construct.tex
-#SRC += 10/1/4/1.rkt
-#
-#TEX += 10/1_5_state.tex
-#SRC += 10/1/5/1.rkt 10/1/5/2.rkt 10/1/5/3.rkt 
-#
-#TEX += 10/1_6_private.tex
-#SRC += 10/1/6/1.rkt
-#
-#TEX += 10/1_7_static.tex
-#SRC += 10/1/7/1.rkt 10/1/7/2.rkt 
-#
-#TEX += 10/1_8_selfref.tex
-#SRC += 10/1/8/1.rkt 10/1/8/2.rkt 10/1/8/3.rkt 10/1/8/4.rkt 
-#
-#TEX += 10/1_9_dynamic.tex
-#SRC += 10/1/9/1.rkt 10/1/9/2.rkt 10/1/9/3.rkt 
-#
-#TEX += 10/2_member.tex
-#TEX += 10/3_whatelse.tex
-#SRC += 10/3/1.rkt
-#
-#TEX += 10/3_1_classes.tex
-#SRC += 10/3/1/1.rkt 10/3/1/2.rkt 10/3/1/3.rkt 10/3/1/4.rkt 
-#SRC += 10/3/1/5.rkt 10/3/1/6.rkt 10/3/1/7.rkt 
-#
-#TEX += 10/3_2_proto.tex
-#
-#TEX += 10/3_3_multi.tex
-#
-#TEX += 10/3_4_super.tex
-#
-#TEX += 10/3_5_mixins.tex
-#SRC += 10/3/5/1.rkt 10/3/5/2.rkt 10/3/5/3.rkt
-#SRC += 10/3/5/4.rkt 10/3/5/5.rkt
-#
+TEX += 10/objects.tex
+TEX += 10/1/woinher.tex
+
+TEX += 10/1/1/core.tex
+SRC += 10/1/1/1.rkt 10/1/1/2.rkt 10/1/1/3.rkt 
+SRC += 10/1/1/4.rkt 10/1/1/5.rkt 10/1/1/6.rkt 
+SRC += 10/1/1/7.rkt 10/1/1/8.rkt 10/1/1/9.rkt 
+
+TEX += 10/1/2/desugar.tex
+
+TEX += 10/1/3/collect.tex
+SRC += 10/1/3/1.rkt 10/1/3/2.rkt 10/1/3/3.rkt 
+SRC += 10/1/3/4.rkt 10/1/3/5.rkt 10/1/3/6.rkt 
+
+TEX += 10/1/4/construct.tex
+SRC += 10/1/4/1.rkt
+
+TEX += 10/1/5/state.tex
+SRC += 10/1/5/1.rkt 10/1/5/2.rkt 10/1/5/3.rkt 
+
+TEX += 10/1/6/private.tex
+SRC += 10/1/6/1.rkt
+
+TEX += 10/1/7/static.tex
+SRC += 10/1/7/1.rkt 10/1/7/2.rkt 
+
+TEX += 10/1/8/selfref.tex
+SRC += 10/1/8/1.rkt 10/1/8/2.rkt 10/1/8/3.rkt 10/1/8/4.rkt 
+
+TEX += 10/1/9/dynamic.tex
+SRC += 10/1/9/1.rkt 10/1/9/2.rkt 10/1/9/3.rkt 
+
+TEX += 10/2/member.tex
+TEX += 10/3/whatelse.tex
+SRC += 10/3/1.rkt
+
+TEX += 10/3/1/classes.tex
+SRC += 10/3/1/1.rkt 10/3/1/2.rkt 10/3/1/3.rkt 10/3/1/4.rkt 
+SRC += 10/3/1/5.rkt 10/3/1/6.rkt 10/3/1/7.rkt 
+
+TEX += 10/3/2/proto.tex
+
+TEX += 10/3/3/multi.tex
+
+TEX += 10/3/4/super.tex
+
+TEX += 10/3/5/mixins.tex
+SRC += 10/3/5/1.rkt 10/3/5/2.rkt 10/3/5/3.rkt
+SRC += 10/3/5/4.rkt 10/3/5/5.rkt
+
 #TEX += 11/memory.tex
-#TEX += 11/1_garbage.tex
-#TEX += 11/2_recovery.tex
-#TEX += 11/3_reclamation.tex
-#TEX += 11/3_1_cost.tex
-#TEX += 11/3_2_refcount.tex
+#TEX += 11/1/garbage.tex
+#TEX += 11/2/recovery.tex
+#TEX += 11/3/reclamation.tex
+#TEX += 11/3/1/cost.tex
+#TEX += 11/3/2/refcount.tex
 #SRC += 11/3/2/1.rkt
-#TEX += 11/4_automated.tex
-#TEX += 11/4_1_overview.tex
-#TEX += 11/4_2_truth.tex
-#TEX += 11/4_3_central.tex
+#TEX += 11/4/automated.tex
+#TEX += 11/4/1/overview.tex
+#TEX += 11/4/2/truth.tex
+#TEX += 11/4/3/central.tex
 #
-#TEX += 11/5_conserva.tex
-#TEX += 11/6_precise.tex
+#TEX += 11/5/conserva.tex
+#TEX += 11/6/precise.tex
 #
 #TEX += 12/repr.tex
-#TEX += 12/1_changing.tex
+#TEX += 12/1/changing.tex
 #SRC += 12/1/1.rkt
-#TEX += 12/2_errors.tex
-#TEX += 12/3_meanings.tex
-#TEX += 12/4_more.tex
+#TEX += 12/2/errors.tex
+#TEX += 12/3/meanings.tex
+#TEX += 12/4/more.tex
 #SRC += 12/4/1.rkt 12/4/2.rkt 12/4/3.rkt 12/4/4.rkt
 #
 #TEX += 13/desugaring.tex
-#TEX += 13/1_first.tex
+#TEX += 13/1/first.tex
 #SRC += 13/1/1.rkt 13/1/2.rkt 13/1/3.rkt 13/1/4.rkt 
 #SRC += 13/1/5.rkt 13/1/6.rkt 13/1/6.err 13/1/7.rkt 
-#TEX += 13/2_syntax.tex
+#TEX += 13/2/syntax.tex
 #SRC += 13/2/1.rkt 13/2/2.rkt 13/2/3.rkt 
-#TEX += 13/3_guards.tex
+#TEX += 13/3/guards.tex
 #SRC += 13/3/1.rkt 13/3/2.rkt
-#TEX += 13/4_smacro.tex
-#TEX += 13/4_1_fatt.tex
+#TEX += 13/4/smacro.tex
+#TEX += 13/4/1/fatt.tex
 #SRC += 13/4/1/1.rkt 13/4/1/2.rkt 13/4/1/3.rkt 
 #SRC += 13/4/1/4.rkt 13/4/1/5.rkt 13/4/1/6.rkt 
-#TEX += 13/4_2_guevl.tex
+#TEX += 13/4/2/guevl.tex
 #SRC += 13/4/2/1.rkt 13/4/2/2.rkt 13/4/2/3.rkt 13/4/2/4.rkt 
-#TEX += 13/4_3_hygiene.tex
+#TEX += 13/4/3/hygiene.tex
 #SRC += 13/4/3/1.rkt 13/4/3/2.rkt 13/4/3/3.rkt 
 #SRC += 13/4/3/4.rkt 13/4/3/5.rkt 
-#TEX += 13/5_indent.tex
+#TEX += 13/5/indent.tex
 #SRC += 13/5/1.rkt 13/5/2.rkt 13/5/3.rkt 
 #SRC += 13/5/4.rkt 13/5/5.rkt 13/5/6.rkt 
-#TEX += 13/6_influ.tex
-#TEX += 13/7_otherlangs.tex
+#TEX += 13/6/influ.tex
+#TEX += 13/7/otherlangs.tex
 #
 #TEX += 14/control.tex
 #
@@ -220,25 +220,25 @@ TEX += 9/4/wostate.tex
 #SRC += 14/1/1.rkt 14/1/2.rkt 
 #TEX += 14/1/decomp.tex
 #SRC += 14/1/1/1.rkt 14/1/1/2.rkt 14/1/1/3.rkt 
-#TEX += 14/1/2_partial.tex
+#TEX += 14/1/2/partial.tex
 #SRC += 14/1/2/1.rkt 14/1/2/2.rkt 14/1/2/3.rkt 14/1/2/4.rkt 
 #SRC += 14/1/2/5.rkt 14/1/2/6.rkt 14/1/2/7.rkt 14/1/2/8.rkt 
-#TEX += 14/1/3_stateless.tex
+#TEX += 14/1/3/stateless.tex
 #SRC += 14/1/3/1.rkt
-#TEX += 14/1/4_interaction.tex
+#TEX += 14/1/4/interaction.tex
 #SRC += 14/1/4/1.rkt 14/1/4/2.rkt 14/1/4/3.rkt 14/1/4/4.rkt
 #SRC += 14/1/4/5.rkt 14/1/4/6.rkt 14/1/4/7.rkt 14/1/4/8.rkt
 #SRC += 14/1/4/9.rkt 14/1/4/10.rkt
 #
 #TEX += 14/2/contpass.tex
-#TEX += 14/2/1_impl.tex
+#TEX += 14/2/1/impl.tex
 #SRC += 14/2/1/1.rkt 14/2/1/2.rkt 14/2/1/3.rkt 14/2/1/4.rkt 
 #SRC += 14/2/1/5.rkt 14/2/1/6.rkt 14/2/1/7.rkt 14/2/1/8.rkt 
 #SRC += 14/2/1/9.rkt 14/2/1/10.rkt 14/2/1/11.rkt 14/2/1/12.rkt 
 #SRC += 14/2/1/13.rkt 14/2/1/14.rkt 14/2/1/15.rkt 14/2/1/16.rkt 
 #SRC += 14/2/1/7.rkt 14/2/1/18.rkt 
 #TEX += 14/2/conv.tex
-#TEX += 14/2/3_core.tex
+#TEX += 14/2/3/core.tex
 #
 #TEX += 14/3/gens.tex
 #TEX += 14/4/cont.tex

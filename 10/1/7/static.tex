@@ -6,10 +6,10 @@ merely a lexically-scoped identifier (making it private) that lives outside the
 constructor (making it common to all uses of the constructor):
 \note{We use quotes because there are many notions of sameness for objects. And
 then some.}
-\lsts{src/10/1/7/1.rkt}{rkt}
+\lsts{10/1/7/1.rkt}{rkt}
 We’ve written the counter increment where the “constructor” for this object
 would go, though it could just as well be manipulated inside the methods.
 
 To test it, we should make multiple objects and ensure they each affect the
 global count:
-\lsts{src/10/1/7/2.rkt}{rkt}
+\lsts{10/1/7/2.rkt}{rkt}
