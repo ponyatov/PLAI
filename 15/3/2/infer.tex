@@ -1,59 +1,53 @@
 \secrel{15.3.2 Type Inference   . 155}
 
-Writing polymorphic type instantiations everywhere can be an awfully frustrating process,
-as users of many versions of Java and C++ can attest. Imagine if in our programs,
-every single time we wrote first or rest, we had to also instantiate it at a type! The
-reason we have been able to avoid this fate is because our language implements type
-inference. This is what enables us to write the definition
+Writing polymorphic type instantiations everywhere can be an awfully frustrating
+process, as users of many versions of Java and C++ can attest. Imagine if in our
+programs, every single time we wrote first or rest, we had to also instantiate
+it at a type! The reason we have been able to avoid this fate is because our
+language implements type inference. This is what enables us to write the
+definition
 \lsts{15/3/2/1.rkt}{rkt}
 and have the programming environment automatically declare that
 \lst{15/3/2/2.rkt}
-Not only is this the correct type, this is a very general type! The process of being able
-to derive such general types just from the program structure feels almost magical. Now
-let’s look behind the curtain.
+Not only is this the correct type, this is a very general type! The process of
+being able to derive such general types just from the program structure feels
+almost magical. Now let’s look behind the curtain.
 
-First, let’s understand what type inference is doing. Some people mistakenly think
-of languages with inference as having no type declarations, with inference taking their
-place. This is confused at multiple levels. For one thing, even in languages with
-inference, programmers are free (and for documentation purposes, often encouraged—
-as you have been) to declare types. Furthemore, in the absence of such declarations, it
-is not quite clear what inference actually means.
-\note{Sometimes,
-inference is also
-undecidable and
-programmers have
-no choice but to
-declare some of the
-types. Finally,
-writing explicit
-annotations can
-greatly reduce
-indecipherable error
-messages.}
+First, let’s understand what type inference is doing. Some people mistakenly
+think of languages with inference as having no type declarations, with inference
+taking their place. This is confused at multiple levels. For one thing, even in
+languages with inference, programmers are free (and for documentation purposes,
+often encouraged— as you have been) to declare types. Furthemore, in the absence
+of such declarations, it is not quite clear what inference actually means.
+\note{Sometimes, inference is also undecidable and programmers have no choice
+but to declare some of the types. Finally, writing explicit annotations can
+greatly reduce indecipherable error messages.}
 
-Instead, it is better to think of the underlying language as being fully, explicitly
-typed—just like the polymorphic language we have just studied [REF].We will simply
-say that we are free to leave the type annotations after the :’s blank, and assume some
-programming environment feature will fill them in for us. (And if we can go that far,
-we can drop the :’s and extra embellishments as well, and let them all be inserted
-automatically. Thus, inference becomes simply a user convenience for alleviating the
-burden of writing type annotations, but the language underneath is explicitly typed.
+Instead, it is better to think of the underlying language as being fully,
+explicitly typed—just like the polymorphic language we have just studied \ref{}.
+We will simply say that we are free to leave the type annotations after the :’s
+blank, and assume some programming environment feature will fill them in for us.
+(And if we can go that far, we can drop the :’s and extra embellishments as
+well, and let them all be inserted automatically. Thus, inference becomes simply
+a user convenience for alleviating the burden of writing type annotations, but
+the language underneath is explicitly typed.
 
 How do we even think about what inference does? Suppose we have an expression
-(or program) e, written in an explicitly typed language: i.e., e has type annotations
-everywhere they are required. Now suppose we erase all annotations in e, and use a
-procedure infer to deduce them back.
+(or program) e, written in an explicitly typed language: i.e., e has type
+annotations everywhere they are required. Now suppose we erase all annotations
+in e, and use a procedure infer to deduce them back.
 
 \DoNow{
 What property do we expect of infer?
 }
 
 We could demand many things of it. One might be that it produces precisely those
-annotations that e originally had. This is problematic for many reasons, not least that e
-might not even type-check, in which case how could infer possibly know what they
-were (and hence should be)? This might strike you as a pedantic trifle: after all, if e
-didn’t type-check, how can erasing its annotations and filling them back in make it do
-so? Since neither program type-checks, who cares?
+annotations that e originally had. This is problematic for many reasons, not
+least that e might not even type-check, in which case how could infer possibly
+know what they were (and hence should be)? This might strike you as a pedantic
+trifle: after all, if e didn’t type-check, how can erasing its annotations and
+filling them back in make it do so? Since neither program type-checks, who
+cares?
 
 \DoNow{
 Is this reasoning correct?
@@ -61,81 +55,85 @@ Is this reasoning correct?
 
 Suppose e is
 \lst{15/3/2/3.rkt}
-This procedure obviously fails to type-check. But if we erase the type annotations—
-obtaining
+This procedure obviously fails to type-check. But if we erase the type
+annotations— obtaining
 \lst{15/3/2/4.rkt}
-—we equally obviously obtain a typeable function! Therefore, a more reasonable demand
-might be that if the original e type-checks, then so must the version with annotations
-replaced by inferred types. This one-directional implication is useful in two
-ways:
+—we equally obviously obtain a typeable function! Therefore, a more reasonable
+demand might be that if the original e type-checks, then so must the version
+with annotations replaced by inferred types. This one-directional implication is
+useful in two ways:
 \begin{enumerate}
   \item 
-It does not say what must happen if e fails to type-check, i.e., it does not preclude
-the type inference algorithm we have, which makes the faultily-typed identity
-function above typeable.
+It does not say what must happen if e fails to type-check, i.e., it does not
+preclude the type inference algorithm we have, which makes the faultily-typed
+identity function above typeable.
   \item 
-More importantly, it assures us that we lose nothing by employing type inference:
-no program that was previously typeable will now cease to be so. That means we
-can focus on using explicit annotations where we want to, but will not be forced
-to do so.
-\note{Of course, this only
-holds if inference is decidable.}
+More importantly, it assures us that we lose nothing by employing type
+inference: no program that was previously typeable will now cease to be so. That
+means we can focus on using explicit annotations where we want to, but will not
+be forced to do so.
+\note{Of course, this only holds if inference is decidable.}
 \end{enumerate}
-We might also expect that both versions type to the same type, but that is not a given: decidable.
+We might also expect that both versions type to the same type, but that is not a
+given: decidable.
 the function
 \lst{15/3/2/5.rkt}
-types to (number -> number), whereas applying inference to it after erasing types
-yields a much more general type. Therefore, relating these types and giving a precise
-definition of type equality is not trivial, though we will briefly return to this issue later
+types to (number -> number), whereas applying inference to it after erasing
+types yields a much more general type. Therefore, relating these types and
+giving a precise definition of type equality is not trivial, though we will
+briefly return to this issue later
 \ref{}.
 
-With these preliminaries out of the way, we are now ready to delve into the mechanics
-of type inference. The most important thing to note is that our simple, recursivedescent
-type-checking algorithm \ref{}\ will no longer work. That was possible because
-we already had annotations on all function boundaries, so we could descend into function
-bodies carrying information about those annotations in the type environment. Sans
-these annotations, it is not clear how to descend.
+With these preliminaries out of the way, we are now ready to delve into the
+mechanics of type inference. The most important thing to note is that our
+simple, recursivedescent type-checking algorithm \ref{}\ will no longer work.
+That was possible because we already had annotations on all function boundaries,
+so we could descend into function bodies carrying information about those
+annotations in the type environment. Sans these annotations, it is not clear how
+to descend.
 
-In fact, it is not clear that there is any particular direction that makes more sense
-than another. In a definition like mapper above, each fragment of code influences the
-other. For instance, applying empty?, cons?, first, and rest to l all point to its
-being a list. But a list of what? We can’t tell from any of those operations. However,
-the fact that we apply f to each (or indeed, any) first element means the list members
-must be of a type that can be passed to f. Similarly, we know the output must be a list
-because of cons and empty. But what are its elements? They must be the return type
-of f. Finally, note something very subtle: when the argument list is empty, we return
-empty, not l (which we know is bound to empty at that point). Using the former
-leaves the type of the return free to be any kind of list at all (constrained only by what
-f returns); using the latter would force it to be the same type as the argument list.
+In fact, it is not clear that there is any particular direction that makes more
+sense than another. In a definition like mapper above, each fragment of code
+influences the other. For instance, applying empty?, cons?, first, and rest to l
+all point to its being a list. But a list of what? We can’t tell from any of
+those operations. However, the fact that we apply f to each (or indeed, any)
+first element means the list members must be of a type that can be passed to f.
+Similarly, we know the output must be a list because of cons and empty. But what
+are its elements? They must be the return type of f. Finally, note something
+very subtle: when the argument list is empty, we return empty, not l (which we
+know is bound to empty at that point). Using the former leaves the type of the
+return free to be any kind of list at all (constrained only by what f returns);
+using the latter would force it to be the same type as the argument list.
 
-All this information is in the function. But how do we extract it systematically and
-in an algorithm that terminates and enjoys the property we have stated above? We do
-this in two steps. First we generate constraints, based on program terms, on what the
-types must be. Then we solve constraints to identify inconsistencies and join together
-constraints spread across the function body. Each step is relatively simple, but the
-combination creates magic.
+All this information is in the function. But how do we extract it systematically
+and in an algorithm that terminates and enjoys the property we have stated
+above? We do this in two steps. First we generate constraints, based on program
+terms, on what the types must be. Then we solve constraints to identify
+inconsistencies and join together constraints spread across the function body.
+Each step is relatively simple, but the combination creates magic.
 
 \secdown
 \secrel{Constraint Generation}
 
-Our goal, ultimately, is to find a type to fill into every type annotation position. It
-will prove to be just as well to find a type for every expression. A moment’s thought
-will show that this is likely necessary anyway: for instance, how can we determine the
-type to put on a function without knowing the type of its body? It is also sufficient, in
-that if every expression has had its type calculated, this will include the ones that need
-annotations.
+Our goal, ultimately, is to find a type to fill into every type annotation
+position. It will prove to be just as well to find a type for every expression.
+A moment’s thought will show that this is likely necessary anyway: for instance,
+how can we determine the type to put on a function without knowing the type of
+its body? It is also sufficient, in that if every expression has had its type
+calculated, this will include the ones that need annotations.
 
-First, we must generate constraints to (later) solve. Constraint generation walks
-the program source, emitting appropriate constraints on each expression, and returns
-this set of constraints. It works by recursive descent mainly for simplicity; it really
-computes a set of constraints, so the order of traversal and generation really does not
-matter in principle—so we may as well pick recursive descent, which is easy—though
-for simplicity we will use a list to represent this set.
+First, we must generate constraints to (later) solve. Constraint generation
+walks the program source, emitting appropriate constraints on each expression,
+and returns this set of constraints. It works by recursive descent mainly for
+simplicity; it really computes a set of constraints, so the order of traversal
+and generation really does not matter in principle—so we may as well pick
+recursive descent, which is easy—though for simplicity we will use a list to
+represent this set.
 
 What are constraints? They are simply statements about the types of expressions.
-In addition, though the binding instances of variables are not expressions, we must
-calculate their types too (because a function requires both argument and return types).
-In general, what can we say about the type of an expression?
+In addition, though the binding instances of variables are not expressions, we
+must calculate their types too (because a function requires both argument and
+return types). In general, what can we say about the type of an expression?
 \begin{enumerate}[nosep]
   \item 
 That it is related to the type of some identifier.
@@ -152,21 +150,21 @@ Thus, we define the following two datatypes:
 
 Now we can define the process of generating constraints:
 \lst{15/3/2/7.rkt}
-When the expression is a number, all we can say is that we expect the type of the
-expression to be numeric:
+When the expression is a number, all we can say is that we expect the type of
+the expression to be numeric:
 \lst{15/3/2/8.rkt}
 
 This might sound trivial, but what we don’t know is what other expectations are
-being made of this expression by those containing it. Thus, there is the possibility that
-some outer expression will contradict the assertion that this expression’s type must be
-numeric, leading to a type error.
+being made of this expression by those containing it. Thus, there is the
+possibility that some outer expression will contradict the assertion that this
+expression’s type must be numeric, leading to a type error.
 
 For an identifier, we simply say that the type of the expression is whatever we
 expect to be the type of that identifier:
 \lst{15/3/2/9.rkt}
 
-If the context limits its type, then this expression’s type will automatically be limited,
-and must then be consistent with what its context expects of it.
+If the context limits its type, then this expression’s type will automatically
+be limited, and must then be consistent with what its context expects of it.
 
 Addition gives us our first look at a contextual constraint. For an addition
 expression, we must first make sure we generate (and return) constraints in the
@@ -179,218 +177,230 @@ error.) Finally, we assert that the entire expression’s type is itself numeric
 
 The case for multC is identical other than the variant name.
 
-Now we get to the other two interesting cases, function declaration and application.
-In both cases, we must remember to generate and return constraints of the subexpressions.
+Now we get to the other two interesting cases, function declaration and
+application. In both cases, we must remember to generate and return constraints
+of the subexpressions.
 
-In a function definition, the type of the function is a function (“arrow”) type, whose
-argument type is that of the formal parameter, and whose return type is that of the body:
+In a function definition, the type of the function is a function (“arrow”) type,
+whose argument type is that of the formal parameter, and whose return type is
+that of the body:
 \lst{15/3/2/11.rkt}
 
-Finally, we have applications. We cannot directly state a constraint on the type of
-the application. Rather, we can say that the function in the application position must
-consume arguments of the actual parameter expression’s type, and return types of the
-application expression’s type:
+Finally, we have applications. We cannot directly state a constraint on the type
+of the application. Rather, we can say that the function in the application
+position must consume arguments of the actual parameter expression’s type, and
+return types of the application expression’s type:
 \lst{15/3/2/12.rkt}
 
-And that’s it! We have finished generating constraints; now we just have to solve
-them.
+And that’s it! We have finished generating constraints; now we just have to
+solve them.
 
 \secrel{Constraint Solving Using Unification}
 
-The process used to solve constraints is known as unification. A unifier is given a
-set of equations. Each equation maps a variable to a term, whose datatype is above.
-Note one subtle point: we actually have two kinds of variables. Both tvar and tExp
-are “variables”, the former evidently so but the latter equally so because we need to
-solve for the types of these expressions. (An alternate formulation would introduce
-fresh type variables for each expression, but we would still need a way to identify
-which ones correspond to which expression, which eq? on the expressions already
-does automatically. Also, this would generate far larger constraint sets, making visual
-inspection daunting.)
+The process used to solve constraints is known as unification. A unifier is
+given a set of equations. Each equation maps a variable to a term, whose
+datatype is above. Note one subtle point: we actually have two kinds of
+variables. Both tvar and tExp are “variables”, the former evidently so but the
+latter equally so because we need to solve for the types of these expressions.
+(An alternate formulation would introduce fresh type variables for each
+expression, but we would still need a way to identify which ones correspond to
+which expression, which eq? on the expressions already does automatically. Also,
+this would generate far larger constraint sets, making visual inspection
+daunting.)
 
 For our purposes, the goal of unification is generate a substitution, or mapping
-from variables to terms that do not contain any variables. This should sound familiar:
-we have a set of simultaneous equations in which each variable is used linearly; such
-equations are solved using Gaussian elimination. In that context, we know that we can
-end up with systems that are both under- and over-constrained. The same thing can
-happen here, as we will soon see.
+from variables to terms that do not contain any variables. This should sound
+familiar: we have a set of simultaneous equations in which each variable is used
+linearly; such equations are solved using Gaussian elimination. In that context,
+we know that we can end up with systems that are both under- and
+over-constrained. The same thing can happen here, as we will soon see.
 
 The unification algorithm works iteratively over the set of constraints. Because
-each constraint equation has two terms and each term can be one of four kinds, there
-are essentially sixteen cases to consider. Fortunately, we can cover all sixteen with
-fewer actual code cases.
+each constraint equation has two terms and each term can be one of four kinds,
+there are essentially sixteen cases to consider. Fortunately, we can cover all
+sixteen with fewer actual code cases.
 
-The algorithm begins with the set of all constraints, and the empty substitution.
-Each constraint is considered once and removed from the set, so in principle the termination
-argument should be utterly simple, but it will prove to be only slightly more
-tricky in reality. As constraints are disposed, the substitution set tends to grow. When
-all constraints have been disposed, unification returns the final substitution set.
+The algorithm begins with the set of all constraints, and the empty
+substitution. Each constraint is considered once and removed from the set, so in
+principle the termination argument should be utterly simple, but it will prove
+to be only slightly more tricky in reality. As constraints are disposed, the
+substitution set tends to grow. When all constraints have been disposed,
+unification returns the final substitution set.
 
-For a given constraint, the unifier examines the left-hand-side of the equation. If it is
-a variable, it is now ripe for elimination. The unifier adds the variable’s right-hand-side
-to the substitution and, to truly eliminate it, replaces all occurrences of the variable in
-the substitution with the this right-hand-side. In practice this needs to be implemented
-efficiently; for instance, using a mutational representation of these variables can avoid
-having to search-and-replace all occurrences. However, in a setting where we might
-need to backtrack (as we will, in the presence of unification \ref{}), the
-mutational implementation has its own disadvantages.
+For a given constraint, the unifier examines the left-hand-side of the equation.
+If it is a variable, it is now ripe for elimination. The unifier adds the
+variable’s right-hand-side to the substitution and, to truly eliminate it,
+replaces all occurrences of the variable in the substitution with the this
+right-hand-side. In practice this needs to be implemented efficiently; for
+instance, using a mutational representation of these variables can avoid having
+to search-and-replace all occurrences. However, in a setting where we might need
+to backtrack (as we will, in the presence of unification \ref{}), the mutational
+implementation has its own disadvantages.
 
 \DoNow{
 Did you notice the subtle error above?
 }
 
-The subtle error is this. We said that the unifier eliminates the variable by replacing
-all instances of it in the substitution. However, that assumes that the right-hand-side
-does not contain any instances of the same variable. Otherwise we have a circular
-definition, and it becomes impossible to perform this particular substitution. For this
-reason, unifiers include a occurs check: a check for whether the same variable occurs
-on both sides and, if it does, decline to unify.
+The subtle error is this. We said that the unifier eliminates the variable by
+replacing all instances of it in the substitution. However, that assumes that
+the right-hand-side does not contain any instances of the same variable.
+Otherwise we have a circular definition, and it becomes impossible to perform
+this particular substitution. For this reason, unifiers include a occurs check:
+a check for whether the same variable occurs on both sides and, if it does,
+decline to unify.
 
 \DoNow{
 Construct a term whose constraints would trigger the occurs check.
 }
 
-Do you remember $\omega$?
-Let us now consider the implementation of unification. It is traditional to denote
-the substitution by the Greek letter $\Omega$.
+Do you remember $\omega$? Let us now consider the implementation of unification.
+It is traditional to denote the substitution by the Greek letter $\Omega$.
 \lst{15/3/2/13.rkt}
 
 Let’s get the easy parts out of the way:
 \lst{15/3/2/14.rkt}
 
 Now we’re ready for the heart of unification. We will depend on a function, ex-
-tend+replace, with this signature: (Term Term Subst -> Subst). We expect
-this to perform the occurs test and, if it fails (i.e., there is no circularity), extends the
-substituion and replaces all existing instances of the first term with the second in the
-substitution. Similarly, we will assume the existence of lookup: (Term subst ->
-(optionof Term))
+tend+replace, with this signature: (Term Term Subst -> Subst). We expect this to
+perform the occurs test and, if it fails (i.e., there is no circularity),
+extends the substituion and replaces all existing instances of the first term
+with the second in the substitution. Similarly, we will assume the existence of
+lookup: (Term subst -> (optionof Term))
 
 \Exercise{
 Define extend+replace and lookup.
 }
 
-If the left-hand of a constraint equation is a variable, we first look it up in the substitution.
-If it is present, we replace the current constraint with a new one; otherwise,
-we extend the substitution:
+If the left-hand of a constraint equation is a variable, we first look it up in
+the substitution. If it is present, we replace the current constraint with a new
+one; otherwise, we extend the substitution:
 \lst{15/3/2/15.rkt}
 The same logic applies when it is an expression designator:
 \lst{15/3/2/16.rkt}
-If it is a base type, such as a number, then we examine the right-hand side. There
-are four possibilities, for the four different kinds of terms:
+If it is a base type, such as a number, then we examine the right-hand side.
+There are four possibilities, for the four different kinds of terms:
 \begin{itemize}
   \item 
-If it is a number, then we have an equation that claims that the type num is
-the same as the type num, which is patently true. We can therefore ignore this
+If it is a number, then we have an equation that claims that the type num is the
+same as the type num, which is patently true. We can therefore ignore this
 constraint—because it tells us nothing new—and move on to the remainder.
 
 You should, of course, question why such a constraint would have come about in
-the first place. Clearly, our constraint generator did not generate such constraints.
-However, a prior extension to the current substitution might have resulted in this
-situation. Indeed, in practice we will encounter several of these.
+the first place. Clearly, our constraint generator did not generate such
+constraints. However, a prior extension to the current substitution might have
+resulted in this situation. Indeed, in practice we will encounter several of
+these.
 
   \item 
 If it is a function type, then we clearly have a type error, because numeric and
-function types are disjoint. Again, we would never have generated such a constraint
-directly, but it must have resulted from a prior substitution.
+function types are disjoint. Again, we would never have generated such a
+constraint directly, but it must have resulted from a prior substitution.
 
 It could have been one of the two variable kinds. However, we have carefully
-arranged our constraint generator to never put these on the right-hand-side. Furthermore,
-substitution will not introduce them on the right-hand-side, either.
-Therefore, these two cases cannot occur.
+arranged our constraint generator to never put these on the right-hand-side.
+Furthermore, substitution will not introduce them on the right-hand-side,
+either. Therefore, these two cases cannot occur.
 \end{itemize}
 This results in the following code:
 \lst{15/3/2/17.rkt}
 
-Finally, we left with function types. Here the argument is almost exactly the same
-as for numeric types.
+Finally, we left with function types. Here the argument is almost exactly the
+same as for numeric types.
 \lst{15/3/2/18.rkt}
 
-Note that we do not always shrink the size of the constraint set, so a simple argument
-does not suffice for proving termination. Instead, we must make an argument
-based on the size of the constraint set, and on the size of the substitution (including the
-number of variables in it).
+Note that we do not always shrink the size of the constraint set, so a simple
+argument does not suffice for proving termination. Instead, we must make an
+argument based on the size of the constraint set, and on the size of the
+substitution (including the number of variables in it).
 
-The algorithm above is very general in that it works for all sorts of type terms,
-not only numbers and functions. We have used numbers as a stand-in for all form of
-base types; functions, similarly, stand for all constructed types, such as listof and
-vectorof.
+The algorithm above is very general in that it works for all sorts of type
+terms, not only numbers and functions. We have used numbers as a stand-in for
+all form of base types; functions, similarly, stand for all constructed types,
+such as listof and vectorof.
 
 With this, we are done. Unification produces a substitution. We can now traverse
-the substitution and find the types of all the expressions in the program, then insert the
-type annotations accordingly. A theorem, which we will not prove here, dictates that
-the success of the above process implies that the program would have typed-checked,
-so we need not explicitly run the type-checker over this program.
+the substitution and find the types of all the expressions in the program, then
+insert the type annotations accordingly. A theorem, which we will not prove
+here, dictates that the success of the above process implies that the program
+would have typed-checked, so we need not explicitly run the type-checker over
+this program.
 
 Observe, however, that the nature of a type error has now changed dramatically.
-Previously, we had a recursive-descent algorithm that walked a expressions using a
-type environment. The bindings in the type environment were programmer-declared
-types, and could hence be taken as (intended) authoritative specifications of types.
-As a result, any mismatch was blamed on the expressions, and reporting type errors
-was simple (and easy to understand). Here, however, a type error is a failure to notify.
-The unification failure is based on events that occur at the confluence of two
-smart algorithms—constraint generation and unification—and hence are not necessarily
-comprehensible to the programmer. In particular, the equational nature of these
-constraints means that the location reported for the error, and the location of the “true”
-error, could be quite far apart. As a result, producing better error messages remains an
+Previously, we had a recursive-descent algorithm that walked a expressions using
+a type environment. The bindings in the type environment were
+programmer-declared types, and could hence be taken as (intended) authoritative
+specifications of types. As a result, any mismatch was blamed on the
+expressions, and reporting type errors was simple (and easy to understand).
+Here, however, a type error is a failure to notify. The unification failure is
+based on events that occur at the confluence of two smart algorithms—constraint
+generation and unification—and hence are not necessarily comprehensible to the
+programmer. In particular, the equational nature of these constraints means that
+the location reported for the error, and the location of the “true” error, could
+be quite far apart. As a result, producing better error messages remains an
 active research area.
 \note{In practice the algorithm will maintain metadata on which program source
 terms were involved and probably on the history of unification, to be able to
 trace errors back to the source program.}
 
 Finally, remember that the constraints may not precisely dictate the type of all
-variables. If the system of equations is over-constrained, then we get clashes, resulting
-in type errors. If instead the system is under-constrained, that means we don’t have
-enough information to make definitive statements about all expressions. For instance,
-in the expression (lambda (x) x) we do not have enough constraints to indicate what
-the type of x, and hence of the entire expression, must be. This is not an error; it simply
-means that x is free to be any type at all. In other words, its type is “the type of x -> the
-type of x” with no other constraints. The types of these underconstrained identifiers are
-presented as type variables, so the above expression’s type might be reported as ('a
--> 'a).
+variables. If the system of equations is over-constrained, then we get clashes,
+resulting in type errors. If instead the system is under-constrained, that means
+we don’t have enough information to make definitive statements about all
+expressions. For instance, in the expression (lambda (x) x) we do not have
+enough constraints to indicate what the type of x, and hence of the entire
+expression, must be. This is not an error; it simply means that x is free to be
+any type at all. In other words, its type is “the type of x -> the type of x”
+with no other constraints. The types of these underconstrained identifiers are
+presented as type variables, so the above expression’s type might be reported as
+('a -> 'a).
 
-The unification algorithm actually has a wonderful property: it automatically computes
-the most general types for an expression, also known as principal types. That is,
-any actual type the expression can have can be obtained by instantiating the inferred
-type variables with actual types. This is a remarkable result: in another example of
-computers beating humans, it says that no human can generate a more general type
-than the above algorithm can!
+The unification algorithm actually has a wonderful property: it automatically
+computes the most general types for an expression, also known as principal
+types. That is, any actual type the expression can have can be obtained by
+instantiating the inferred type variables with actual types. This is a
+remarkable result: in another example of computers beating humans, it says that
+no human can generate a more general type than the above algorithm can!
 
 \secrel{Let-Polymorphism}
 
-Unfortunately, though these type variables are superficially similar to the polymorphism
-we had earlier \ref{}, they are not. Consider the following program:
+Unfortunately, though these type variables are superficially similar to the
+polymorphism we had earlier \ref{}, they are not. Consider the following
+program:
 \lst{15/3/2/19.rkt}
 If we write it with explicit type annotations, it type-checks:
 \lst{15/3/2/20.rkt}
-However, if we use type inference, it does not! That is because the 'a’s in the type
-of id unify either with boolean or with number, depending on the order in which the
-constraints are processed. At that point id effectively becomes either a (boolean ->
-boolean) or (number -> number) function. At the use of id of the other type, then,
-we get a type error!
+However, if we use type inference, it does not! That is because the 'a’s in the
+type of id unify either with boolean or with number, depending on the order in
+which the constraints are processed. At that point id effectively becomes either
+a (boolean -> boolean) or (number -> number) function. At the use of id of the
+other type, then, we get a type error!
 
-The reason for this is because the types we have inferred through unification are not
-actually polymorphic. This is important to remember: just because you type variables,
-you haven’t seen polymorphism! The type variables could be unified at the next use,
-at which point you end up with a mere monomorphic function. Rather, true polymorphism
-only obtains when you have true instantiation of type variables.
+The reason for this is because the types we have inferred through unification
+are not actually polymorphic. This is important to remember: just because you
+type variables, you haven’t seen polymorphism! The type variables could be
+unified at the next use, at which point you end up with a mere monomorphic
+function. Rather, true polymorphism only obtains when you have true
+instantiation of type variables.
 
 In languages with true polymorphism, then, constraint generation and unification
-are not enough. Instead, languages like ML, Haskell, and even our typed programming
-language, implement something colloquially called let-polymorphism. In this strategy,
-when a term with type variables is bound in a lexical context, the type is automatically
-promoted to be a quantified one. At each use, the term is effectively automatically
-instantiated.
+are not enough. Instead, languages like ML, Haskell, and even our typed
+programming language, implement something colloquially called let-polymorphism.
+In this strategy, when a term with type variables is bound in a lexical context,
+the type is automatically promoted to be a quantified one. At each use, the term
+is effectively automatically instantiated.
 
-There are many implementation strategies that will accomplish this. The most naive
-(and unsatisfying) is to merely copy the code of the bound identifier; thus, each use of
-id above gets its own copy of (lambda (x) x), so each gets its own type variables.
-The first might get the type ('a -> 'a), the second ('b -> 'b), the third ('c ->
-'c), and so on. None of these type variables clash, so we get the effect of polymorphism.
-Obviously, this not only increases program size, it also does not work in the
-presence of recursion. However, it gives us insight into a better solution: instead of
-copying the code, why not just copy the type? Thus at each use, we create a renamed
-copy of the inferred type: id’s ('a -> 'a) becomes ('b -> 'b) at the first use, and
-so on, thus achieving the same effect as copying code but without its burdens. Because
-all these strategies effectively mimic copying code, however, they only work within a
-lexical context.
+There are many implementation strategies that will accomplish this. The most
+naive (and unsatisfying) is to merely copy the code of the bound identifier;
+thus, each use of id above gets its own copy of (lambda (x) x), so each gets its
+own type variables. The first might get the type ('a -> 'a), the second ('b ->
+'b), the third ('c -> 'c), and so on. None of these type variables clash, so we
+get the effect of polymorphism. Obviously, this not only increases program size,
+it also does not work in the presence of recursion. However, it gives us insight
+into a better solution: instead of copying the code, why not just copy the type?
+Thus at each use, we create a renamed copy of the inferred type: id’s ('a -> 'a)
+becomes ('b -> 'b) at the first use, and so on, thus achieving the same effect
+as copying code but without its burdens. Because all these strategies
+effectively mimic copying code, however, they only work within a lexical
+context.
 
 \secup
