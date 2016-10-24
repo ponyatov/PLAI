@@ -7,17 +7,17 @@ mutation). We’ve chosen to implement the mapping through a data structure,
 but...do we have another way to represent maps? As functions, of course! An
 environment, then, is a function that takes a name as an argument and return its
 bound value (or an error):
-\lsts{src/12/4/1.rkt}{rkt}
+\lsts{12/4/1.rkt}{rkt}
 What is the empty environment? It’s the one that returns an error no matter what
 name you try to look up:
-\lsts{src/12/4/2.rkt}{rkt}
+\lsts{12/4/2.rkt}{rkt}
 (In principle we should put a type annotation on the return, and it should be
 Value, except of course thiis is vacuous.) Extending an environment with a
 binding creates a function that takes a name and checks whether it is the name
 just extended; if so it returns the corresponding value, otherwise it punts to
 the environment being extended:
-\lsts{src/12/4/3.rkt}{rkt}
+\lsts{12/4/3.rkt}{rkt}
 Finally, how do we look up a name in an environment? We simply apply the
 environment!
-\lsts{src/12/4/4.rkt}{rkt}
+\lsts{12/4/4.rkt}{rkt}
 And with that, we’re done!

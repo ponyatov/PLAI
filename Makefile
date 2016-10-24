@@ -183,14 +183,14 @@ TEX += 11/4/3/central.tex
 TEX += 11/5/conserva.tex
 TEX += 11/6/precise.tex
 
-#TEX += 12/repr.tex
-#TEX += 12/1/changing.tex
-#SRC += 12/1/1.rkt
-#TEX += 12/2/errors.tex
-#TEX += 12/3/meanings.tex
-#TEX += 12/4/more.tex
-#SRC += 12/4/1.rkt 12/4/2.rkt 12/4/3.rkt 12/4/4.rkt
-#
+TEX += 12/repr.tex
+TEX += 12/1/changing.tex
+SRC += 12/1/1.rkt
+TEX += 12/2/errors.tex
+TEX += 12/3/meanings.tex
+TEX += 12/4/more.tex
+SRC += 12/4/1.rkt 12/4/2.rkt 12/4/3.rkt 12/4/4.rkt
+
 #TEX += 13/desugaring.tex
 #TEX += 13/1/first.tex
 #SRC += 13/1/1.rkt 13/1/2.rkt 13/1/3.rkt 13/1/4.rkt 
