@@ -1,1 +1,58 @@
 \secrel{16.5 Extending to Compound Data Structures  . 188}
+
+As we have already discussed, it appears easy to extend contracts to structured
+datatypes such as lists, vectors, and user-defined recursive datatypes. This
+only requires that the appropriate set of run-time observations be available.
+This will usually be the case, up to the resolution of types in the language.
+For instance, as we have discussed \ref{}, a language with datatypes does not
+require type predicates but will still offer predicates to distinguish the
+variants; this is case where type-level “contract” checking is best (and perhaps
+must) be left to the static type system, while the contacts assert more refined
+structural properties.
+
+However, this strategy can run into significant performance problems. For
+instance, suppose we built a balanced binary search-tree to perform asymptotic
+logarithmic time (in the size of the tree) insertions and lookups. Now say we
+have wrapped this tree in a suitable contract. Sadly, the mere act of checking
+the contract visits the entire tree, thereby taking linear time! Ideally,
+therefore, we would prefer a strategy whereby the contract was already
+checked—incrementally—at the time of construction, and does not need to be
+checked again at the time of lookup.
+
+Worse, both balancing and search-tree ordering are recursive properties. In
+principle, therefore, they attach to every sub-tree, and so should be applied on
+every recursive call. During insertion, which is a recursive procedure, the
+contract would be checked on every visited sub-tree. In a tree of size t, the
+contract predicate applies to a sub-tree of t 2 elements, then to a sub-sub-tree
+of t 4 elements, and so on, resulting—in the worst case—in visiting a total of t
+%  2 + t 4 +    + t t 
+elements...making our intended logarithmictime insertion process take linear
+time.
+
+In both cases, there is ready mitigation available in many cases. Each value
+needs to be associated (either intrinsically, or by storage in a hash table)
+with the set of contracts it has already passed. Then, when a contract is ready
+to apply, it first checks whether the value has already been checked and, if it
+has, does not check again. This is essentially a form of memoization of contract
+checking and can thus reduce the algorithmic complexity of checking. Again, like
+memoization, this works best when the values are immutable. If the values can
+mutate and the contracts perform arbitrary computations, it may not be sound to
+perform this optimization.
+
+There is a subtler way in which we might examine the issue of data structures.
+As an example, consider the contract we wrote earlier to check that all values
+in a numeric list are even. Suppose we have wrapped a list in this contract, but
+are interested only in the first element of the list. Naturally, we are paying
+the cost of checking all the values in the list, which may take a very long
+time. More importantly, however, a user might argue that reporting a violation
+about the second element of the list is itself a violation of our expectation
+about contract-checking, since we did not actually use that element.
+
+This suggests deferring checking even for some values that could be checked
+immediately. For instance, the entire list could be turned into a wrapped value
+containing a deferred check, and each value is checked only when it is visited.
+This strategy might be attractive, but it is not trivial to code, and especially
+runs into problems in the presence of aliasing: if two different identifiers are
+referring to the same list, one with a contract guard and the other without, we
+have to ensure both of them function as expected (which usually means we cannot
+store any mutable state in the list itself).
