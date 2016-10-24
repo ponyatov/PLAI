@@ -1,1 +1,26 @@
 \secrel{16.6 More on Contracts and Observations  189}
+
+A general problem for any contract implementation—which is exacerbated by
+complex data—is a curious one. Earlier, we complained that it was difficult to
+check function contracts because we have insufficient power to observe: all we
+can check is that a value is a function, and no more. In real languages, the
+problem for data structures is actually the opposite: we have too much ability
+to observe. For instance, if we implement a strategy of deferring checking of a
+list, we quite possibly need to use a structure to hold the actual list, and
+modify first and rest to get their values through this structure (after checking
+contracts). However, a procedure like list? might now return false rather than
+true because structures are not lists; therefore, list? needs to be re-bound to
+a procedure that also returns true on structures that represent these special
+deferredcontract lists. But the contract system author needs to also remember to
+tackle cons?, pair?, and goodness knows how many other procedures that all
+perform observations.
+
+In general, one observation is essentially impossible to “fix”: eq?. Normally,
+we have the property that every value is eq? to itself, even for functions.
+However, the wrapped value of a function is a new procedure that not only isn’t
+eq? to itself but probably shouldn’t be, because its behavior truly is different
+(though only on contract violations, and only after enough values have been
+supplied to observe the violation). However, this means that a program cannot
+surreptitiously guard itself, because the act of guarding can be observed. As a
+result, a malicious module can sometimes detect whether it is being passed
+guarded values, behaving normally when it is and abnormally only when it is not!
