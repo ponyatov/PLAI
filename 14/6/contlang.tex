@@ -1,7 +1,69 @@
-\secrel{14.6 Continuations as a Language Feature  124}
-\secdown
-\secrel{14.6.1 Presentation in the Language  125}
-\secrel{14.6.2 Defining Generators  . 126}
-\secrel{14.6.3 Defining Threads   127}
-\secrel{14.6.4 Better Primitives for Web Programming  131}
+\secrel{14.6 Continuations as a Language Feature  124}\secdown
+
+With this insight into the connection between continuations and stacks, we can
+now return to the treatment of procedures: we ignored the continuation at the
+point of closure creation and instead only used the one at the point of closure
+invocation. This of course corresponds to normal procedure behavior. But now we
+can ask, what if we use the creation-time continuation instead? This would
+correspond to maintaining a reference to (a copy of) the stack at the point of
+“procedure” creation, and when the procedure is applied, ignoring the dynamic
+evaluation and going back to the point of procedure creation.
+
+In principle, we are trying to leave lambda intact and instead give ourselves a
+language construct that corresponds to this behavior:
+\note{cc = “current continuation”}
+\lsts{14/6/1.rkt}{rkt}
+
+What this says is that either way, control will return to the expression that
+immediately surrounds the let/cc: either by falling through (because the
+continuation of the body, b, is k) or—more interestingly—by invoking the
+continuation, which discards the dynamic continuation dyn/k by simply ignoring
+it and returning to k instead.
+
+Here’s the simplest test:
+\lsts{14/6/2.rkt}{rkt}
+This confirms that if we never use the continuation, evaluation of the body
+proceeds as if the let/cc weren’t there at all (because of the ((cps b) k)). If
+we use it, the value given to the continuation returns to the point of creation:
+\lsts{14/6/3.rkt}{rkt}
+This example, of course, isn’t revealing, but consider this one:
+\lsts{14/6/4.rkt}{rkt}
+This confirms that the addition actually happens. But what about the dynamic
+continuation?
+\lsts{14/6/5.rkt}{rkt}
+This shows that the addition by 2 never happens, i.e., the dynamic continuation
+is indeed ignored. And just to be sure that the continuation at the point of
+creation is respected, observe:
+\lsts{14/6/6.rkt}{rkt}
+
+From these examples, you have probably noticed a familiar pattern: esc here is
+behaving like an exception. That is, if you do not throw an exception (in this
+case, invoke a continuation) it’s as if it’s not there, but if you do throw it,
+all pending intermediate computation is ignored and computation returns to the
+point of exception creation.
+
+\Exercise{
+Using let/cc and macros, create a throw/catch mechanism.
+}
+
+However, these examples only scratch the surface of available power, because the
+continuation at the point of invocation is always an extension of one at the
+point of creation: i.e., the latter is just earlier in the stack than the
+former. However, nothing actually demands that k and dyn-k be at all related.
+That means they are in fact free to be unrelated, which means each can be a
+distinct stack, so we can in fact easily implement stack-switching procedures
+with them.
+
+\Exercise{
+To be properly analogous to lambda, we should have introduced a construct
+called, say, cont-lambda with the following expansion:
+\lsts{14/6/7.rkt}{rkt}
+Why didn’t we? Consider both the static typing implications, and also how we
+might construct the above exception-like behaviors using this construct instead.
+}
+
+\input{14/6/1/present}
+\input{14/6/2/gens}
+\input{14/6/3/threads}
+\input{14/6/4/better}
 \secup
