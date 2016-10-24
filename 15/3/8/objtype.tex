@@ -1,1 +1,131 @@
 \secrel{15.3.8 Object Types   . . 176}
+
+As we’ve mentioned earlier, types for objects are typically riven into two
+camps: nominal and structural. Nominal types are familiar to most programmers
+through Java, so I won’t say much about them here. Structural types for objects
+dictate that an object’s type is itself a structured object, consisting of names
+of fields and their types. For instance, an object with two methods, add1 and
+sub1 \ref{}, would have the type
+\lsts{15/3/8/1.rkt}{rkt}
+(For future reference, let’s call this type addsub.) Type-checking would then
+follow along predictable lines: for field access we would simply ensure the
+field exists and would use its declared type for the dereference expression; for
+method invocation we would have to ensure not only that the member exists but
+that it has a function type. So far, so straightforward.
+
+Object types become complicated for many reasons:
+\note{Whole books are therefore devoted to this topic. Abadi and Carelli’s A
+Theory of Objects is important but now somewhat dated. Bruce’s Foundations of
+Object-Oriented Languages: Types and Semantics is more modern, and also offers
+more gentle exposition. Pierce covers all the necessary theory beautifully.}
+\begin{itemize}
+  \item 
+Self-reference. What is the type of self? It must the same type as the object
+itself, since any operation that can be applied to the object from the “outside”
+can also be applied to it from the “inside” using self. This means object types
+are recursive types.
+  \item 
+Access controls: private, public, and other restrictions. These lead to a
+distinction in the type of an object from “outside” and “inside”.
+  \item 
+Inheritance. Not only do we have to give a type to the parent object(s), what is
+visible along inheritance paths may, again, differ from what is visible from the
+“outside”.
+  \item 
+The interplay between multiple-inheritance and subtyping.
+  \item 
+The relationship between classes and interfaces in languages like Java, which
+has a run-time cost.
+  \item 
+Mutation.
+  \item 
+Casts.
+  \item 
+Snakes on a plane.
+\end{itemize}
+and so on. Some of these problems simplify in the presence of nominal types,
+because given a type’s name we can determine everything about its behavior (the
+type declarations effectively become a dictionary through which the object’s
+description can be looked up on demand), which is one argument in favor of
+nominal typing.
+\note{Note that Java’s approach is not the only way to build a nominal type
+system. We have already argued that Java’s class system needlessly restricts the
+expressive power of programmers \ref{}; in turn, Java’s nominal type system
+needlessly conflates types (which are interface descriptions) and
+implementations. It is, therefore, possible to have much better nominal type
+systems than Java’s. Scala, for instance, takes significant steps in this
+direction.}
+
+A full exposition of these issues will take much more room than we have here.
+For now, we will limit ourselves to one interesting question. Remember that we
+said subtyping forces us to consider every type constructor? The structural
+typing of objects introduces one more: the object type constructor. We therefore
+have to understand its interaction with subtyping.
+
+Before we do, let’s make sure we understand what an object type even means.
+Consider the type addsub above, which lists two methods. What objects can be
+given this type? Obviously, an object with just those two methods, with
+precisely those two types, is eligible. Equally obviously, an object with only
+one and not the other of those two methods, no matter what else it has, is not.
+But the phrase “no matter what else it has” is meant to be leading. What if an
+object represents an arithmetic package that also contains methods + and *, in
+addition to the above two (all of the appropriate type)? In that case we
+certainly have an object that can supply those two methods, so the arithmetic
+package certainly has type addsub. Its other methods are simply inaccessible
+using type addsub.
+
+Let us write out the type of this package, in full, and call this type as+*:
+\lsts{15/3/8/2.rkt}{rkt}
+What we have just argued is that an object of type as+* should also be allowed
+to claim the type addsub, which means it can be substituted in any context
+expecting a value of type addsub. In other words, we have just said that we want
+as+* <: addsub:
+\lsts{15/3/8/3.rkt}{rkt}
+This may momentarily look confusing: we’ve said that subtyping follows set
+inclusion, so we would expect the smaller set on the left and the larger set on
+the right. Yet, it looks like we have a “larger type” (certainly in terms of
+character count) on the left and a “smaller type” on the right.
+
+To understand why this is sound, it helps to develop the intuition that the
+“larger” the type, the fewer values it can have. Every object that has the four
+methods on the left clearly also has the two methods on the right. However,
+there are many objects that have the two methods on the right that fail to have
+all four on the left. If we think of a type as a constraint on acceptable value
+shapes, the “bigger” type imposes more constraints and hence admits fewer
+values. Thus, though the types may appear to be of the wrong sizes, everything
+is well because the sets of values they subscribe are of the expected sizes.
+
+More generally, this says that by dropping fields from an object’s type, we
+obtain a supertype. This is called width subtyping, because the subtype is
+“wider”, and we move up the subtyping hierarchy by adjusting the object’s
+“width”. We see this even in the nominal world of Java: as we go up the
+inheritance chain a class has fewer and fewer methods and fields, until we reach
+Object, the supertype of all classes, which has the fewest. Thus for all class
+types C in Java, C <: Object.
+\note{Somewhat confusingly, the terms narrowing and widening are sometimes used,
+but with what some might consider the opposite meaning.
+To widen is to go from subtype to supertype, because it goes from a “narrower”
+(smaller) to a “wider” (bigger) set. These terms evolved independently, but
+unfortunately not consistently.}
+
+As you might expect, there is another important form of subtyping, which is
+within a given member. This simply says that any particular member can be
+subsumed to a supertype in its corresponding position. For obvious reasons, this
+form is called depth subtyping.
+
+\Exercise{
+Construct two examples of depth subtyping. In one, give the field itself an
+object type, and use width subtyping to subtype that field. In the other, give
+the field a function type.
+}
+
+Java has limited depth subtyping, preferring types to be invariant down the
+object hierarchy because this is a safe option for conventional mutation.
+
+The combination of width and depth subtyping cover the most interesting cases of
+object subtyping. A type system that implemented only these two would, however,
+needlessly annoy programmers. Other convenient (and mathematically necessary)
+rules include the ability to permute names, reflexivity (every type is a subtype
+of itself, because it is more convenient to interpret the subtype relationship
+as $\subseteq$), and transitivity. Languages like Typed JavaScript employ all
+these features to provide maximum flexibility to programmers.
