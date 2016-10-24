@@ -1,1 +1,57 @@
 \secrel{16.8 Combining Contracts   . . 190}
+
+Now that we’ve discussed combinators for all the basic datatypes, it’s natural
+to discuss combining contracts. Just as we saw unions \ref{}\ and intersections
+\ref{}\ for types, we should be considering unions and intersections
+(respectively, “or”s and “and”s), ; for that matter, we might also consider
+negation. However, contracts are only superficially like types, so we have to
+consider these questions in their own light for contracts rather than try to map
+the meanings we have learned from types to the sphere of contracts.
+
+As always, the immediate case is straightforward. Union contracts combine with
+disjunction—indeed, being predicates, their results can literally be combined
+with or— and intersection contracts with conjunction. We apply the predicates in
+turn, with shortcircuiting, and either generate an error or return the
+contracted value. Intersection contracts combine with conjunction (and). And
+negation contracts are simply the original immediate contract applied and the
+decision negated (with not).
+
+Contract combination is much harder in the deferred, higher-order case. For
+instance, consider the negation of a function contract from numbers to numbers.
+What exactly does it mean to negate it? Does it mean the function should not
+accept numbers? Or that if it does, it should not produce them? Or both? And in
+particular, how do we enforce such a contract? How, for instance, do we check
+that a function does not accept numbers—are we expecting that when given a
+number, it produces an error? But now consider the identity function wrapped
+with such a contract; since it clearly does not result in an error when given a
+number (or indeed any other value), does that mean we should wait until it
+produces a value, and if it does produce a number, reject it? But worst of all,
+note that this means we will be running functions on domains on which they are
+not defined: a sure recipe for destroying program invariants, polluting the
+heap, or crashing the program.
+
+Intersection contracts require values to pass all the sub-contracts. This means
+rewrapping the higher-order value in something that checks all the domain
+sub-contracts as well as all the range sub-contracts. Failing to meet even one
+sub-contract means the value has failed the entire intersction.
+
+Union contracts are more subtle, because failing to meet any one sub-contract is
+not grounds for rejection. Rather, it simply means that that one sub-contract is
+no longer a candidate contract representing the wrapped value; the other
+sub-contracts might still be candidates, and only when no others are left must
+be reject the value. This means the implementation of union contracts must
+maintain memory of which sub-contracts have and have not yet passed—memory, in
+this case, being a sophisticated term for the use of mutation. As each
+sub-contract fails, it is removed from the list of candidates, while all the
+remaining ones continue to applied. When no candidates remain, the contract
+system must report a violation. The error report would presumably provide the
+actual values that eliminated each part of each sub-contract (keeping in mind
+that these may be nested multiple functions deep).
+\note{In a multi-threaded language like Racket, this also requires locks to
+avoid race conditions.}
+
+The implemented versions of contract constructors and combinators in Racket
+place restrictions on the acceptable forms of sub-contracts. These enable
+implementations that are both efficient and yield useful error messages.
+Furthermore, the more extreme situations discussed above rarely occur in
+practice—though now you know how to implement them if you need to.
