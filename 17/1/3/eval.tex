@@ -1,1 +1,44 @@
-\secrel{17.1.3 What Causes Evaluation? . . . . . . . . . . . . . . . . . . . 198}
+\secrel{17.1.3 What Causes Evaluation? . 198}
+
+Let us now return to discussing arithmetic expressions. On evaluating (+ 1 2), a
+lazy application interpreter could return any number of things, including
+(suspendV (+ 1 2) mt-env). In this way suspended computation could cascade on
+suspended computation, and in the limiting case every program would return
+immediately with an “answer”: the thunk representing the suspension of its
+computation.
+\note{It is legitimate to write mt-env here because even if the (+ 1 2)
+expression was written in a non-empty environment, it has no free identifiers,
+so it doesn’t need any of the environment’s bindings.}
+
+Clearly, something must force a suspension to be lifted. (Lifting a suspension
+means, of course, evaluating its body in the stored environment.) Those
+expression positions that undo suspensions are called strictness points. The
+most obvious strictness point is the interactive environment’s printer, because
+a user clearly would not use such an environment if they did not wish to see
+answers. We will embody the act of lifting suspension in the procedure strict:
+\lsts{17/1/3/1.rkt}{rkt}
+where the returned Value is guaranteed to not be a suspendV. We can imagine the
+printer as wrapping strict around the result of evaluating the program, to
+obtain a value to print.
+
+\DoNow{
+What impact would using closures to represent suspended computation have had?
+}
+
+The definition of strict above depends crucially on being able to distinguish
+deferred computations—which are internally-constructed closures—from
+user-defined closures. Had we conflated the two, then we would have to guess
+what to do with zero-argument closures. If we fail to further process them, we
+might incorrectly get an error (e.g., + might get a thunk rather than the
+numeric value residing inside it). If we do process it further, we might
+accidentally force a user-defined thunk prematurely. In short, we need a flag on
+thunks telling us whether they are internal or user-defined. For clarity, our
+interpreter uses a separate variant.
+
+Let us now return to the interaction between strict and the interpreter.
+Unfortunately, as we have defined things, this will cause an infinite loop. The
+act of trying to interpret an addition creates a suspension, which strict tries
+to undo by forcing the interpreter to interpret an addition, which.... Clearly,
+therefore, we cannot have every expression simply suspend its computation;
+instead, we will limit suspension to applications. This suffices to give us the
+rich power of laziness, without making the language absurd.
