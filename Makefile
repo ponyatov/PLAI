@@ -108,16 +108,16 @@ SRC += 8/2/3/5.rkt 8/2/3/6.rkt 8/2/3/7.rkt 8/2/3/8.rkt
 TEX += 8/3/design.tex 8/4/pars.tex
 SRC += 8/4/1.rkt 8/4/2.rkt
 
-#TEX += 9/recursion.tex
-#TEX += 9/1_data.tex
-#SRC += 9/1/1.rkt 9/1/2.rkt 9/1/3.rkt 9/1/4.rkt 
-#TEX += 9/2_funcs.tex
-#SRC += 9/2/1.rkt 9/2/2.rkt 9/2/3.rkt 9/2/4.rkt    
-#TEX += 9/3_premat.tex
-#SRC += 9/3/1.rkt 9/3/2.rkt 9/3/3.rkt 
-#SRC += 9/3/4.rkt 9/3/5.rkt 9/3/6.rkt  
-#TEX += 9/4_wostate.tex
-#
+TEX += 9/recursion.tex
+TEX += 9/1/data.tex
+SRC += 9/1/1.rkt 9/1/2.rkt 9/1/3.rkt 9/1/4.rkt 
+TEX += 9/2/funcs.tex
+SRC += 9/2/1.rkt 9/2/2.rkt 9/2/3.rkt 9/2/4.rkt    
+TEX += 9/3/premat.tex
+SRC += 9/3/1.rkt 9/3/2.rkt 9/3/3.rkt 
+SRC += 9/3/4.rkt 9/3/5.rkt 9/3/6.rkt  
+TEX += 9/4/wostate.tex
+
 #TEX += 10/objects.tex
 #TEX += 10/1_woinher.tex
 #

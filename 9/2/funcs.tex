@@ -7,7 +7,7 @@ that only check for 0, as described earlier: section 5), so we can write
 non-trivial programs that terminate.
 
 Let’s now try to write a recursive factorial:
-\lsts{src/9/2/1.rkt}{rkt}
+\lsts{9/2/1.rkt}{rkt}
 But this doesn’t work at all! The inner fact gives an unbound identifier error,
 just as in our cyclic datum example.
 
@@ -27,15 +27,15 @@ The means to do so is now clear: the problem is the same one we diagnosed
 before, so we can reuse the same solution. We again have to follow a three-step
 process: first create a placeholder, then refer to the placeholder where we want
 the cyclic reference, and finally mutate the placeholder before use. Thus:
-\lsts{src/9/2/2.rkt}{rkt}
+\lsts{9/2/2.rkt}{rkt}
 In fact, we don’t even need fact-fun: I’ve used that binding just for clarity.
 Observe that because it isn’t recursive, and we have identifiers rather than
 variables, its use can simply be substituted with its value:
-\lsts{src/9/2/3.rkt}{rkt}
+\lsts{9/2/3.rkt}{rkt}
 There is the small nuisance of having to repeatedly unbox fact. In a language
 with variables, this would be even more seamless:
 \note{ Indeed, one use for variables is that they simplify the desguaring of the
 above pattern, instead of requiring every use of a cyclically-bound identifier
 to be unboxed. On the other hand, with a little extra effort the desugaring
 process could take care of doing the unboxing, too.}
-\lsts{src/9/2/4.rkt}{rkt}
+\lsts{9/2/4.rkt}{rkt}

@@ -3,14 +3,14 @@
 Our preceding discussion of this pattern shows a clear temporal sequencing:
 create, update, use. We can capture it in a desugaring rule. Suppose we add the
 following new syntax:
-\lsts{src/9/3/1.rkt}{rkt}
+\lsts{9/3/1.rkt}{rkt}
 As an example of its use,
-\lsts{src/9/3/2.rkt}{rkt}
+\lsts{9/3/2.rkt}{rkt}
 would evaluate to the factorial of 10. This new syntax would desugar to:
-\lsts{src/9/3/3.rkt}{rkt}
+\lsts{9/3/3.rkt}{rkt}
 Where we assume that all references to name in value and body have been
 rewritten to (unbox name), or alternatively that we instead use variables:
-\lsts{src/9/3/4.rkt}{rkt}
+\lsts{9/3/4.rkt}{rkt}
 
 This naturally inspires a question: what if we get these out of order? Most
 interestingly, what if we try to use name before we’re done updating its true
@@ -18,9 +18,9 @@ value into place? Then we observe the state of the system right after creation,
 i.e., we can see the placeholder in its raw form.
 
 The simplest example that demonstrates this is as follows:
-\lsts{src/9/3/5.rkt}{rkt}
+\lsts{9/3/5.rkt}{rkt}
 or equivalently,
-\lsts{src/9/3/6.rkt}{rkt}
+\lsts{9/3/6.rkt}{rkt}
 In most Racket variants, this leaks the initial value given to the placeholder—a
 value that was never meant for public consumption. This is troubling because it
 is, after all, a legitimate value, which means it can probably be used in at
