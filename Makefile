@@ -245,6 +245,9 @@ SRC += 14/2/3/1.rkt 14/2/3/2.rkt 14/2/3/3.rkt 14/2/3/4.rkt
 SRC += 14/2/3/5.rkt 14/2/3/6.rkt 14/2/3/7.rkt 
 
 TEX += 14/3/gens.tex
+TEX += 14/3/1/vars.tex
+TEX += 14/3/2/gens.tex
+
 TEX += 14/4/cont.tex
 TEX += 14/5/tailcalls.tex
 TEX += 14/6/contlang.tex

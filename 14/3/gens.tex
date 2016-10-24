@@ -1,5 +1,13 @@
 \secrel{14.3 Generators   . . 117}
+
+Many programming languages now have a notion of generators. A generator is like
+a procedure, in that one can invoke it in an application. Whereas a regular
+procedure always begins execution at the beginning, a generator resumes from
+where it last left off. Of course, that means a generator needs a notion of
+“exiting before it’s done”. This is known as yielding, namely returning control
+to whatever called it.
+
 \secdown
-\secrel{14.3.1 Design Variations   117}
-\secrel{14.3.2 Implementing Generators  . . 119}
+\input{14/3/1/vars}
+\input{14/3/2/gens}
 \secup
