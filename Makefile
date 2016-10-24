@@ -239,6 +239,7 @@ SRC += 14/2/1/9.rkt 14/2/1/10.rkt 14/2/1/11.rkt 14/2/1/12.rkt
 SRC += 14/2/1/13.rkt 14/2/1/14.rkt 14/2/1/15.rkt 14/2/1/16.rkt 
 SRC += 14/2/1/7.rkt 14/2/1/18.rkt 
 TEX += 14/2/2/conv.tex
+SRC += 14/2/2/1.rkt 14/2/2/2.rkt 
 TEX += 14/2/3/core.tex
 
 TEX += 14/3/gens.tex

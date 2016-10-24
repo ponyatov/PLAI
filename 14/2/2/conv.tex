@@ -1,1 +1,25 @@
 \secrel{14.2.2 Converting the Example  . . 114}
+
+Let’s consider the example above and see what it converts to. You can either do
+this by hand, or take the easy way out and employ the Macro Stepper of DrRacket.
+Assuming we include the application to identity contained in run, we get:
+\note{For now, you need to put the code in \#lang racket to get the full force
+of the Macro Stepper.}
+\lsts{14/2/2/1.rkt}{rkt}
+What! This isn’t at all the version we wrote by hand!
+
+In fact, this program is full of so-called administrative lambdas that were
+introduced by the particular CPS algorithm we used. Fear not! If we stepwise
+apply each of these lambdas and substitute, however\ ---
+\note{Designing better
+CPS algorithms, that
+eliminate needless
+administrative
+lambdas, is
+therefore an
+ongoing and open
+research question.}
+\DoNow{Do it!}
+--- the program reduces to
+\lsts{14/2/2/2.rkt}{rkt}
+which is precisely what we wanted.
