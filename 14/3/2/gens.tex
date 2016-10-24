@@ -1,1 +1,96 @@
 \secrel{14.3.2 Implementing Generators  . . 119}
+
+To implement generators, it will be especially useful to employ our CPS macro
+language. Let’s first decide where we stand regarding the above design
+decisions. We will use the applicative representation of generators: that is,
+asking for the next value from the generator is done by applying it to any
+necessary arguments. Similarly, the yielder will also be an applicable value and
+will in turn be an expression. Though we have already seen how macros can
+automatically capture a name \ref{}, let’s make the yielder’s name explicit to
+keep the macro simpler. Finally, we’ll raise an error when the generator is done
+executing.
+
+How do generators work? To yield, a generator must
+\begin{itemize}[nosep]
+\item remember where in its execution it currently is, and
+\item know where in its caller it should return to.
+\end{itemize}
+while, when invoked, it should
+\begin{itemize}[nosep]
+  \item 
+remember where in its execution its caller currently is, and
+  \item 
+know where in its body it should return to.
+\end{itemize}
+Observe the duality between invocation and yielding.
+
+As you might guess, these “where”s correspond to continuations.
+
+Let’s build up the generator rule of the cps macro incrementally. First a header
+pattern:
+\lsts{14/3/2/1.rkt}{rkt}
+
+The beginning of the body is easy: all code in CPS needs to consume a
+continuation, and because a generator is a value, this value should be supplied
+to the continuation:
+\lsts{14/3/2/2.rkt}{rkt}
+
+Now we’re ready to tackle the heart of the generator.
+
+Recall that a generator is an applicable value. That means it can occur in an
+application position, and must therefore have the same “interface” as a
+procedure: a procedure of two arguments, the first a value and the second the
+continuation at the point of application. What should this procedure do? We’ve
+described just this above. First the generator must remember where the caller is
+in its execution, which is precisely the continuation at the point of
+application; “remember” here most simply means “must be stored in state”. Then,
+the generator should return to where it previously was, i.e., its own
+continuation, which must clearly have been stored. Therefore the core of the
+applicable value is:
+\lsts{14/3/2/3.rkt}{rkt}
+
+Here, where-to-go records the continuation of the caller, to resume it upon
+yielding; resumer is the local continuation of the generator. Let’s think about
+what their initial values must be:
+\begin{itemize}
+  \item 
+where-to-go has no initial value (because the generator has yet to be invoked),
+so it needs to throw an error if ever used. Fortunately this error will never
+occur, because where-to-go is mutated on the first entry into the generator, so
+the error is just a safeguard against bugs in the implementation.
+  \item 
+Initially, the rest of the generator is the whole generator, so resumer should
+be bound to the (CPS of) b. What is its continuation? This is the continuation
+of the entire generator, i.e., what to do when the generator finishes. We’ve
+agreed that this should also signal an error (except in this case the error
+truly can occur, in case the generator is asked to produce more values than it’s
+equipped to).
+\end{itemize}
+
+We still need to bind yield. It is, as we’ve pointed out, symmetric to generator
+resumption: save the local continuation in resumer and return by applying
+where-to-go.
+
+Putting together these pieces, we get:
+\lsts{14/3/2/4.rkt}{rkt}
+
+\DoNow{
+Why this pattern of let and letrec instead of let?
+}
+
+Observe the dependencies between these code fragments. where-to-go doesn’t
+depend on either of resumer or yield. yield clearly depends on both where-to-go
+and resumer. But why are resumer and yield mutually referential?
+
+\DoNow{
+Try the alternative!
+}
+
+The subtle dependency you may be missing is that resumer contains b, the body of
+the generator, which may contain references to yield. Therefore, it needs to be
+closed over the binding of the yielder.
+
+\Exercise{
+How do generators differ from coroutines and threads? Implement coroutines and
+threads using a similar strategy.
+}
