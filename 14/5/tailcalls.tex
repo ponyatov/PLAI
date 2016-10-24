@@ -1,1 +1,55 @@
 \secrel{14.5 Tail Calls   . . 123}
+
+Observe that the stack patterns above add a frame to the current stack, perform
+some evaluation, and eventually always return to the current stack. In
+particular, observe that in an application, we need stack space to evaluate the
+function position and then the arguments, but once all these are evaluated, we
+resume computation using the stack we started out with before the application.
+In other words, function calls do not themselves need to consume stack space: we
+only need space to compute the arguments.
+
+However, not all languages observe or respect this property. In languages that
+do, programmers can use recursion to obtain iterative behavior: i.e., a sequence
+of function calls can consume no more stack space than no function calls at all.
+This removes the need to create special looping constructs; indeed, loops can
+simply be expressed as a syntactic sugar.
+
+Of course, this property does not apply in general. If a call to f is performed
+to compute an argument to a call to g, the call to f is still consuming space
+relative to the context surrounding g. Thus, we should really speak of a
+relationship between expressions: one expression is in tail position relative to
+another if its evaluation requires no additional stack space beyond the other.
+In our CPS macro, every expression that uses k as its continuation—such as a
+function application after all the sub-expressions have been evaluated, or the
+then- and else-branches of a conditional—are all in tail position relative to
+the enclosing application (and perhaps recursively further up). In contrast,
+every expression that has to create a new stack frame is not in tail position.
+
+Some languages have special support for tail recursion: when a procedure calls
+itself in tail position relative to its body. This is obviously useful, because
+it enables recursion to efficiently implement loops. However, it hurts “loops”
+that cannot be squeezed into a single recursive function. For instance, when
+implementing a scanner or other state machine, it is most convenient to have a
+set of functions each representing one state, and transitioning to other states
+by making (tail) function calls. It is onerous (and misses the point) to turn
+these into a single recursive function. If, however, a language recognizes tail
+calls as such, it can optimize these cross-function calls just as much as it
+does intra-function ones.
+
+Racket, in particular, promises to implement tail calls without allocating
+additional stack space. Though some people refer to this as “tail call
+optimization”, this term is misleading: an optimization is optional, whereas
+whether or not a language promises to properly implement tail calls is a
+semantic feature. Developers need to know how the language will behave because
+it affects how they program.
+
+Because of this feature, observe something interesting about the program after
+CPS transformation: all of its function applications are themselves tail calls!
+You can see this starting with the read-number/suspend example that began this
+chapter: any pending computation was put into the continuation argument.
+Assuming the program might terminate at any call is tantamount to not using any
+stack space at all (because the stack would get wiped out).
+
+\Exercise{
+How is the program able to function in the absence of a stack?
+}
