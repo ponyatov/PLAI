@@ -1,5 +1,26 @@
-\secrel{17.1 Lazy Application . . . . . . . . . . . . . . . . . . . . . . . . . . . . 196}
+\secrel{17.1 Lazy Application 196}
 \secdown
+
+Let’s start by considering when parameters are reduced to values. That is, do we
+substitute formal parameters with the value of the actual parameter, or with the
+actual parameter expression itself? If we define
+\lsts{17/1/1.rkt}{rkt}
+and invoke it as
+\lsts{17/1/2.rkt}{rkt}
+does that reduce to
+\lsts{17/1/3.rkt}{rkt}
+or to
+\lsts{17/1/4.rkt}{rkt}
+? The former is called eager application, while the latter is lazy. Of course we
+don’t want to return to defining interpreters by substitution, but it is always
+useful to think of substitution as a design principle.
+\note{Some people also use the term strict for the former. A more arcane
+terminology is applicative-order evaluation for the former and normal-order
+evaluation for the latter. Or, call-by-value for the former and call-by-name or
+call-by-need for the latter. The last two terms—by-name versus by-need—actually
+represent a technical distinction we will see below.
+This concludes our name-dump.}
+
 \input{17/1/1/lazy}
 \input{17/1/2/vals}
 \input{17/1/3/eval}
