@@ -1,4 +1,29 @@
 \secrel{17 Alternate Application Semantics 195}\secdown
+
+Long ago \ref{}, we considered the question of what to substitute when
+performing application. Now we are ready to consider some alternatives. At the
+time, we suggested just one alternative; in fact there are many more. To
+understand this, see whether you can answer this question:
+
+Which of these is the same?
+\begin{itemize}[nosep]
+  \item 
+(f x (current-seconds))
+  \item 
+(f x (current-seconds))
+  \item 
+(f x (current-seconds))
+\item
+(f x (current-seconds))
+\end{itemize}
+
+What we’re about to find is that this fragment of syntax can have wildly
+different run-time behaviors. For instance, there is the distinction we have
+already mentioned: variation in when (current-seconds) is evaluated. There is
+variation in how many times it is evaluated (and hence f is run). There is even
+variation even in whether values for x flow strictly from the caller to the
+callee, or can even flow in the opposite direction!
+
 \input{17/1/lazy}
 \input{17/2/reactive}
 \secup
