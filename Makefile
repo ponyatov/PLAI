@@ -271,10 +271,12 @@ TEX += 15/1/types.tex
 SRC += 15/1/1.rkt 15/1/2.rkt 15/1/3.rkt 
 
 TEX += 15/2/classview.tex
+
 TEX += 15/2/1/simple.tex
 SRC += 15/2/1/1.rkt 15/2/1/2.rkt 15/2/1/3.rkt 15/2/1/4.rkt 15/2/1/5.rkt 
 SRC += 15/2/1/6.rkt 15/2/1/7.rkt 15/2/1/8.rkt 15/2/1/9.rkt 15/2/1/10.rkt 
 SRC += 15/2/1/11.rkt 15/2/1/12.rkt 15/2/1/13.rkt 15/2/1/14.rkt 
+
 TEX += 15/2/2/type.tex
 TEX += 15/2/3/rcode.tex
 SRC += 15/2/3/1.rkt 15/2/3/2.rkt 15/2/3/3.rkt 
@@ -287,17 +289,26 @@ SRC += 15/2/6/1.rkt 15/2/6/2.rkt
 TEX += 15/2/7/central.tex
 
 TEX += 15/3/exts.tex
+
 TEX += 15/3/1/explicit.tex
 SRC += 15/3/1/1.rkt 15/3/1/2.rkt 15/3/1/3.rkt 15/3/1/4.rkt
 SRC += 15/3/1/5.rkt 15/3/1/6.rkt 15/3/1/7.rkt 15/3/1/8.rkt
 SRC += 15/3/1/9.rkt 15/3/1/10.rkt 15/3/1/11.rkt 15/3/1/12.rkt
 SRC += 15/3/1/13.rkt 15/3/1/14.rkt 15/3/1/15.rkt 15/3/1/16.rkt
+
 TEX += 15/3/2/infer.tex
 SRC += 15/3/2/1.rkt 15/3/2/2.rkt 15/3/2/3.rkt 15/3/2/4.rkt 15/3/2/5.rkt 
 SRC += 15/3/2/6.rkt 15/3/2/7.rkt 15/3/2/8.rkt 15/3/2/9.rkt 15/3/2/10.rkt 
 SRC += 15/3/2/11.rkt 15/3/2/12.rkt 15/3/2/13.rkt 15/3/2/14.rkt 15/3/2/15.rkt 
 SRC += 15/3/2/16.rkt 15/3/2/17.rkt 15/3/2/18.rkt 15/3/2/19.rkt 15/3/2/20.rkt 
+
 TEX += 15/3/3/union.tex
+SRC += 15/3/3/1.rkt 15/3/3/2.rkt 15/3/3/3.rkt 15/3/3/4.rkt 15/3/3/5.rkt 
+SRC += 15/3/3/6.rkt 15/3/3/7.rkt 15/3/3/8.rkt 15/3/3/9.rkt 15/3/3/10.rkt 
+SRC += 15/3/3/10.rkt 15/3/3/11.rkt 15/3/3/12.rkt 15/3/3/13.rkt 15/3/3/14.rkt 
+SRC += 15/3/3/15.rkt 15/3/3/16.rkt 15/3/3/17.rkt 15/3/3/18.rkt 15/3/3/19.java 
+SRC += 15/3/3/20.java 15/3/3/21.rkt 15/3/3/22.rkt 15/3/3/23.rkt
+ 
 TEX += 15/3/4/nominal.tex
 TEX += 15/3/5/intersec.tex
 TEX += 15/3/6/rectype.tex

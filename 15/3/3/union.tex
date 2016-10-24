@@ -1,1 +1,235 @@
 \secrel{15.3.3 Union Types   . . 164}
+
+Suppose we want to construct a list of zoo animals, of which there are many
+kinds: armadillos, boa constrictors, and so on. Currently, we are forced to
+create a new datatype:
+\note{“In Texas, there ain’t nothing in the middle of the road but a yellow line
+and dead armadillos.”—Jim Hightower}
+\lsts{15/3/3/1.rkt}{rkt}
+and make a list of these: (listof Animal). The type Animal therefore represents
+a “union” of armadillo and boa, except the only way to construct such unions is
+to make a new type every time: if we want to represent the union of animals and
+plants, we need
+\lsts{15/3/3/2.rkt}{rkt}
+so an actual animal is now one extra “level” deep. These datatypes are called
+tagged unions or discriminated unions, because we must introduce explicit tags
+(or discriminators), such as animal and plant, to tell them apart. In turn, a
+structure can only reside inside a datatype declaration; we have had to create
+datatypes with just one variant, such as
+\lsts{15/3/3/3.rkt}{rkt}
+to hold the datatype, and everywhere we’ve had to use the type Constraints
+because eqCon is not itself a type, only a variant that can be distinguished at
+run-time.
+
+Either way, the point of a union type is to represent a disjunction, or “or”. A
+value’s type is one of the types in the union. A value usually belongs to only
+one of the types in the union, though this is a function of precisely how the
+union types are defined, whether there are rules for normalizing them, and so
+on.
+
+\secdown
+
+\secrel{Structures as Types}
+
+A natural reaction to this might be, why not lift this restriction? Why not
+allow each structure to exist on its own, and define a type to be a union of
+some collection of structures? After all, in languages ranging from C to Racket,
+programmers can define stand-alone structures without having to wrap them in
+some other type with a tag constructor! For instance, in raw Racket, we can
+write
+\lsts{15/3/3/4.rkt}{rkt}
+and a comment that says
+\lsts{15/3/3/5.rkt}{rkt}
+but without enforced static types, the comparison is messy. However, we can more
+directly compare with Typed Racket, a typed form of Racket that is built into
+DrRacket. Here is the same typed code:
+\lsts{15/3/3/6.rkt}{rkt}
+We can now define functions that consume values of type boa without any
+reference to armadillos:
+\lsts{15/3/3/7.rkt}{rkt}
+In fact, if we apply this function to any other type, including an
+armadillo—(big-one? (armadillo true))—we get a static error. This is because
+armadillos are no more related to boas than numbers or strings are.
+
+Of course, we can still define a union of these types:
+\lsts{15/3/3/8.rkt}{rkt}
+and functions over it:
+\lsts{15/3/3/9.rkt}{rkt}
+Whereas before we had one type with two variants, now we have three types. It
+just so happens that two of the types form a union of convenience to define a
+third.
+
+\secrel{Untagged Unions}
+
+It might appear that we still need to have discriminative tags, but we don’t. In
+languages with union types, the effect of the optionof type constructor is often
+obtained by combining the intended return type with a disjoint one representing
+failure or noneness. For instance, here is the moral equivalent of (optionof
+number):
+\lsts{15/3/3/10.rkt}{rkt}
+For that matter, Boolean may itself be a union of True and False, as it is in
+Typed Racket, so a more accurate simulation of the option type would be:
+\lsts{15/3/3/11.rkt}{rkt}
+
+More generally, we could define
+\lsts{15/3/3/12.rkt}{rkt}
+which would work for all types, because none is a new, distinct type that cannot
+be confused for any other. This gives us the same benefit as the optionof type,
+except the value we want is not buried one level deep inside a some structure,
+but is rather available immediately. For instance, consider member, which has
+this Typed Racket type:
+\lsts{15/3/3/13.rkt}{rkt}
+If the element is not found, member returns false. Otherwise, it returns the
+list starting from the element onward (i.e., the first element of the list will
+be the desired element):
+\lst{15/3/3/14.rkt}
+To convert this to use Maybeof, we can write
+\lsts{15/3/3/15.rkt}{rkt}
+which, if the element is not found, returns the value (none), but if it is
+found, still returns a list
+\lsts{15/3/3/16.rkt}{rkt}
+so that there is no need to remove the list from a some wrapper.
+
+\secrel{Discriminating Untagged Unions}
+
+It’s one thing to put values into unions; we have to also consider how to take
+them out, in a well-typed manner. In our ML-like type system, we use a stylized
+notation— type-case in our language, pattern-matching in ML—to identify and pull
+apart the pieces. In particular, when we write
+\lsts{15/3/3/17.rkt}{rkt}
+the type of a remains the same in the entire expression. The identifiers a? and
+l are bound to a boolean and numeric value, respectively, and big-one? must now
+be written to consume those types, not armadillo and boa. Put in different
+terms, we cannot have a function big-one? that consumes boas, because there is
+no such type.
+
+In contrast, with union types, we do have the boa type. Therefore, we follow the
+principle that the act of asking predicates of a value narrows the type. For
+instance, in the cond case
+\lsts{15/3/3/18.rkt}{rkt}
+though a begins as type Animal, after it passes the boa? test, the type checker
+is expected to narrow its type to just the boa branch, so that the application
+of big-one? is well-typed. In turn, in the rest of the conditional its type is
+not boa—in this case, that leaves only one possibility, armadillo. This puts
+greater pressure on the typechecker’s ability to test and recognize certain
+patterns—known as if-splitting—without which it would be impossible to program
+with union types; but it can always default to recognizing just those patterns
+that the ML-like system would have recognized, such as pattern-matching or
+type-case.
+
+\secrel{Retrofitting Types}
+
+It is unsurprising that Typed Racket uses union types. They are especially
+useful when retrofitting types onto existing programming languages whose
+programs were not defined with an ML-like type discipline in mind, such as in
+scripting languages. A common principle of such retrofitted types is to
+statically catch as many dynamic exceptions as possible. Of course, the checker
+must ultimately reject some programs, and if it rejects too many programs that
+would have run without an error, developers are unlikely to adopt it. Because
+these programs were written without type-checking in mind, the type checker may
+therefore need to go to heroic lengths to accept what are considered reasonable
+idioms in the language.
+\note{Unless it implements an interesting idea called soft typing, which rejects
+no programs but provides information about points where the program would not
+have been typeable.}
+Consider the following JavaScript function:
+\lsts{15/3/3/19.java}{java}
+It consumes an array and two indices, and produces the sub-array between those
+indices. For instance, slice([5, 7, 11, 13], 0, 2) produces [5, 7, 11].
+
+In JavaScript, however, developers are free to leave out any or all trailing
+arguments to a function. Every elided argument is given a special value,
+undefined, and it is up to the function to cope with this. For instance, a
+typical implementation of splice would let the user drop the third argument; the
+following definition
+\lsts{15/3/3/20.java}{java}
+automatically returns the subarray until the end of the array: thus, slice([5,
+7, 11, 13], 2) returns [11, 13].
+
+In Typed JavaScript, a programmer can explicitly indicate a function’s
+willingness to accept fewer arguments by giving a parameter the type U
+Undefined, giving it the type
+\note{Built at Brown by Arjun Guha and others. See
+\href{http://www.jswebtools.org/}{our Web site}.}
+\lsts{15/3/3/21.rkt}{rkt}
+In principle, this means there is a potential type error at the expression stop
+- start, because stop may not be a number. However, the assignment to stop sets
+it to a numeric type precisely when it was elided by the user. In other words,
+in all control paths, stop will eventually have a numeric type before the
+subtraction occurs, so this function is well-typed. Of course, this requires the
+type-checker to be able to reason about both control-flow (through the
+conditional) and state (through the assignment) to ensure that this function is
+well-typed; but Typed JavaScript can, and can thus bless functions such as this.
+
+\secrel{Design Choices}
+
+In languages with union types, it is common to have
+\begin{itemize}[nosep]
+  \item 
+Stand-alone structure types (often represented using classes), rather than
+datatypes with variants.
+  \item 
+Ad hoc collections of structures to represent particular types.
+  \item 
+The use of sentinel values to represent failure.
+\end{itemize}
+To convert programs written in this style to an ML-like type discipline would be
+extremely onerous. Therefore, many retrofitted type systems adopt union types to
+ease the process of typing.
+
+Of the three properties above, the first seems morally neutral, but the other
+two warrant more discussion. We will address them in reverse order.
+\begin{itemize}
+  \item 
+Let’s tackle sentinels first. In many cases, sentinels ought to be replaced with
+exceptions, but in many languages, exceptions can be very costly. Thus,
+developers prefer to make a distinction between truly exceptional
+situations—that ought not occur—and situations that are expected in the normal
+course of operation. Checking whether an element is in a list and failing to
+find it is clearly in the latter category (if we already knew the element was or
+wasn’t present, there would be no need to run this predicate). In the latter
+case, using sentinels is reasonable.
+
+However, we must square this with the observation that failure to check for
+exceptional sentinel values is a common source of error—and indeed, security
+flaws—in C programs. This is easy to reconcile. In C, the sentinel is of the
+same type (or at least, effectively the same type) as the regular return value,
+and furthermore, there are no run-time checks. Therefore, the sentinel can be
+used as a legitimate value without a type error. As a result, a sentinel of 0
+can be treated as an address into which to allocate data, thus potentially
+crashing the system. In contrast, our sentinel is of a truly new type that
+cannot be used in any computation. We can easily reason about this by observing
+that no existing functions in our language consume values of type none.
+
+  \item 
+Setting aside the use of “ad hoc”, which is pejorative, are different groupings
+of a set of structures a good idea? In fact, such groupings occur even in
+programs using an ML-like discipline, when programmers want to carve different
+subuniverses of a larger one. For instance, ML programmers use a type like
+\lsts{15/3/3/22.rkt}{rkt}
+to represent s-expressions. If a function now operates on just some subset of
+these terms—say just numbers and lists of numbers—they must create a fresh type,
+and convert values between the two types even though their underlying
+representations are essentially identical. As another example, consider the set
+of CPS expressions. This is clearly a subset of all possible expressions, but if
+we were to create a fresh datatype for it, we would not be able to use any
+existing programs that process expressions—such as the interpreter.
+
+\end{itemize}
+
+In other words, union types appear to be a reasonable variation on the ML-style
+type system we have seen earlier. However, even within union types there are
+design variations, and these have consequences. For instance, can the type
+system create new unions, or are user-defined (and named) unions permitted? That
+is, can an expression like this
+\lsts{15/3/3/23.rkt}{rkt}
+be allowed to type (to (U Number Boolean)), or is it a type error to introduce
+unions that have not previously been named and explicitly identified? Typed
+Racket provides the former: it will construct truly ad hoc unions. This is
+arguably better for importing existing code into a typed setting, because it is
+more flexible. However, it is less clear whether this is a good design for
+writing new code, because unions the programmer did not intend can occur and
+there is no way to prevent them. This offers an unexplored corner in the design
+space of programming languages.
+
+\secup

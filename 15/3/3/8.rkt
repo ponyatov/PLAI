@@ -1,0 +1,1 @@
+(define-type Animal (U armadillo boa))

@@ -1,0 +1,1 @@
+[(boa? a) (not (big-one? a))]

@@ -1,0 +1,1 @@
+(All (a) (a (Listof a) -> (U False (Listof a))))

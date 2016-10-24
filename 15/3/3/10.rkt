@@ -1,0 +1,1 @@
+(define-type MaybeNumber (U Number Boolean))
