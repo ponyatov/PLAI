@@ -1,1 +1,49 @@
-\secrel{17.2.3 The Alternative: Reactive Languages . . . . . . . . . . . . . 204}
+\secrel{17.2.3 The Alternative: Reactive Languages . 204}
+
+Consider the FrTime (pronounced “Father Time”) language in DrRacket. If we run
+this expression at the interactions window, we still get 0 or some other very
+small non-negative number:
+\note{In DrRacket v5.3, you must select the language from the Language menu;
+writing \#lang frtime will not provide the interesting interactions window
+behavior.}
+\lsts{17/2/3/1.rkt}{rkt}
+In fact, we can try several other expressions and see that FrTime seems to have
+exactly like traditional Racket.
+
+However, it also binds a few additional identifiers. For instance, it provides a
+value bound to seconds. If we type this into the interaction prompt, we get
+something very interesting! First we see 1353030630, then a second later
+1353030631, another second later 1353030632, and so on. This kind of value is
+called a behavior: a value that changes over time. Except we haven’t written any
+callbacks or other code to keep it current.
+
+A behavior can be used in computations. For instance, we can write (- seconds
+seconds), and this always evaluates to 0. Here are some more expressions to try
+at the interaction prompt:
+\lsts{17/2/3/2.rkt}{rkt}
+As you can see, being a behavior is “sticky”: if any sub-expression is a
+behavior, so is its enclosing expression.
+
+Thanks to this evaluation model, every time seconds updates the entire
+application happens afresh: as a result, even though we have written seemingly
+simple expressions without any explicit loop-like control, the program still
+“loops”. In other words, having explored an application semantics where
+arguments are evaluated once, then another where they may be evaluated zero
+times, now we have one where they are evaluated as many times as necessary, and
+the entire corresponding function with them. As a consequence, reactive values
+that are “inside” an expression no longer brought “outisde”; rather, they can
+reside nested inside expressions, giving programmers a more natural means of
+expression. This style of evaluation is called dataflow or functional reactive
+programming.
+\note{Historically, dataflow has tended to refer to languages with first-order
+functions, whereas functional reactive languages support higher-order functions
+too. See the \href{http://www.flapjax-lang.org/}{Flapjax Web site}.}
+
+FrTime implements what we call transparent reactivity, whereby the programmer
+can inject a reactive behavior anywhere in a program’s evaluation without
+needing to make any syntactic changes to its context. This has the virtue of
+making it easy to inject reactivity into existing programs, but it can make the
+evaluation and cost model more complex for programmers. In other languages,
+programmers can instead explicitly introduce behavior through appropriate
+primitives, trading convenience for greater predictability. FrTime’s sister
+language, Flapjax, an extension of JavaScript, provides both modes.

@@ -375,6 +375,7 @@ SRC += 17/2/1/1.rkt 17/2/1/2.java 17/2/1/3.java
 TEX += 17/2/2/callback.tex
 SRC += 17/2/2/1.java 17/2/2/2.caml 17/2/2/3.hs
 TEX += 17/2/3/alt.tex
+SRC += 17/2/3/1.rkt 17/2/3/2.rkt
 TEX += 17/2/4/trans.tex
   
 #MisspelledAnimal = plai.rkt cr
