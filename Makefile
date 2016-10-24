@@ -340,6 +340,8 @@ SRC += 16/3/5.rkt 16/3/6.rkt 16/3/7.rkt 16/3/8.rkt
 SRC += 16/3/9.rkt 16/3/10.rkt 16/3/11.rkt 16/3/12.rkt
  
 TEX += 16/4/conv.tex
+SRC += 16/4/1.rkt 16/4/2.rkt 16/4/3.rkt
+
 TEX += 16/5/extn.tex
 TEX += 16/6/more.tex
 TEX += 16/7/contracts.tex

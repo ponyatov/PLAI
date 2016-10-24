@@ -1,1 +1,33 @@
 \secrel{16.4 Syntactic Convenience   . 187}
+
+Earlier we saw two styles of using flat contracts, as embodied in real-sqrt-1
+and real-sqrt-2. Both styles have disadvantages. The latter, which is
+reminiscent of traditional assertion systems, simply does not work for
+higher-order values, because it is the wrapped value that must be used in the
+computation. (Not surprisingly, traditional assertion systems only handle
+immediate contracts, so they fail to notice this subtlety.) The style in the
+former, where we wrap each use with a contract, works in theory but suffers from
+three downsides:
+\begin{enumerate}[nosep]
+  \item 
+The developer may forget to wrap some uses.
+  \item 
+The contract is checked once per use, which is wasteful when there is more than
+one use.
+  \item 
+The program comingles contract checking with its functional behavior, reducing
+readability.
+\end{enumerate}
+Fortunately, a judicious use of syntactic sugar can solve this problem in common
+cases. For instance, suppose we want to make it easy to attach contracts to
+function parameters, so a developer could write
+\lsts{16/4/1.rkt}{rkt}
+with the intent of guarding x with positive?, but performing the check only
+once, on function invocation. This should translate to, say,
+\lsts{16/4/2.rkt}{rkt}
+That is, the macro generates a fresh name for each identifier, then associates
+the name given by the user to the wrapped version of the value supplied to that
+fresh name. The following macro implements exactly this:
+\lsts{16/4/3.rkt}{rkt}
+With conveniences like this, designers of contract languages can improve the
+readability, efficiency, and robustness of contract use.
