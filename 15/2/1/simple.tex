@@ -1,1 +1,186 @@
 \secrel{15.2.1 A Simple Type Checker  . . 134}
+
+Before we can define a type checker, we have to fix two things: the syntax of
+our typed core language and, hand-in-hand with that, the syntax of types
+themselves.
+
+To begin with, we’ll return to our language with functions-as-values \ref{}\ but
+before we added mutation and other complications (some of which we’ll return to
+later). To this language we have to add type annotations. Conventionally, we
+don’t impose type annotations on constants or on primitive operations such as
+addition; instead, we impose them on the boundaries of functions or methods.
+Over the course of this study we will explore why this is a good locus for
+annotations.
+
+Given this decision, our typed core language becomes:
+\lsts{15/2/1/1.rkt}{rkt}
+That is, every procedure is annotated with the type of argument it expects and
+type of argument it purports to produce.
+
+Now we have to decide on a language of types. To do so, we follow the tradition
+that the types abstract over the set of values. In our language, we have two
+kinds of values:
+\lsts{15/2/1/2.rkt}{rkt}
+It follows that we should have two kinds of types: one for numbers and the other
+for functions.
+
+Even numeric types may not be straightforward: What information does a number
+type need to record? In most languages, there are actually many numeric types,
+and indeed there may not even be a single one that represents “numbers”.
+However, we have ignored these gradations between numbers \ref{}, so it’s
+sufficient for us to have just one. Having decided that, do we record additional
+information about which number? We could in principle, but we would soon run
+into decidability problems.
+
+As for functions, we have more information: the type of expected argument, and
+the type of claimed result. We might as well record this information we have
+been given until and unless it has proven to not be useful. Combining these, we
+obtain the following abstract language of types:
+\lsts{15/2/1/3.rkt}{rkt}
+Now that we’ve fixed both the term and type structure of the language, let’s
+make sure we agree on what constitute type errors in our language (and, by fiat,
+everything not a type error must pass the type checker). There are three obvious
+forms of type errors:
+\begin{itemize}[nosep]
+  \item 
+One or both arguments of + is not a number, i.e., is not a numT.
+  \item 
+One or both arguments of * is not a number.
+  \item 
+The expression in the function position of an application is not a function,
+i.e., is not a funT.
+
+\DoNow{
+Any more?
+}
+
+We’re actually missing one:
+
+  \item 
+The expression in the function position of an application is a function but the
+type of the actual argument does not match the type of the formal argument
+expected by the function.
+\end{itemize}
+It seems clear all other programs in our language ought to type-check.
+
+A natural starting signature for the type-checker would be that it is a
+procedure that consumes an expression and returns a boolean value indicating
+whether or not the expression type-checked. Because we know expressions contain
+identifiers, it soon becomes clear that we will want a type environment, which
+maps names to types, analogous to the value environment we have seen so far.
+
+\Exercise{
+Define the types and functions associated with type environments.
+}
+
+Thus, we might begin our program as follows:
+\lsts{15/2/1/4.rkt}{rkt}
+
+As the abbreviated set of cases above suggests, this approach will not work out.
+We’ll soon see why.
+
+Let’s begin with the easy case: numbers. Does a number type-check? Well, on its
+own, of course it does; it may be that the surrounding context is not expecting
+a number, but that error would be signaled elsewhere. Thus:
+\lsts{15/2/1/5.rkt}{rkt}
+
+Now let’s handle identifiers. Is an identifier well-typed? Again, on its own it
+would appear to be, provided it is actually a bound identifier; it may not be
+what the context desires, but hopefully that too would be handled elsewhere.
+Thus we might write
+\lsts{15/2/1/6.rkt}{rkt}
+
+This should make you a little uncomfortable: lookup already signals an error if
+an identifier isn’t bound, so there’s no need to repeat it (indeed, we will
+never get to this error invocation). But let’s push on.
+
+Now we tackle applications. We should type-check both the function part, to make
+sure it’s a function, then ensure that the actual argument’s type is consistent
+with what the function declares to be the type of its formal argument. For
+instance, the function could be a number and the application could itself be a
+function, or vice versa, and in either case we want to prevent such
+mis-applications.
+
+How does the code look?
+\lsts{15/2/1/7.rkt}{rkt}
+
+The recursive call to tc can only tell us whether the function expression
+typechecks or not. If it does, how do we know what type it has? If we have an
+immediate function, we could reach into its syntax and pull out the argument
+(and return) types. But if we have a complex expression, we need some procedure
+that will calculate the resulting type of that expression. Of course, such a
+procedure could only provide a type if the expression is well-typed; otherwise
+it would not be able to provide a coherent answer. In other words, our type
+“calculator” has type “checking” as a special case! We should therefore
+strengthen the inductive invariant on tc: that it not only tells us whether an
+expression is typed but also what its type is. Indeed, by giving any type at all
+it confirms that the expression types, and otherwise it signals an error.
+
+Let’s now define this richer notion of a type “checker”.
+\lsts{15/2/1/8.rkt}{rkt}
+
+Now let’s fill in the pieces. Numbers are easy: they have the numeric type.
+\lsts{15/2/1/9.rkt}{rkt}
+
+Similarly, identifiers have whatever type the environment says they do (and if
+they aren’t bound, this signals an error).
+\lsts{15/2/1/10.rkt}{rkt}
+
+Observe, so far, the similarity to and difference from interpreting: in the
+identifier case we did essentially the same thing (except we returned a type
+rather than an actual value), whereas in the numeric case we returned the
+abstract “number” rather than indicate which specific number it was.
+
+Let’s now examine addition. We must make sure both sub-expressions have numeric
+type; only if they do will the overall expression evaluate to a number itself.
+\lsts{15/2/1/11.rkt}{rkt}
+
+We’ve usually glossed over multiplication after considering addition, but now it
+will be instructive to handle it explicitly:
+\lsts{15/2/1/12.rkt}{rkt}
+
+\DoNow{
+Did you see what’s different?
+}
+
+That’s right: practically nothing! (The multC instead of plusC in the type-case,
+and the slightly different error message, notwithstanding.) That’s because, from
+the perspective of type-checking (in this type language), there is no difference
+between addition and multiplication, or indeed between any two functions that
+consume two numbers and return one.
+
+Observe another difference between interpreting and type-checking. Both care
+that the arguments be numbers. The interpreter then returns a precise sum or
+product, but the type-checker is indifferent to the differences between them:
+therefore the expression that computes what it returns ((numT)) is a constant,
+and the same constant in both cases.
+
+Finally, the two hard cases: application and funcions. We’ve already discussed
+what application must do: compute the value of the function and argument
+expressions; ensure the function expression has function type; and check that
+the argument expression is of compatible type. If all this holds up, then the
+type of the overall application is whatever type the function body would return
+(because the value that eventually returns at run-time is the result of
+evaluating the function’s body).
+\lsts{15/2/1/13.rkt}{rkt}
+
+That leaves function definitions. The function has a formal parameter, which is
+presumably used in the body; unless this is bound in the environment, the body
+most probably will not type-check properly. Thus we have to extend the type
+environment with the formal name bound to its type, and in that extended
+environment type-check the body. Whatever value this computes must be the same
+as the declared type of the body. If that is so, then the function itself has a
+function type from the type of the argument to the type of the body.
+
+\Exercise{
+Why do I say “most probably” above?
+\lsts{15/2/1/14.rkt}{rkt}
+}
+
+Observe another curious difference between the interpreter and type-checker. In
+the interpreter, application was responsible for evaluating the argument
+expression, extending the environment, and evaluating the body. Here, the
+application case does check the argument expression, but leaves the environment
+alone, and simply returns the type of the body without traversing it. Instead,
+the body is actually traversed by the checker when checking a function
+definition, so this is the point at which the environment actually extends.
