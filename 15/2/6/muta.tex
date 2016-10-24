@@ -1,1 +1,38 @@
 \secrel{15.2.6 Types and Mutation  . . 146}
+
+We have now covered most of the basic features of our core language other than
+mutation. In some ways, types have a simple interaction with mutation, and this
+is because in a classical setting, they don’t interact at all. Consider, for
+instance, the following untyped program:
+\lsts{15/2/6/1.rkt}{rkt}
+What is “the type” of x? It doesn’t really have one: for some time it’s a
+number, and later (note the temporal word) it’s a string. We simply can’t give
+it a type. In general, type checking is an atemporal activity: it is done once,
+before the program runs, and must hence be independent of the specific order in
+which programs execute. Keeping track of the precise values in the store is
+hence beyond the reach of a type-checker.
+
+The example above is, of course, easy to statically understand, but we should
+never be mislead by simple examples. Suppose instead we had a program like
+\lsts{15/2/6/2.rkt}{rkt}
+Now it is literally impossible to reach any static conclusion about the type of
+x after the conditional finishes, because only at run-time can we know what the
+user might have entered.
+
+To avoid this morass, traditional type checkers adopt a simple policy: types
+must be invariant across mutation. That is, a mutation operation—whether
+variable mutation or structure mutation—cannot change the type of the mutant.
+Thus, the above examples would not type in our type language so far. How much
+flexibility this gives the programmer is, however, a function of the type
+language. For instance, if we were to admit a more flexible type that stands for
+“number or string”, then the examples above would type, but x would always have
+this, less precise, type, and all uses of x would have to contend with its
+reduced specificity, an issue we will return to later \ref{}.
+
+In short, mutation is easy to account for in a traditional type system because
+its rule is simply that, while the value can change in ways below the level of
+specificity of the type system, the type cannot change. In the case of an
+operation like set! (or our core language’s setC), this means the type of the
+assigned value must match that of the variable. In the case of structure
+mutation, such as boxes, it means the assigned value must match that the box’s
+contained type.
