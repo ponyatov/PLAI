@@ -279,6 +279,7 @@ TEX += 15/2/2/type.tex
 TEX += 15/2/3/rcode.tex
 SRC += 15/2/3/1.rkt 15/2/3/2.rkt 15/2/3/3.rkt 
 TEX += 15/2/4/rdata.tex
+SRC += 15/2/4/1.rkt 15/2/4/2.rkt 15/2/4/3.rkt 15/2/4/4.rkt 
 TEX += 15/2/5/time.tex
 TEX += 15/2/6/muta.tex
 TEX += 15/2/7/central.tex

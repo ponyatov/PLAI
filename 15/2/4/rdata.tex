@@ -1,1 +1,114 @@
 \secrel{15.2.4 Recursion in Data   142}
+
+We have seen how to type recursive programs, but this doesn’t yet enable us to
+create recursive data. We already have one kind of recursive datum—the function
+type—but this is built-in. We haven’t yet seen how developers can create their
+own recursive datatypes.
+
+\secdown
+
+\secrel{Recursive Datatype Definitions}
+
+When we speak of allowing programmers to create recursive data, we are actually
+talking about three different facilities at once:
+\begin{itemize}[nosep]
+  \item 
+Creating a new type.
+  \item 
+Letting instances of the new type have one or more fields.
+  \item 
+Letting some of these fields refer to instances of the same type.
+\end{itemize}
+In fact, once we allow the third, we must allow one more:
+\begin{itemize}[nosep]
+  \item Allowing non-recursive base-cases for the type.
+\end{itemize}
+This confluence of design criteria leads to what is commonly called an algebraic
+datatype, such as the types supported by our typed language. For instance,
+consider the following definition of a binary tree of numbers:
+\note{Later \ref{}, we will discuss how types can be parameterized.}
+\lsts{15/2/4/1.rkt}{rkt}
+Observe that without a name for the new datatype, BTnum, we would not have been
+able to refer back ot it in BTnd. Similarly, without the ability to have more
+than one kind of BTnum, we would not have been able to define BTmt, and thus
+wouldn’t have been able to terminate the recursion. Finally, of course, we need
+multiple fields (as in BTnd) to construct useful and interesting data. In other
+words, all three mechanisms are packaged together because they are most useful
+in conjunction. (However, some langauges do permit the definition of stand-alone
+structures. We will return to the impact of this design decision on the type
+system later \ref{}.)
+
+This concludes our initial presentation of recursive types, but it has a fatal
+problem. We have not actually explained where this new type, BTnum, comes from.
+That is because we have had to pretend it is baked into our type-checker.
+However, it is simply impractical to keep changing our type-checker for each new
+recursive type definition— it would be like modifying our interpreter each time
+the program contains a recursive function! Instead, we need to find a way to
+make such definitions intrinsic to the type language. We will return to this
+problem later \ref{}.
+
+This style of data definition is sometimes also known as a sum of products.
+“Product” refers to the way fields combine in one variant: for instance, the
+legal values of a BTnd are the cross-product of legal values in each of the
+fields, supplied to the BTnd constructor. The “sum” is the aggregate of all
+these variants: any given BTnum value is just one of these. (Think of “product”
+as being “and”, and “sum” as being “or”.)
+
+\secrel{Introduced Types}
+
+Now, what impact does a datatype definition have? First, it introduces a new
+type; then it uses this to define several constructors, predicates, and
+selectors. For instance, in the above example, it first introduces BTnum, then
+uses it to ascribe the following types:
+\lsts{15/2/4/2.rkt}{rkt}
+
+Observe a few salient facts:
+\begin{itemize}
+  \item 
+Both the constructors create instances of BTnum, not something more refined.
+We will discuss this design tradeoff later \ref{}.
+  \item 
+Both predicates consume values of type BTnum, not “any”. This is because the
+type system can already tell us what type a value is. Thus, we only need to
+distinguish between the variants of that one type.
+  \item 
+The selectors really only work on instances of the relevant variant—e.g., BTnd-
+n can work only on instances of BTnd, not on instances of BTmt—but we don’t have
+a way to express this in the static type system for lack of a suitable static
+type. Thus, applying these can only result in a dynamic error, not a static one
+caught by the type system.
+\end{itemize}
+There is more to say about recursive types, which we will return to shortly
+\ref{}.
+
+\secrel{Pattern-Matching and Desugaring}
+
+Once we observe that these are the types, the only thing left is to provide an
+account of pattern-matching. For instance, we can write the expression
+\lsts{15/2/4/3.rkt}{rkt}
+We have already seen \ref{}\ that this can be written in terms of the functions
+defined above. We can simulate the binding done by this pattern-matcher using
+let:
+\lsts{15/2/4/4.rkt}{rkt}
+In short, this can be done by a macro, so pattern-matching does not need to be
+in the core language and can instead be delegated to desugaring. This, in turn,
+means that one language can have many different pattern-matching mechanisms.
+
+Except, that’s not quite true. Somehow, the macro that generates the code above
+in terms of cond needs to know that the three positional selectors for a BTnd
+are BTnd-n, BTnd-l, and BTnd-r, respectively. This information is explicit in
+the type definition but only implicitly present in the use of the
+pattern-matcher (that, indeed, being the point). Thus, somehow this information
+must be communicated from definition to use. Thus the macro expander needs
+something akin to the type environment to accomplish its task.
+
+Observe, furthermore, that expressions such as e1 and e2 cannot be type-checked—
+indeed, cannot even be reliable identified as expressions—until macro expansion
+expands the use of type-case. Thus, expansion depends on the type environment,
+while type-checking depends on the result of expansion. In other words, the two
+are symbiotic and need to happen, not quite in “parallel”, but rather in
+lock-step. Thus, building desugaring for a typed language, where the syntactic
+sugar makes assumptions about types, is a little more intricate than doing so
+for an untyped language.
+
+\secup
