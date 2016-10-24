@@ -1,4 +1,15 @@
 \secrel{15 Checking Program Invariants Statically: Types 131}\secdown
+
+As programs grow larger or more subtle, developers need tools to help them
+describe and validate statements about program invariants. Invariants, as the
+name suggests, are statements about program elements that are expected to always
+hold of those elements. For example, when we write x : number in our typed
+language, we mean that x will always hold a number, and that all parts of the
+program that depend on x can rely on this statement being enforced. As we will
+see, types are just one point in a spectrum of invariants we might wish to
+state, and static type checking—itself a diverse family of techniques—is also a
+point in a spectrum of methods we can use to enforce the invariants.
+
 \input{15/1/types}
 \input{15/2/classview}
 \input{15/3/exts}
