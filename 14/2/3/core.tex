@@ -1,1 +1,61 @@
 \secrel{14.2.3 Implementation in the Core  115}
+
+Now that we’ve seen how CPS can be implemented through desguaring, we should ask
+whether it can be put in the core instead.
+
+Recall that we’ve said that CPS applies to all programs. We have one program we
+are especially interested in: the interpreter. Sure enough, we can apply the CPS
+transformation to it, making available what are effectively the same
+continuations.
+
+First, we’ll find it convenient to use a procedural representation of closures
+\ref{}. We’ll have the interpreter take an extra argument, which consumes values
+(those given to the continuation) and eventually returns them:
+\lsts{14/2/3/1.rkt}{rkt}
+In the easy cases, instead of returning a value we need to simply pass it to the
+continuation argument:
+\lsts{14/2/3/2.rkt}{rkt}
+(Note that multC is handled entirely analogous to plusC.)
+
+Let’s start with the easy case, plusC. First we interpret the left
+sub-expression. The continuation for this evaluation interprets the right
+sub-expression. The continuation for that adds the result. What should happen to
+the result of addition? In interp, it was returned to whichever computation
+caused the plusC to be interpreted. Now, remember, we no longer return values;
+instead we pass them to the continuation:
+\lsts{14/2/3/3.rkt}{rkt}
+\Exercise{
+Implement the code for multC.
+}
+This leaves the two difficult, and related, pieces.
+
+In an application, we again have to interpret the two sub-expressions, and then
+apply the resulting closure to the argument. But we’ve already agreed that every
+application needs a continuation argument. Therefore, we have to update our
+definition of a value:
+\lsts{14/2/3/4.rkt}{rkt}
+
+Now we have to decide what continuation to pass. In an application, it’s the
+continuation given to the interpreter:
+\lsts{14/2/3/5.rkt}{rkt}
+
+Finally, the lamC case. We have to create a closV using a lambda, as before.
+However, this procedure needs to take two arguments: the actual value of the
+argument, and the continuation of the application. The critical question is,
+what is this latter value?
+
+We have essentially two choices. k represents the static continuation: the one
+active at the point of closure construction. However, what we want is the
+continuation at the point of closure invocation: the dynamic continuation.
+\lsts{14/2/3/6.rkt}{rkt}
+
+To test this revised interpreter, we need to invoke interp/k with some kind of
+initial continuation value. This needs to be a procedure that represents nothing
+remaining in the computation. A natural representation for this is the identity
+function:
+\lsts{14/2/3/7.rkt}{rkt}
+To signify that this is strictly a top-level interface to interp/k, we’ve
+dropped the environment parameter and pass the empty environment automatically.
+If we want to be especially sure we haven’t accidentally used this procedure
+recursively, we could insert a call to error at its end to prevent it from
+returning and its return value being used.
