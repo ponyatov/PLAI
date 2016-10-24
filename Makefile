@@ -244,6 +244,47 @@ TEX += 14/3/gens.tex
 TEX += 14/4/cont.tex
 TEX += 14/5/tailcalls.tex
 TEX += 14/6/contlang.tex
+
+TEX += 15/invar.tex
+
+TEX += 15/1/types.tex
+
+TEX += 15/2/classview.tex
+TEX += 15/2/1/simple.tex
+TEX += 15/2/2/type.tex
+TEX += 15/2/3/rcode.tex
+TEX += 15/2/4/rdata.tex
+TEX += 15/2/5/time.tex
+TEX += 15/2/6/muta.tex
+TEX += 15/2/7/central.tex
+
+TEX += 15/3/exts.tex
+TEX += 15/3/1/explicit.tex
+TEX += 15/3/2/infer.tex
+TEX += 15/3/3/union.tex
+TEX += 15/3/4/nominal.tex
+TEX += 15/3/5/intersec.tex
+TEX += 15/3/6/rectype.tex
+TEX += 15/3/7/subtype.tex
+TEX += 15/3/8/objtype.tex
+
+TEX += 16/contracts.tex
+
+TEX += 17/alter.tex
+
+TEX += 17/1/lazy.tex
+TEX += 17/1/1/lazy.tex
+TEX += 17/1/2/vals.tex
+TEX += 17/1/3/eval.tex
+TEX += 17/1/4/interp.tex
+TEX += 17/1/5/muta.tex
+TEX += 17/1/6/caching.tex
+
+TEX += 17/2/reactive.tex
+TEX += 17/2/1/timer.tex
+TEX += 17/2/2/callback.tex
+TEX += 17/2/3/alt.tex
+TEX += 17/2/4/trans.tex
   
 #MisspelledAnimal = plai.rkt cr
 #MisspelledAnimal += 1/3/p8_1.rkt cr 1/3/p8_4.rkt cr
