@@ -1,1 +1,51 @@
 \secrel{14.3.1 Design Variations   117}
+
+There are many variations between generators. The points of variation,
+predictably, have to do with how to enter and exit a generator:
+\begin{itemize}
+  \item 
+In some languages a generator is an object that is instantiated like any other
+object, and its execution is resumed by invoking a method (such as next in
+Python). In others it is just like a procedure, and indeed it is re-entered by
+applying it like a function.
+\note{In languages where values in addition to regular procedures can be used in
+an application, all such values are collectively called applicables.}
+  \item 
+In some languages the yielding operation—such as Python’s yield—is available
+only inside the syntactic body of the generator. In others, such as Racket,
+yield is an applicable value bound in the body, but by virtue of being a value,
+it can be passed to abstractions, stored in data structures, and so on.
+\end{itemize}
+
+Python’s design represents an extreme point in that a generator is simply any
+function that contains the keyword yield in its body. In addition, Python’s
+yield cannot be passed as a parameter to another function that performs the
+yielding on behalf of the generator.
+
+There is also a small issue of naming. In many languages with generators, the
+yielder is automatically called word yield: either as a keyword (as in Python)
+or as an identifier bound to an applicable value (as in Racket). Another
+possibility is that the user of the generator must indicate in the generator
+expression what name to give the yielder. That is, a use might look like
+\note{Curiously, Python expects users to determine what to call self or this in
+objects, but it does not provide the same flexibility for yield, because it has
+no other way to determine which functions are generators!}
+\lsts{14/3/1/1.rkt}{rkt}
+but it might equivalently be
+\lsts{14/3/1/2.rkt}{rkt}
+and if the yielder is an actual value, a user can also abstract over yielding:
+\lsts{14/3/1/3.rkt}{rkt}
+where yield-helper will presumably perform the actual yielding.
+
+There are actually two more design decisions:
+\begin{enumerate}
+  \item 
+Is yield a statement or expression? In many languages it is actually an
+expression, meaning it has a value: the one supplied when resuming the
+generator. This makes the generator more flexible because the user of a
+generator can use the parameter( s) to alter the generator’s behavior, rather
+than being forced to use state to communicate desired changes.
+  \item 
+What happens at the end of the generator’s execution? In many languages, a
+generator raises an exception to signal its completion.
+\end{enumerate}
