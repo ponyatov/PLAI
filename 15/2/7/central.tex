@@ -1,1 +1,104 @@
 \secrel{15.2.7 The Central Theorem: Type Soundness  147}
+
+We have seen earlier \ref{}\ that certain type languages can offer very strong
+theorems about their programs: for instance, that all programs in the language
+terminate. In general, of course, we cannot obtain such a guarantee (indeed, we
+added general recursion precisely to let ourselves write unbounded loops).
+However, a meaningful type system—indeed, anything to which we wish to bestow
+the noble title of a type system—ought to provide some kind of meaningful
+guarantee that all typed programs enjoy. This is the payoff for the programmer:
+by typing this program, she can be certain that certain bad things will
+certainly not happen. Short of this, we have just a bug-finder; while it may be
+useful, it is not a sufficient basis for building any higherlevel tools (e.g.,
+for obtaining security or privacy or robustness guarantees).
+\note{We have repeatedly used the term “type system”. A type system is usually a
+combination of three components: a language of types, a set of type rules, and
+an algorithm that applies these rules to programs. By largely presenting our
+type rules embedded in a function, we have blurred the distinction between the
+second and third of these, but can still be thought of as intellectually
+distinct.}
+
+What theorem might we want of a type system? Remember that the type checker runs
+over the static program, before execution. In doing so, it is essentially making
+a prediction about the program’s behavior: for instance, when it states that a
+particular complex term has type num, it is effectively predicting that when
+run, that term will produce a numeric value. How do we know this prediction is
+sound, i.e., that the type checker never lies? Every type system should be
+accompanied by a theorem that proves this.
+
+There is a good reason to be suspicious of a type system, beyond general
+skepticism. There are many differences between the way a type checker and a
+program evaluator work:
+\begin{itemize}[nosep]
+  \item 
+The type checker only sees program text, whereas the evaluator runs over actual
+stores.
+  \item 
+The type environment binds identifiers to types, whereas the evaluator’s
+environment binds identifiers to values or locations.
+  \item 
+The type checker compresses (even infinite) sets of values into types, whereas
+the evaluator treats these distinctly.
+  \item 
+The type checker always terminates, whereas the evaluator might not.
+  \item 
+The type checker passes over the body of each expression only once, whereas the
+evaluator might pass over each body anywhere from zero to infinite times.
+\end{itemize}
+Thus, we should not assume that these will always correspond!
+
+The central result we wish to have for a given type-system is called soundness.
+It says this. Suppose we are given an expression (or program) e. We type-check
+it and conclude that its type is t. When we run e, let us say we obtain the
+value v. Then v will also have type t.
+
+The standard way of proving this theorem is to prove it in two parts, known as
+progress and preservation. Progress says that if a term passes the type-checker,
+it will be able to make a step of evaluation (unless it is already a value);
+preservation says that the result of this step will have the same type as the
+original. If we interleave these steps (first progress, then preservation;
+repeat), we can conclude that the final answer will indeed have the same type as
+the original, so the type system is indeed sound.
+
+For instance, consider this expression: (+ 5 (* 2 3)). It has the type num. In a
+sound type system, progress offers a proof that, because this term types, and is
+not already a value, it can take a step of execution—which it clearly can. After
+one step the program reduces to (+ 5 6). Sure enough, as preservation proves,
+this has the same type as the original: num. Progress again says this can take a
+step, producing 11. Preservation again shows that this has the same type as the
+previous (intermediate) expressions: num. Now progress finds that we are at an
+answer, so there are no steps left to be taken, and our answer is of the same
+type as that given for the original expression.
+
+However, this isn’t the entire story. There are two caveats:
+\begin{enumerate}
+  \item 
+The program may not produce an answer at all; it might loop forever. In this
+case, the theorem strictly speaking does not apply. However, we can still
+observe that every intermediate term still has the same type, so the program is
+computing meaningfully even if it isn’t producing a value.
+  \item 
+Any rich enough language has properties that cannot be decided statically (and
+others that perhaps could be, but the language designer chose to put off until
+run-time). When one of these properties fails—e.g., the array index being within
+bounds—there is no meaningful type for the program. Thus, implicit in every type
+soundness theorem is some set of published, permitted exceptions or error
+conditions that may occur. The developer who uses a type system implicitly signs
+on to accepting this set.
+\end{enumerate}
+As an example of the latter set, the user of a typical typed language
+acknowledges that vector dereference, list indexing, and so on may all yield
+exceptions.
+
+The latter caveat looks like a cop-out. In fact, it is easy to forget that it is
+really a statement about what cannot happen at run-time: any exception not in
+this set will provably not be raised. Of course, in languages designed with
+static types in the first place, it is not clear (except by loose analogy) what
+these exceptions might be, because there would be no need to define them. But
+when we retrofit a type system onto an existing programming language—especially
+languages with only dynamic enforcement, such as Racket or Python—then there is
+already a well-defined set of exceptions, and the type-checker is explicitly
+stating that some set of those exceptions (such as “non-function found in
+application position” or “method not found”) will simply never occur. This is
+therefore the payoff that the programmer receives in return for accepting the
+type system’s syntactic restrictions.
