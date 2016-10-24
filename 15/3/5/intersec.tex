@@ -1,1 +1,46 @@
 \secrel{15.3.5 Intersection Types  . . 171}
+
+Since we’ve just explored union types, you must naturally wonder whether there
+are also intersection types. Indeed there are.
+
+If a union type means that a value (of that type) belongs to one of the types in
+the union, an intersection type clearly means the value belongs to all the types
+in the intersection: a conjunction, or “and”. This might seem strange: how can a
+value belong to more than one type?
+
+As a concrete answer, consider overloaded functions. For instance, in some
+languages + operates on both numbers and strings; given two numbers it produces
+a number, and given two strings it produces a string. In such a language, what
+is the proper type for +? It is not (number number -> number) alone, because
+that would reject its use on strings. By the same reasoning, it is not (string
+string -> string) alone either. It is not even
+\lsts{15/3/5/1.rkt}{rkt}
+because + is not just one of these functions: it truly is both of them. We could
+ascribe the type
+\lsts{15/3/5/2.rkt}{rkt}
+reflecting the fact that each argument, and the result, can be only one of these
+types, not both. Doing so, however, leads to a loss of precision.
+
+\DoNow{
+In what way does this type lose precision?
+}
+
+Observe that with this type, the return type on all invocations is (number U
+string). Thus, on every return we must distinguish beween numeric and string
+returns, or else we will get a type error. Thus, even though we know that if
+given two numeric arguments we will get a numeric result, this information is
+lost to the type system.
+
+More subtly, this type permits each argument’s type to be chosen independently
+of the other. Thus, according to this type, the invocation (+ 3 "x") is
+perfectly valid (and produces a value of type (number U string)). But of course
+the addition operation we have specified is not defined for these inputs at all!
+
+Thus the proper type to ascribe this form of addition is
+\lsts{15/3/5/3.rkt}{rkt}
+where $\Lambda$ should be reminiscent of the conjunction operator in logic. This
+permits invocation with two numbers or two strings, but nothing else. An
+invocation with two numbers has a numeric result type; one with two strings has
+a string result type; and nothing else. This corresponds precisely to our
+intended behavior for overloading (sometimes also called ad hoc polymorphism).
+Observe that this only handles a finite number of overloaded cases.
