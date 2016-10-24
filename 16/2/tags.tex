@@ -1,1 +1,78 @@
 \secrel{16.2 Tags, Types, and Observations on Values  . 182}
+
+At this point we’ve reproduced the essence of assertion systems in most
+languages. What else is there to say? Let’s suppose for a moment that our
+language is not statically typed. Then we will want to write assertions that
+reproduce at least traditional typelike invariants, if not more. make-contract
+above can capture all standard type-like properties such as checking for
+numbers, strings, and so on, assuming the appropriate predicates are either
+provided by the language or can be fashioned from the ones given.
+Or can it?
+
+Recall that even our simplest type language had not just base types, like
+numbers, but also constructed types. While some of these, like lists and
+vectors, appear to not be very challenging, they are once we care about
+mutation, performance, and blame, which we discuss below. However, functions are
+immediately problematic.
+
+As a working example, we will take the following function:
+\lsts{16/2/1.rkt}{rkt}
+Statically, we would give this the type
+\lsts{16/2/2.rkt}{rkt}
+(it consumes a function, and produces its derivative—another function). Let us
+suppose we want to guard this with contracts.
+
+The fundamental problem is that in most languages, we cannot directly express
+this as a predicate. Most language run-time systems store very limited
+information about the types of values—so limited that, relative to the types we
+have seen so far, we should use a different name to describe this information;
+traditionally they are called tags. Sometimes tags coincide with what we might
+regard as types: for instance, a number will have a tag identifying it as a
+number (perhaps even a specific kind of number), a string will have a tag
+identifying it as a string, and so forth. Thus we can write predicates based on
+the values of these tags.
+\note{There have been a few efforts to preserve rich type information from the
+source program through lower levels of abstraction all the way down to assembly
+language, but these are research efforts.}
+
+When we get to structured values, however, the situation is more complex. A
+vector would have a tag declaring it to be a vector, but not dictating what
+kinds of values its elements are (and they may not even all be of the same
+kind); however, a program can usually also obtain its size, and thus traverse
+it, to gather this information. (There is, however, more to be said about
+structured values below \ref{}.)
+
+\DoNow{
+Write a contract that checks that a list consists solely of even numbers.
+}
+
+Here it is:
+\lsts{16/2/3.rkt}{rkt}
+(Again, note that the first two questions need not be asked if we know,
+statically, that we have a list of numbers.) Similarly, an object might simply
+identify itself as an object, not providing additional information. But in
+languages that permit reflection on the object’s structure, a contract can still
+gather the information it needs.
+
+In every language, however, this becomes problematic when we encounter
+functions. We might think of a function as having a type for its domain and
+range, but to a run-time system, a function is just an opaque object with a
+function tag, and perhaps some very limited metadata (such as the function’s
+arity). The run-time system can hardly even tell whether the function consumes
+and produces functions—as opposed to other kinds of values—much less whether
+they it consumes and produces ones of (number -> number) type.
+
+This problem is nicely embodied in the (misnamed) typeof operator in JavaScript.
+Given values of base types like numbers and strings, typeof returns a string to
+that effect (e.g., "number"). For objects, it returns "object". Most
+importantly, for functions it returns "function", with no additional
+information.
+\note{For this reason, perhaps typeof is a bad name for this operator. It should
+have been called tagof instead, leaving open the possibility that future static
+type systems for JavaScript could provide a true typeof.}
+
+To summarize, this means that at the point of being confronted with a function,
+a function contract can only check that it is, indeed, a function (and if it is
+not, that is clearly an error). It cannot check anything about the domain and
+range of the function.
+Should we give up?

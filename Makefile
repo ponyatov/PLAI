@@ -332,6 +332,8 @@ TEX += 16/1/contrpred.tex
 SRC += 16/1/1.rkt 16/1/2.rkt 16/1/3.rkt 16/1/4.rkt
 
 TEX += 16/2/tags.tex
+SRC += 16/2/1.rkt 16/2/2.rkt 16/2/3.rkt
+
 TEX += 16/3/highord.tex
 TEX += 16/4/conv.tex
 TEX += 16/5/extn.tex
