@@ -1,60 +1,113 @@
 \secrel{Substitution\\\ru{Подстановка}}
 
-Substitution is the act of replacing a name (in this case, that of the formal
-parameter) in an expression (in this case, the body of the function) with another expression (in this case, the actual parameter). Let’s define its type:
-\lsts{5/3/1.rkt}{rkt}
-It helps to also give its parameters informative names:
+\termdef{Substitution}{substitution} is the act of replacing a name
+\ru{\termdef{Подстановка}{подстановка} это процесс замены имени}
+(in this case, that of the formal parameter
+\ru{в этом конкретном случае, это имя формального параметра})
+in an expression \ru{в выражении}
+(in this case, the \termdef{body}{function body} of the function
+\ru{в этом случае это \termdef{тело функции}{тело функции}})
+with another expression
+\ru{на другое выражение}
+(in this case, the actual parameter
+\ru{значение пареметра}).
+Let’s define its type
+\ru{Давайте определим его тип}:
+\lst{5/3/1.rkt}
+It helps to also give its parameters informative names
+\ru{Это поможет нам также дать его параметрам информативные имена}:
 \lsts{5/3/2.rkt}{rkt}
-The first argument is what we want to replace the name with; the second is for
-what name we want to perform substitution; and the third is in which expression
-we want to do it.
+The first argument is \ru{Первый аргумент} \term{what} we want to replace the
+name with \ru{на что мы хотим заменить имя};
+the second \ru{второй} \term{is} for what name we want to perform substitution
+\ru{для какого имени мы хотим выполнить подстановку};
+and the third is \ru{и третий это } \term{in} which expression we want to
+do it \ru{в каком выражения мы хотим сделать это}.
 \DoNow{
-Suppose we want to substitute 3 for the identifier x in the bodies of the three
-example functions above. What should it produce\,?
-}
-In double, this should produce (+ 3 3); in quadruple, it should produce (double
-(double 3)); and in const5, it should produce 5 (i.e., no substitution happens
-because there are no instances of x in the body).
-\note{A common mistake is to assume that the result of substituting, e.g., 3
-for x in double is (define (double x) (+ 3 3)). This is incorrect. We only
-substitute at the point when we apply the function, at which point the
-function’s invocation is replaced by its body. The header enables us to find the
-function and ascertain the name of its parameter; but only its body remains for
-evaluation. Examine how substitution is used to notice the type error that would
-result from returning a function definition.}
+Suppose we want to substitute \ru{Предположим что мы хотим подставить} $3$ for
+the identifier \ru{вместо идентификатора} $x$ in the bodies of the three example
+functions above \ru{в телах трех примеров функций выше}.
+What should it produce \ru{Что должно получиться в результате}\,? } In \ru{В}
+\verb|double|, this should produce \ru{должно получиться} \verb|(+ 3 3)|; in
+\ru{в} \verb|quadruple|, it should produce \ru{результат}
+\verb|(double (double 3))|; \clearpage and in \ru{и в} \verb|const5|, it should
+produce \ru{должно получиться} \verb|5| (i.e., no substitution happens \ru{т.е.
+никакой подстановки не происходит} because there are no instances of \ru{потому
+что нет вхождений} \verb|x| in the body \ru{в теле функции}).
+\note{A common mistake is to assume that the result of substituting, e.g., 3 for
+x in double is (define (double x) (+ 3 3)). This is incorrect. We only
+substitute \emph{at the point when we apply the function}, at which point the
+\termdef{function’s invocation}{function invocation} is replaced by its body.
+The \termdef{header}{function header} enables us to find the function and
+ascertain the name of its parameter; but \emph{only its body remains for
+evaluation}. Examine how substitution is used to notice the type error that
+would result from returning a function definition.}
+\note{\ru{Распространенной ошибкой является предположение того что результат
+подстановки, например} 3 \ru{для} x \ru{в} double \ru{это} (define (double x) (+
+3 3)). \ru{Это неправильно. Мы выполняем подстановку только \emph{в точке где мы
+применяем функцию}, в том месте где \termdef{вызов функции}{вызов функции}
+заменяется на ее тело. \termdef{Заголовок}{заголовок функции} позволяет нам
+найти функцию и установить имя ее параметра; но \emph{только ее тело остается
+для вычисления}. Рассмотрите внимательно как происходит подстановка, чтобы
+запомнить типичную ошибку которая может быть результатом возврата определения
+функции.}}
 
-These examples already tell us what to do in almost all the cases. Given a
-number, there’s nothing to substitute. If it’s an identifier, we haven’t seen an
-example with a different identifier but you’ve guessed what should happen: it
-stays unchanged. In the other cases, descend into the sub-expressions,
-performing substitution.
+\clearpage
+These examples already tell us what to do in almost all the cases. \ru{Эти
+примеры показывают нам что делать в большинстве случаев.} Given a number,
+there’s nothing to substitute. \ru{Для числа не нужна подстановка.} If it’s an
+identifier \ru{Если это идентификатор}, we haven’t seen an example with a
+\emph{different} identifier \ru{мы еще не видели пример с \emph{другим}
+идентификатором}, but you’ve guessed what should happen \ru{но вы предполагаете
+что должно произойти}: it stays unchanged \ru{он остается неизменным}. In the
+other cases \ru{В других случаях}, descend into the sub-expressions \ru{обходим
+подвыражения}, performing substitution \ru{выполняя подстановку}.
 
-Before we turn this into code, there’s an important case to consider. Suppose
-the name we are substituting happens to be the name of a function. Then what
-should happen\,?
+Before we turn this into code \ru{Перед тем как превратить эти правила в код},
+there’s an important case to consider \ru{необходимо рассмотреть важный случай}.
+Suppose the name we are substituting happens to be the name of a function
+\ru{Предположим что подставляемое имя оказывается именем функции}. Then what
+should happen \ru{Что должно при этом произойти}\,?
 \DoNow{
-What, indeed, should happen?
+What, indeed, should happen \ru{И шо-таки должно быть}\,?
 }
-There are many ways to approach this question. One is from a design perspective:
-function names live in their own “world”, distinct from ordinary program
-identifiers. Some languages (such as C and Common Lisp, in slightly different
-ways) take this perspective, and partition identifiers into different namespaces
-depending on how they are used. In other languages, there is no such
-distinction; indeed, we will examine such languages soon \ref{}.
+There are many ways to approach this question \ru{Есть много подходов к этому
+вопросу}. One is from a design perspective \ru{Один подход с точки зрения
+дизайна}: function names live in their own ``world'' \ru{имена функций живут в
+их собственном ``мире''}, distinct from ordinary program identifiers \ru{и
+отличаются от обычных идентификаторов в прогремме}. Some languages \ru{Некоторые
+языки} (such as C and Common Lisp \ru{такие как \ci\ и Common \lisp}, in
+slightly different ways \ru{немного различными способами}) take this perspective
+\ru{идут этим путем}, and partition identifiers into different
+\termdef{namespaces}{namespace} \ru{разделяют идентификаторы в различные \termdef{пространства имен}{пространство имен}}
+depending on how they are used \ru{в зависимости от того как они используются}.
+In other languages \ru{В других языках}, there is no such distinction \ru{такого
+разделения нет}; indeed, we will examine such languages soon \ru{на самом деле
+мы рассмотрим такие языки в ближайшее время} \ref{}.
 
-For now, we will take a pragmatic viewpoint. Because expressions evaluate to
-numbers, that means a function name could turn into a number. However, numbers
-cannot name functions, only symbols can. Therefore, it makes no sense to
-substitute in that position, and we should leave the function name unmolested
-irrespective of its relationship to the variable being substituted. (Thus, a
-function could have a parameter named x as well as refer to another function
-called x, and these would be kept distinct.)
+For now, we will take a pragmatic viewpoint \ru{Теперь примем практическую точку
+зрения}. Because expressions evaluate to numbers \ru{Так как выражения
+вычисляются в числа}, that means a function name could turn into a number
+\ru{это значит что имя функции в итоге превращается в число}. However, numbers
+cannot name functions \ru{Тем не менее, числа не могут именовать функции}, only
+symbols can \ru{это могут делать только символы}. Therefore, it makes no sense
+to substitute in that position \ru{Так что нет смысла делать подстановку в этой
+позиции}, and we should leave the function name unmolested \ru{и мы должны
+оставить имя функции нетронутым} irrespective of its relationship to the
+variable being substituted \ru{независимо от ее отношения к подставляемой
+переменной}. (Thus, a function could have a parameter named \ru{Таким образом
+функция может иметь параметр названный} x as well as refer to another
+\emph{function} called \ru{одновременно со ссылкой на другую \emph{функцию} с
+именем} x, and these would be kept distinct \ru{и они будут различимы}.)
 
-Now we’ve made all our decisions, and we can provide the body code:
+Now we’ve made all our decisions \ru{Теперь мы приняли все наши решения}, and we
+can provide the body code \ru{и можем предоставить body-код}:
 \lsts{5/3/3.rkt}{rkt}
 
 \Exercise{
-Observe that, whereas in the numC case the interpreter returned n, substitution
-returns in (i.e., the original expression, equivalent at that point to writing
-(numC n). Why\,?
+Observe that \ru{Заметим что}, whereas in the \ru{в случае} numC case the
+interpreter returned \ru{интерпретатор возвращает} n, substitution returns
+\ru{подстановка возвращает} in (i.e., the original expression \ru{т.е.
+оригинальное выражение}, equivalent at that point to writing \ru{в этом месте
+эквивалентное} (numC n). Why \ru{Зачем}\,?
 }

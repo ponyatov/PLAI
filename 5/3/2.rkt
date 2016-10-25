@@ -1,3 +1,5 @@
 <subst> ::=
-(define (subst [what : ExprC] [for : symbol] [in : ExprC]) : ExprC
+  (define (subst [ what : ExprC  ]
+                 [ for  : symbol ]
+                 [ in   : ExprC  ]  ) : ExprC
   <subst-body>)
