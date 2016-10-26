@@ -1,14 +1,14 @@
 %{
 #include "hpp.hpp"
 %}
-%option noyywrap main
+%option noyywrap
 S [\+\-]?
 N [0-9]+
 %%
 #[^\n]*				{}
 [ \t\r\n]+			{}
-{S}{N}[eE]{S}{N}	{ cout << "<"<<yytext<<">"; }
-{S}{N}\.{N}			{ cout << "<"<<yytext<<">"; }
-{S}{N}				{ cout << "<"<<yytext<<">"; }
-.					{ cout << "<"<<yytext<<">"; }
+{S}{N}[eE]{S}{N}	TOC(SYM)
+{S}{N}\.{N}			TOC(SYM)
+{S}{N}				TOC(SYM)
+.					TOC(SYM)
 
