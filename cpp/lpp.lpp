@@ -1,7 +1,7 @@
 %{
 #include "hpp.hpp"
 %}
-%option noyywrap
+%option noyywrap yylineno
 S [\+\-]?
 N [0-9]+
 %%
@@ -12,8 +12,21 @@ N [0-9]+
 {S}{N}\.{N}			TOC(Num,NUM)
 {S}{N}				TOC(Num,NUM)
 
+\(					TOC(Op,LP)
+\)					TOC(Op,RP)
+\[					TOC(Op,LQ)
+\]					TOC(Op,RQ)
+\{					TOC(Op,LC)
+\}					TOC(Op,RC)
+
+\=					TOC(Op,EQ)
+\@					TOC(Op,AT)
+\,					TOC(Op,COMMA)
+\:					TOC(Op,COLON)
+
 \+					TOC(Op,ADD)
 \*					TOC(Op,MUL)
+\^					TOC(Op,POW)
 
 [a-zA-Z0-9_]+		TOC(Sym,SYM)
 

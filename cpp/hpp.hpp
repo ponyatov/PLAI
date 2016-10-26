@@ -19,6 +19,10 @@ struct Num:Sym { Num(string); string head(); double val; };
 
 struct Op:Sym { Op(string); };
 
+struct Vector:Sym { Vector(); };
+struct Lambda:Sym { Lambda(); };
+struct Tuple:Sym { Tuple(Sym*,Sym*); };
+
 extern int yylex();
 extern int yylineno;
 extern char* yytext;

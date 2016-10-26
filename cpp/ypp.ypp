@@ -2,17 +2,42 @@
 #include "hpp.hpp"
 %}
 %defines %union { Sym*o; }
-%token <o> SYM NUM
-%token <o> ADD MUL
-%type <o> ex scalar
+%token <o> SYM NUM				// symbol number
+%token <o> LP RP LQ RQ LC RC	// (exp) [vector] {lambda}
+%token <o> ADD MUL POW			// + * ^
+%token <o> EQ AT				// = @
+%token <o> COMMA COLON			// , :
 
+%type <o> ex scalar vector lambda tuple
+
+%right EQ
 %left ADD
 %left MUL
+%left POW
+%left PFX
 %%
 REPL : | REPL ex { cout << $2->dump() << endl; } ;
 scalar : SYM | NUM ;
-ex : scalar
-   | ex ADD ex	{ $$=$2; $2->push($1); $2->push($3); }
-   | ex MUL ex	{ $$=$2; $2->push($1); $2->push($3); }
+ex : scalar | tuple
+	| LP ex RP		{ $$=$2; }
+	| LQ vector RQ	{ $$=$2; }
+	| LC lambda RC	{ $$=$2; }
+	| SYM LP ex RP	{ $$=new Op("@"); $$->push($1); $$->push($3); }
+	| ex AT ex		{ $$=$2; $2->push($1); $2->push($3); }
+	| ex EQ  ex		{ $$=$2; $2->push($1); $2->push($3); }
+	| ex ADD ex		{ $$=$2; $2->push($1); $2->push($3); }
+	| ex MUL ex		{ $$=$2; $2->push($1); $2->push($3); }
+	| ex POW ex		{ $$=$2; $2->push($1); $2->push($3); }
+;
+vector : 			{ $$=new Vector(); }
+	| vector ex		{ $$=$1; $$->push($2); }
+;
+lambda :					{ $$=new Lambda(); }
+	| lambda SYM COLON		{ $$=$1; $$->push($2); }
+	| lambda tuple COLON	{ $$=$1; $$->push($2); }
+	| lambda ex				{ $$=$1; $$->push($2); }
+;
+tuple :	ex COMMA ex			{ $$=new Tuple($1,$3); }
+	| tuple COMMA ex		{ $$=$1; $$->push($3); }
 ;
 

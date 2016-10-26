@@ -18,3 +18,7 @@ string Num::head() { ostringstream os; os<<val; return os.str(); }
 
 Op::Op(string V):Sym(V){}
 
+Vector::Vector():Sym("[]"){}
+Lambda::Lambda():Sym("{}"){}
+Tuple::Tuple(Sym*A,Sym*B):Sym(","){ push(A); push(B); }
+
