@@ -7,8 +7,15 @@ N [0-9]+
 %%
 #[^\n]*				{}
 [ \t\r\n]+			{}
-{S}{N}[eE]{S}{N}	TOC(SYM)
-{S}{N}\.{N}			TOC(SYM)
-{S}{N}				TOC(SYM)
-.					TOC(SYM)
+
+{S}{N}[eE]{S}{N}	TOC(Num,NUM)
+{S}{N}\.{N}			TOC(Num,NUM)
+{S}{N}				TOC(Num,NUM)
+
+\+					TOC(Op,ADD)
+\*					TOC(Op,MUL)
+
+[a-zA-Z0-9_]+		TOC(Sym,SYM)
+
+.					{yyerror("lexer");}
 
