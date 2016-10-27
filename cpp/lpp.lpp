@@ -8,9 +8,9 @@ N [0-9]+
 #[^\n]*				{}
 [ \t\r\n]+			{}
 
-{S}{N}[eE]{S}{N}	TOC(Num,NUM)
-{S}{N}\.{N}			TOC(Num,NUM)
-{S}{N}				TOC(Num,NUM)
+{N}[eE]{S}{N}		TOC(Num,NUM)
+{N}\.{N}			TOC(Num,NUM)
+{N}					TOC(Num,NUM)
 
 \(					TOC(Op,LP)
 \)					TOC(Op,RP)

@@ -33,8 +33,8 @@ vector : 			{ $$=new Vector(); }
 	| vector ex		{ $$=$1; $$->push($2); }
 ;
 lambda :					{ $$=new Lambda(); }
-	| lambda SYM COLON		{ $$=$1; $$->push($2); }
-	| lambda tuple COLON	{ $$=$1; $$->push($2); }
+	| lambda SYM COLON		{ $$=$1; $$->lookup[$2->val]=$2; }
+	| lambda SYM COMMA		{ $$=$1; $$->lookup[$2->val]=$2; }
 	| lambda ex				{ $$=$1; $$->push($2); }
 ;
 tuple :	ex COMMA ex			{ $$=new Tuple($1,$3); }

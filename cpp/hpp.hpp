@@ -5,12 +5,14 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
+#include <map>
 using namespace std;
 
 struct Sym {
 	string val;
 	Sym(string);
 	vector<Sym*> nest; void push(Sym*);
+	map<string,Sym*> lookup;
 	virtual string head(); string pad(int);
 	virtual string dump(int=0);
 };
