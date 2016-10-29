@@ -2,49 +2,73 @@
 \ru{Возвращаемся к интерпретатору}}\label{interpresumed}
 
 Phew \ru{Фу}\,! Now that we’ve completed the definition of substitution
-\ru{Теперь, когда мы завершили определение подстановки} (or so we think
-\ru{или мы так думаем}), let’s complete the interpreter \ru{давайте доделаем
-интерпретатор}.
-Substitution was a heavyweight step \ru{Подстановка была сложным шагом}, but it
-also does much of the work \ru{но она также выполняет б\'{о}льшую часть работы}
-involved in applying a function \ru{по применению функции}.
-It is tempting to write
+\ru{Теперь, когда мы завершили определение подстановки} (or so we think \ru{или
+мы так думаем}), let’s complete the interpreter \ru{давайте доделаем
+интерпретатор}. Substitution was a heavyweight step \ru{Подстановка была сложным
+шагом}, but it also does much of the work \ru{но она также выполняет б\'{о}льшую
+часть работы} involved in applying a function \ru{по применению функции}. It is
+tempting to write \ru{Заманчиво написать}
 \lsts{5/4/1.rkt}{rkt}
-Tempting, but wrong.
+Tempting, but wrong \ru{Заманчиво, но неправильно}.
 
 \DoNow{
-Do you see why?
+Do you see why \ru{Вы видите почему}\,?
 }
 
-Reason from the types. What does the interpreter return? Numbers. What does
-substitution return? Oh, that’s right, expressions! For instance, when we
-substituted in the body of double, we got back the representation of (+ 5 5).
-This is not a valid answer for the interpreter. Instead, it must be reduced to
-an answer. That, of course, is precisely what the interpreter does:
+Reason from the types \ru{Дело в типах}. What does the interpreter return
+\ru{Что должен возвращать интерпретатор}\,? \emph{Numbers} \ru{Числа}. What does
+substitution return \ru{Что возвращает подстановка}\,? Oh, that’s right,
+\emph{expressions} \ru{О, правильно, выражения}\,! For instance \ru{Например},
+when we substituted in the body of \ru{когда мы подставили тело} \verb|double|,
+we got back the representation of \ru{мы получили представление} \verb|(+ 5 5)|.
+This is not a valid answer for the interpreter \ru{Это неправильное поведение
+для интерпретатора}. Instead, it must be reduced to an answer \ru{Вместо этого
+это выражение должно быть редуцировано до ответа}. That, of course, is precisely
+what the interpreter does \ru{Естественно, вот что точно должен сделать
+интерпретатор}:
 \lsts{5/4/2.rkt}{rkt}
-Okay, that leaves only one case: identifiers. What could possibly be complicated
-about them? They should be just about as simple as numbers! And yet we’ve put
-them off to the very end, suggesting something subtle or complex is afoot.
+Okay, that leaves only one case: \termdef{identifiers}{identifier} \ru{Итак,
+остается только один случай: \termdef{идентификаторы}{идентификатор}}. What
+could possibly be complicated about them \ru{Что может быть сложного}\,? They
+should be just about as simple as numbers \ru{Они должны быть так же просто
+реализуемы, как числа}\,! And yet we’ve put them off to the very end \ru{И все
+же мы оставили их на самый конец}, suggesting something subtle or complex is
+afoot \ru{предполагая что там есть что-то тонкое и сложное}.
 
 \DoNow{
-Work through some examples to understand what the interpreter should do in the
-identifier case.
+Work through some examples to understand \ru{Пройдите через несколько примеров,
+чтобы понять} what the interpreter should do in the identifier case \ru{что
+интерпретатор должен делать в случае идентификатора}.
 }
 
-Let’s suppose we had defined double as follows:
+Let’s suppose we had defined \ru{Предположим что мы определили} \verb|double| as
+follows \ru{следующим образом}:
 \lsts{5/4/3.rkt}{rkt}
-When we substitute 5 for x, this produces the expression (+ 5 y). So far so
-good, but what is left to substitute y? As a matter of fact, it should be clear
-from the very outset that this definition of double is erroneous. The identifier
-y is said to be free, an adjective that in this setting has negative
-connotations.
+When we substitute \ru{Когда мы подставляем} \verb|5| for \ru{вместо} \verb|x|,
+this produces the expression \ru{это создает выражение} \verb|(+ 5 y)|.
+So far so good \ru{Все идет нормально}, but what is left to substitute \ru{но
+что осталось для подстановки} \verb|y|\,? As a matter of fact \ru{Собственно
+говоря}, it should be clear from the very outset \ru{должно быть ясно с самого
+начала} that this definition of \ru{что это определение} \verb|double| is
+\emph{erroneous} \ru{является \emph{ошибочным}}. The identifier
+\ru{Идентификатор} \verb|y| is said to be \termdef{free}{free identifier}
+\ru{нужно назвать \termdef{свободным}{свободный идентификатор}}, an adjective
+\ru{прилагательное} that in this setting has negative connotations \ru{которое в
+этой ситуации имеет негативный оттенок}.
 
-In other words, the interpreter should never confront an identifier. All
-identifiers ought to be parameters that have already been substituted (known as
-bound identifiers—here, a positive connotation) before the interpreter ever sees
-them. As a result, there is only one possible response given an identifier:
+In other words \ru{Другими словами}, the interpreter should never confront an
+identifier \ru{интерпретатор никогда не должен сопоставлять такой
+идентификатор}. All identifiers ought to be parameters \ru{Все идентификаторы
+являющиеся параметрами} that have already been substituted \ru{которые уже были
+замещены} (known as \termdef{bound}{bound identifier} identifiers \ru{известные
+как \termdef{связанные}{связанный идентификатор} идентификаторы}\ --- here, a
+positive connotation \ru{здесь в положительном смысле}) before the interpreter
+ever sees them \ru{до того как интерпретатор их увидел}. As a result \ru{В
+результате}, there is only one possible response given an identifier \ru{есть
+только один положительный ответ для данного идентификатора}:
 \lsts{5/4/4.rkt}{rkt}
-And that’s it!
+And that’s it \ru{Вот и все},!
 
-Finally, to complete our interpreter, we should define get-fundef:
+Finally \ru{В итоге}, to complete our interpreter \ru{для завершения нашего
+интерпретатора}, we should define \ru{мы должны определить} \verb|get-fundef|:
 \lsts{5/4/5.rkt}{rkt}
