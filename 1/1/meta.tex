@@ -1,0 +1,204 @@
+\secrel{\ru{Метапрограммирование}}\secdown
+
+Метапрограммирование\ --- вид программирования, связанный с созданием программ,
+которые порождают другие программы как результат своей работы (в частности, на
+стадии компиляции их исходного кода), либо программы, которые меняют себя во
+время выполнения (самомодифицирующийся код).
+
+\secrel{\ru{Генерация кода}}
+
+При этом подходе код программы не пишется вручную, а создаётся автоматически
+программой-генератором на основе другой программы\note{часто на каком-нибудь
+специализированном сверхвысокоуровневом DSL-языке} или спецификации требуемого
+приложения. Такой подход приобретает смысл, когда у вас вырабываются различные
+шаблоны кода, часто достаточно сложные (высокоуровневые парадигмы, выполнение
+требований внешних библиотек, стереотипные методы реализации приложений и т.п.).
+При этом б\'{о}льшая часть кода теряет содержательный смысл, и становится лишь
+механическим выполнением правил реализации/кодирования. В большинстве
+практических случаев, при написании типовых приложений, особенно если вы
+работаете в одной-двух прикладных областях\note{ERP/бухучет, расчетные
+программы, АРМ, САПР, веб-приложения,\ldots}, эта часть становится настолько
+значительной, что возникает мысль задавать вручную лишь спецификаторную часть
+бизнес-логики, а остальной типовой код добавлять автоматически. Это и
+проделывает метапрограмма-генератор.
+
+\secrel{\ru{Мультиплатформенные приложения}}
+
+Проблема поддержки нескольких платформ выполнения для приложений стала особенно
+актуальной в последние 5-10 лет с связи с заметным увеличением количества
+активно используемых операционных систем, взрывным ростом рынка мобильных
+устройств, и развитием облачных технологий. Применение метапрограммирования
+позволяет упростить реализацию серверов облачных сервисов и программ-клиентов
+для десятков вариантов аппаратных $\times$ программных платформ.
+
+\secrel{Transformational programming (TP)\\
+\ru{Трансформаторное программирование}}
+
+A program transformation is any operation that takes a computer program and
+generates another program. In many cases the transformed program is required to
+be semantically equivalent to the original, relative to a particular formal
+semantics and in fewer cases the transformations result in programs that
+semantically differ from the original in predictable ways.[1]
+
+While the transformations can be performed manually, it is often more practical
+to use a program transformation system that applies specifications of the
+required transformations. Program transformations may be specified as automated
+procedures that modify compiler data structures (e.g. abstract syntax trees)
+representing the program text, or may be specified more conveniently using
+patterns representing parameterized source code text fragments.
+
+A practical requirement for source code transformation systems is that they be
+able to effectively process programs written in a programming language. This
+usually requires integration of a full front-end for the programming language of
+interest, including source code parsing, building internal program
+representations of code structures, the meaning of program symbols, useful
+static analyses, and regeneration of valid source code from transformed program
+representations. The problem of building and integrating adequate front ends for
+conventional languages (Java, C++, PHP, ...) may be of equal difficulty as
+building the program transformation system itself because of the complexity of
+such languages. To be widely useful, a transformation system must be able to
+handle many target programming languages, and must provide some means of
+specifying such front ends.
+
+A generalisation of semantic equivalence is the notion of program refinement:
+one program is a refinement of another if it terminates on all the initial
+states for which the original program terminates, and for each such state it is
+guaranteed to terminate in a possible final state for the original program. In
+other words, a refinement of a program is more defined and more deterministic
+than the original program. If two programs are refinements of each other, then
+the programs are equivalent.
+
+A transformation language is a computer language designed to transform some
+input text in a certain formal language into a modified output text that meets
+some specific goal[clarification needed].
+
+Program transformation systems such as Stratego/XT, TXL, Tom, DMS, and ASF+SDF
+all have transformation languages as a major component. The transformation
+languages for these systems are driven by declarative descriptions of the
+structure of the input text (typically a grammar), allowing them to be applied
+to wide variety of formal languages and documents.
+
+Macro languages are a kind of transformation languages to transform a meta
+language into specific higher programming language like Java, C++, Fortran or
+into lower-level Assembly language.
+
+In the model-driven engineering technical space, there are model transformation
+languages (MTLs), that take as input models conforming to a given metamodel and
+produce as output models conforming to a different metamodel. An example of such
+a language is the QVT OMG standard.
+
+There are also low-level languages such as the Lx family[1] implemented by the
+bootstrapping method. The L0 language may be considered as assembler for
+transformation languages. There is also a high-level graphical language built on
+upon Lx called MOLA.[2]
+
+There are a number of XML transformation languages. These include Tritium, XSLT,
+XQuery, STX, FXT, XDuce, CDuce, HaXml, XMLambda, and FleXML.
+
+\secrel{\ru{Основные методы реализации}}\secdown
+
+\secrel{Homoiconicity \ru{Гомоиконичность}}
+
+In computer programming \ru{В программировании},
+\termdef{homoiconicity}{homoiconicity}
+\ru{\termdef{гомоиконичность}{гомоиконичность}}\note{from the Greek words \ru{от
+греческих слов} \emph{homo} meaning the same \ru{обозначает \emph{само-}} and
+\ru{и} \emph{icon} meaning representation \ru{обозначает \emph{представление}}}\
+is a property of some programming languages \ru{это свойство некоторых языков
+программирования} in which the program structure is similar to its syntax
+\ru{когда структура программы аналогична ее синтаксису}, and therefore \ru{и
+таким образом} the program's internal representation \ru{внутреннее представление
+программы} can be inferred by reading the text's layout \ru{может быть выведено
+через чтение текстового описания}.\ref{}
+If a language is homoiconic \ru{Если язык гомоиконичен}, it means that the
+language text \ru{это значит что текст программы на этом языке} has the same
+structure \ru{имеет ту же структуру} as its abstract syntax tree \ru{что и ее
+синтаксическое дерево} (i.e. the AST and the syntax are \term{isomorphic} \ru{то
+есть AST и синтаксис \term{изоморфны}}).
+This allows all code in the language to be accessed \ru{Это позволяет иметь
+доступ ко всему коду на таком языке} and transformed as data \ru{и
+трансформировать его как данные}, using the same representation \ru{используя
+одно представление}.
+
+In a homoiconic language \ru{В гомоиконичном языке} the primary representation
+of programs \ru{первичное представлние программы} is also a \emph{data
+structure} \ru{также само является \emph{структурой данных}} in a primitive type
+of the language itself \ru{примитивного для этого языка типа}.
+This makes metaprogramming easier \ru{Это свойство языка делает
+метапрограммирование проще} than in a language without this property \ru{чем в
+языке без него}, since code can be treated as data \ru{так как код
+рассматривается как данные}:
+reflection in the language \ru{интроспекция/рефлексия в языке} (examining the
+program's entities at runtime \ru{обработка элементов программы в рантайме})
+depends on a single, homogeneous structure \ru{выполняется на простой гомогенной
+структуре данных}, and it does not have to handle several different structures
+\ru{и не требует поддержки нескольких разнотипных элементов данных} that would
+appear in a complex syntax \ru{необходимой при сложном синтаксисе}.
+To put that another way \ru{Другими словами}, homoiconicity is where a program's
+source code \ru{гомоиконичность это когда исходный код программы} is written as
+a basic data structure \ru{является базовой структурой данных} that the
+programming language knows how to access \ru{с которой язык умеет работать
+непосредственно}.
+
+A typical, commonly cited example \ru{Типичный, широко упоминаемый пример} is
+the programming language \ru{это язык программирования} \lisp, which was created
+to be easy \ru{который был создан специально} for lists manipulation \ru{для
+манипуляции списками} and where the structure is given by \term{S-expressions}
+\ru{в котором структура заданная \term{S-выражениями}} that take the form of
+nested lists \ru{принимает форму вложенных списков}. \lisp\ programs are written
+in the form of lists \ru{Программы на \lisp\ записивыаются в форме списков}; the
+result is that the program can access its own functions and procedures while
+running \ru{в результате программа может оперировать собственными функциями и
+процедурами в процессе выполнения}, and programmatically reprogram itself on the
+fly \ru{и репрограммировать себя на лету}. Homoiconic languages typically
+include full support of syntactic macros \ru{Гомоиконичные языки обычно включают
+полную поддержку синтаксических макросов} allowing the programmer to express
+program transformations \ru{позволяющих программисту выражать трансформации
+программ} in a concise way \ru{в сжатой форме}. Examples are the programming
+languages \ru{Другие примеры таких языков программирования} $Clojure$ (a
+contemporary dialect of \ru{современный диалект} \lisp), $Rebol$ and Refal \ru{и
+Рефал}.
+
+\secrel{Интроспекция}
+
+\termdef{Интроспекция}{интроспекция}\ --- представление внутренних структур
+языка в виде переменных встроенных типов с возможностью доступа к ним из
+программы.
+
+Позволяет во время выполнения просматривать, создавать и изменять определения
+типов, стек вызовов, обращаться к переменной по имени, получаемому динамически и
+пр.
+
+\begin{itemize}[nosep]
+  \item 
+Пространство имён \verb|System.Reflection| и тип \verb|System.Type| в .NET;
+  \item 
+классы \verb|Class|, \verb|Method|, \verb|Field| в \java;
+  \item 
+представление пространств имен и определений типов через встроенные типы данных
+в \py;
+  \item 
+стандартные встроенные возможности в $Forth$ по доступу к ресурсам виртуальной
+машины;
+  \item 
+получение значения и изменение свойств почти любого из объектов в ECMAScript (с
+оговорками).
+\end{itemize}
+
+\secrel{Интерпретация произвольного кода}
+
+Интерпретация произвольного кода, представленного в виде строки.
+
+Существует естественным образом во множестве интерпретируемых языков (впервые
+функция \verb|eval| была реализована в \lisp, а точнее, непосредственно перед
+ним, ставшим её первым реализованным интерпретатором).
+
+Компилятор \href{https://ru.wikipedia.org/wiki/Tiny_C_Compiler}{TinyC} позволяет
+``на лету'' компилировать и исполнять код на языке \ci, представленный в виде
+строки символов. В
+\href{https://ru.wikipedia.org/wiki/%D0%A4%D0%BE%D1%80%D1%82_(%D1%8F%D0%B7%D1%8B%D0%BA_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)}{$Forth$}
+предусмотрена интерпретация из строки словом \verb|EVALUATE|.
+
+\secup
+
+\secup
