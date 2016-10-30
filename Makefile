@@ -1,7 +1,8 @@
 include ../texheader/head.mk
 TEX +=../texheader/lstrkt.sty
 
-TEX += 1/intro.tex 1/1/philo.tex 1/1/meta.tex 1/2/struc.tex 1/3/lang.tex
+TEX += 1/intro.tex 1/trans.tex
+TEX += 1/1/philo.tex 1/1/meta.tex 1/2/struc.tex 1/3/lang.tex
 TEX += 17/alter.tex
 
 SRC = 1/3/p8_1.rkt 1/3/p8_2.rkt 1/3/p8_3.rkt 1/3/p8_4.rkt
