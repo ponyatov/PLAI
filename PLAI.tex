@@ -17,6 +17,11 @@
 	\end{description}
 }
 
+% first titlepage fix:
+%http://tex.stackexchange.com/questions/140168/how-to-remove-a-blank-page-before-the-title-page
+\usepackage{atbegshi}
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+
 \begin{document}
 \input{lic/title}
 \tableofcontents
