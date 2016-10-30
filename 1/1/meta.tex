@@ -34,65 +34,120 @@
 \secrel{Transformational programming (TP)\\
 \ru{Трансформаторное программирование}}
 
-A program transformation is any operation that takes a computer program and
-generates another program. In many cases the transformed program is required to
-be semantically equivalent to the original, relative to a particular formal
-semantics and in fewer cases the transformations result in programs that
-semantically differ from the original in predictable ways.[1]
+A program transformation \ru{Трансформация программы} is any operation \ru{это
+любая операция} that takes a computer program \ru{которая берет компьютерную
+программы} and generates another program \ru{и генерирует другую программу}.
+In many cases \ru{Во многих случаях} the transformed program is required to be
+\term{semantically equivalent} to the original \ru{трансформированная программа
+должна быть \term{семантически эквивалентна} оригиналу}, relative to a
+particular formal semantics \ru{соответственно определенной формальной
+семантике} and in fewer cases \ru{или в некоторых случаях} the transformations
+result in programs that semantically differ from the original in predictable
+ways \ru{результаты трансформации программы семантически предсказуемо отличаются
+от оригинала}.\ref{}
 
-While the transformations can be performed manually, it is often more practical
-to use a program transformation system that applies specifications of the
-required transformations. Program transformations may be specified as automated
-procedures that modify compiler data structures (e.g. abstract syntax trees)
-representing the program text, or may be specified more conveniently using
-patterns representing parameterized source code text fragments.
+While the transformations can be performed manually \ru{В то время как
+трансформации могут быть выполнены вручную}, it is often more practical to use a
+program transformation system \ru{практичнее использовать систему трансформации
+программ} that applies specifications of the required trans\-for\-ma\-tions
+\ru{применяющую спецификации заданных трансформаций}. Program transformations
+\ru{Трансофрмация программы} may be specified \ru{может быть определена} as
+automated procedures \ru{как автоматическая процедура} that modify compiler data
+structures \ru{модифицирующая структуры данных компилятора} (e.g. abstract
+syntax trees \ru{т.е. абстрактные синтаксические деревья}) representing the
+program text \ru{представляющие текст программы}, or may be specified more
+conveniently \ru{или может использовать более удобную спецификацию} using
+patterns representing parameterized source code text fragments \ru{через шаблоны
+представляющие параметризованные фрагменты исходного кода}.
 
-A practical requirement for source code transformation systems is that they be
-able to effectively process programs written in a programming language. This
-usually requires integration of a full front-end for the programming language of
-interest, including source code parsing, building internal program
-representations of code structures, the meaning of program symbols, useful
-static analyses, and regeneration of valid source code from transformed program
-representations. The problem of building and integrating adequate front ends for
-conventional languages (Java, C++, PHP, ...) may be of equal difficulty as
-building the program transformation system itself because of the complexity of
-such languages. To be widely useful, a transformation system must be able to
-handle many target programming languages, and must provide some means of
-specifying such front ends.
+A practical requirement \ru{Практические требования} for source code
+trans\-for\-mation systems \ru{к системам трансформации исходного кода} is that
+they be able \ru{включают их способность} to effectively process programs
+\ru{эффективно обрабатывать программы} written in a programming language
+\ru{написанные на языках программирования}. This usually requires integration
+\ru{Обычно это приводит к необходимости интеграции} of a full front-end for the
+programming language of interest \ru{полного фронтенда интересующего нас языка
+программирования}, including source code parsing \ru{включая разбор исходного
+кода}, building internal program representations of code structures
+\ru{построение внутренних структур представления кода}, the meaning of program
+symbols \ru{значения символов программы}, useful static analyses \ru{полезный
+статический анализ кода}, and regeneration of valid source code \ru{и
+регенерация валидного исходниго кода} from transformed program representations
+\ru{из представления трансформированной программы}. The problem of building and
+integrating \ru{Проблема построения и интеграции} adequate front ends for
+conventional languages \ru{адекватного фронтенда для широко используемых языков}
+(\java, \cpp, PHP, \ldots) may be of equal difficulty \ru{может иметь сложность
+эквивалентную} as building the program transformation system itself
+\ru{построению самой системы трансформации программ} because of the complexity
+of such languages \ru{из-за сложности этих языков}. To be widely useful
+\ru{Чтобы быть практически полезной}, a transformation system \ru{система
+трансформации} must be able to handle many target programming languages
+\ru{должна поддерживать множество целевых языков программирования}, and must
+provide some means of specifying such front ends \ru{и должна предоставлять
+средства для спецификации таких фронтендов}.
 
-A generalisation of semantic equivalence is the notion of program refinement:
-one program is a refinement of another if it terminates on all the initial
-states for which the original program terminates, and for each such state it is
-guaranteed to terminate in a possible final state for the original program. In
-other words, a refinement of a program is more defined and more deterministic
-than the original program. If two programs are refinements of each other, then
-the programs are equivalent.
+A generalisation of semantic equivalence \ru{Обобщение семантической
+эквивалентности} is the notion of program refinement \ru{является понятием
+\termdef{уточнения}{уточнение программы} программы}: one program is a refinement
+of another \ru{программа является уточнением другой программы} if it terminates
+on all the initial states \ru{если она завершается на всех начальных состояниях}
+for which the original program terminates \ru{на которых завершается
+оригинальная программы}, and for each such state \ru{и для каждого из этих
+состояний} it is guaranteed to terminate \ru{гарантировано завершение} in a
+possible final state for the original program \ru{в возможном оконечном
+состоянии оригинальной программы}. In other words \ru{Другими словами}, a
+refinement of a program \ru{уточнение программы} is more defined \ru{лучше
+определено} and more deterministic \ru{и более детерминистично} than the
+original program \ru{чем оригинальная программа}. If two programs are
+refinements of each other \ru{Если две программы являются уточнениями друг
+друга}, then the programs are equivalent \ru{то программы
+\termdef{эквивалентны}{эквивалентная программа}}.
 
-A transformation language is a computer language designed to transform some
-input text in a certain formal language into a modified output text that meets
-some specific goal[clarification needed].
+\bigskip
+A transformation language \ru{Трансформаторный язык} is a computer language
+\ru{это компьютерный язык} designed to transform some input text
+\ru{разработанный для преобразования некоторого входного текста} in a certain
+formal language \ru{на некотором формальном языке} into a modified output text
+\ru{в модифицированный выходной текст} that meets some specific goal
+\ru{отвечающий некоторым определенным требованиям}.
 
-Program transformation systems such as Stratego/XT, TXL, Tom, DMS, and ASF+SDF
-all have transformation languages as a major component. The transformation
-languages for these systems are driven by declarative descriptions of the
-structure of the input text (typically a grammar), allowing them to be applied
-to wide variety of formal languages and documents.
+Program transformation systems such as \ru{Системы транформации программ такие
+как} Stratego/XT, TXL, Tom, DMS, and ASF+SDF all have transformation languages
+\ru{включают транформаторные языки} as a major component \ru{как главный
+компонент}. The transformation languages for these systems \ru{Трансформаторные
+языки для этих систем} are driven by declarative descriptions \ru{определяются
+декларативными описаниями} of the structure of the input text \ru{структуры
+входного текста} (typically a grammar \ru{обычно это грамматика}), allowing them
+to be applied \ru{позволяя им быть примененными} to wide variety of formal
+languages and documents \ru{к широкому диапазону формальных языков и
+документов}.
 
-Macro languages are a kind of transformation languages to transform a meta
-language into specific higher programming language like Java, C++, Fortran or
-into lower-level Assembly language.
+Macro languages \ru{Макроязыки} are a kind of transformation languages \ru{это
+вид траформаторных языков} to transform a meta language \ru{для преобразования
+метаязыка} into specific higher programming language like \ru{в определенный
+язык высокого уровня типа} \java, \cpp+, $Fortran$ or into lower-level Assembly
+language \ru{или низкоуровневый язык ассемблера}.
 
-In the model-driven engineering technical space, there are model transformation
-languages (MTLs), that take as input models conforming to a given metamodel and
-produce as output models conforming to a different metamodel. An example of such
-a language is the QVT OMG standard.
+In the model-driven engineering technical space \ru{В технических областях
+использующих модели}, there are model transformation languages \ru{применяются
+языки транформации моделей} (MTLs), that take as input models \ru{которые берут
+входную модель} conforming to a given metamodel \ru{удовлетворяющую заданной
+метамодели} and produce as output models \ru{и создают выходную модель}
+conforming to a different metamodel \ru{соответствующую другой метамодели}.
+An example of such a language is the QVT OMG standard \ru{Примером такого языка
+является стандарт QVT OMG}.
 
-There are also low-level languages such as the Lx family[1] implemented by the
-bootstrapping method. The L0 language may be considered as assembler for
-transformation languages. There is also a high-level graphical language built on
-upon Lx called MOLA.[2]
+There are also low-level languages \ru{Также существуют низкоуровневые языки}
+such as the Lx family \ru{типа множества языков Lx}\ref{} implemented by the
+bootstrapping method \ru{реализованные методом самоприменения}. The L0 language
+\ru{Язык L0} may be considered as assembler for transformation languages
+\ru{может рассмтариваться как ассемблер для транформаторных языков}. There is
+also a high-level graphical language \ru{Также существует высокоуровневый
+графический язык} built on upon Lx \ru{построенный на базе языков Lx} called
+\ru{который называется} MOLA.\ref{}
 
-There are a number of XML transformation languages. These include Tritium, XSLT,
+There are a number of XML transformation languages \ru{Существует множество
+языков транформации XML}. These include \ru{Можно упомянуть} Tritium, XSLT,
 XQuery, STX, FXT, XDuce, CDuce, HaXml, XMLambda, and FleXML.
 
 \secrel{\ru{Основные методы реализации}}\secdown
