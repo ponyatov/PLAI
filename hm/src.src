@@ -1,0 +1,22 @@
+
+core
+	ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile
+
+files
+	src.src log.log
+	core
+	.gitignore bat.bat 
+
+touch files
+bat.bat
+	@start .
+	@gvim -p files
+
+.gitignore
+	*~
+	*.swp
+	exe.exe
+	log.log
+	ypp.tab.?pp
+	lex.yy.c
+
