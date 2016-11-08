@@ -10,14 +10,16 @@ string Sym::head() { ostringstream os; os <<"<"<<val<<"> @"<<this;
 	return os.str(); }
 string Sym::pad(int n) { string S; for (int i=0;i<n;i++) S+='\t'; return S; }
 string Sym::dump(int depth) { string S = "\n"+pad(depth)+head();
+	for (auto it=lookup.begin(),e=lookup.end();it!=e;it++)
+		S += "\n"+pad(depth+1)+it->first+" = "+it->second->head();
 	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
 		S += (*it)->dump(depth+1);
 	return S; }
 
 Sym* Sym::eval(Sym* env) {
-	Sym*E = env->lookup[val]; if (E) return E;
 	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
 		(*it) = (*it)->eval(env);
+	Sym*E = env->lookup[val]; if (E) return E;
 	return this; }
 
 Str::Str(string V):Sym(V){}
@@ -27,20 +29,17 @@ string Str::head() { ostringstream os; os<<"'";
 	}
 	os<<"' @"<<this; return os.str(); }
 
-Op::Op(string V):Sym(V){}
-string Op::head() { return val; }
-Sym* Op::eval(Sym*env) { Sym::eval(env);
-	if (val=="=") return new Var(env,nest[0],nest[1]);
-	return this; }
-
 Vector::Vector():Sym("[]"){}
 string Vector::head() { return val; }
 
-Var::Var(Sym*E,Sym*A,Sym*B):Sym(A->val) { env=E;
-	push(B->eval(E)); E->lookup[val]=this; }
-string Var::head() { ostringstream os;
-	os<<env->val<<"/"<<val<<" @"<<this; return os.str(); }
-Sym* Var::eval(Sym*env) { return nest[0]->eval(env); }
+Op::Op(string V):Sym(V){}
+string Op::head() { return val; }
+Sym* Op::eval(Sym*env) { Sym::eval(env);
+	if (val=="=") { env->lookup[nest[0]->val] = nest[1]; return nest[1]; }
+	return this; }
+
+Lambda::Lambda():Sym("{}"){}
+string Lambda::head() { return val; }
 
 Sym glob("global");
 void glob_init(){}

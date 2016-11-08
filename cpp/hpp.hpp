@@ -23,11 +23,10 @@ struct Sym {
 struct Num:Sym { Num(string); };
 struct Str:Sym { Str(string); string head(); };
 
-struct Op:Sym { Op(string); string head(); Sym*eval(Sym*); };
-
 struct Vector:Sym { Vector(); string head(); };
 
-struct Var:Sym { Var(Sym*,Sym*,Sym*); Sym*env; string head(); Sym*eval(Sym*); };
+struct Op:Sym { Op(string); string head(); Sym*eval(Sym*); };
+struct Lambda:Sym { Lambda(); string head(); };
 
 extern int yylex();
 extern int yylineno;

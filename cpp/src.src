@@ -1,10 +1,7 @@
-bat.bat = [
-	@start .
-	@gvim '-p' core-Makefile
-]
+pp = {X: X+'pp.'+X+'pp'} "Xpp.Xpp"
 
-core = [
-	ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile
+core = [ "language core"
+	pp@y lpp.lpp hpp.hpp cpp.cpp Makefile
 ]
 
 files = [
@@ -14,6 +11,15 @@ files = [
 ]
 
 touch = files
+
+touch
+
+.end
+
+bat.bat = [
+	@start .
+	@gvim '-p' core-Makefile
+]
 
 .gitignore = [
 	'*~'

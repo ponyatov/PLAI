@@ -2,15 +2,21 @@
 #include "hpp.hpp"
 string LexString;
 %}
-%x lexstring
+%x lexstring docstring
 %option noyywrap yylineno
 %%
 #[^\n]*				{}
+^.end				{yyterminate();}
 
 '					{BEGIN(lexstring); LexString="";}
 <lexstring>'		{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
 <lexstring>\\.		{LexString+=yytext[1];}
 <lexstring>.		{LexString+=yytext[0];}
+
+\"					{BEGIN(docstring); LexString="";}
+<docstring>\"		{BEGIN(INITIAL); yylval.o = new Str(LexString); return DOC;}
+<docstring>\\.		{LexString+=yytext[1];}
+<docstring>.		{LexString+=yytext[0];}
 
 \(					TOC(Op,LP)
 \)					TOC(Op,RP)
@@ -20,6 +26,9 @@ string LexString;
 \}					TOC(Op,RC)
 
 \=					TOC(Op,EQ)
+\@					TOC(Op,AT)
+\~					TOC(Op,TILD)
+\:					TOC(Op,COLON)
 
 \+					TOC(Op,ADD)
 \-					TOC(Op,SUB)
@@ -27,7 +36,7 @@ string LexString;
 \/					TOC(Op,DIV)
 \^					TOC(Op,POW)
 
-[a-zA-Z0-9_.@?]+	TOC(Sym,SYM)
+[a-zA-Z0-9_.?]+		TOC(Sym,SYM)
 
 [ \t\r\n]+			{}
 .					{yyerror("lexer");}
