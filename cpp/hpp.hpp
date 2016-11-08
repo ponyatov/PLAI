@@ -9,22 +9,25 @@
 using namespace std;
 
 struct Sym;
-extern Sym env;
-extern void env_init();
+extern Sym glob;
+extern void glob_init();
 struct Sym {
 	string val;
 	Sym(string);
 	vector<Sym*> nest; void push(Sym*);
+	map<string,Sym*> lookup;
 	virtual string head(); string pad(int); virtual string dump(int=0);
-	virtual Sym* eval(Sym*E=&env);
+	virtual Sym* eval(Sym*env=&glob);
 };
 
 struct Num:Sym { Num(string); };
-struct Str:Sym { Str(string); };
+struct Str:Sym { Str(string); string head(); };
 
-struct Op:Sym { Op(string); };
+struct Op:Sym { Op(string); string head(); Sym*eval(Sym*); };
 
 struct Vector:Sym { Vector(); string head(); };
+
+struct Var:Sym { Var(Sym*,Sym*,Sym*); Sym*env; string head(); Sym*eval(Sym*); };
 
 extern int yylex();
 extern int yylineno;
