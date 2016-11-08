@@ -39,7 +39,7 @@ string Vector::head() { return val; }
 Var::Var(Sym*E,Sym*A,Sym*B):Sym(A->val) { env=E;
 	push(B->eval(E)); E->lookup[val]=this; }
 string Var::head() { ostringstream os;
-	os<<env->val<<"::"<<val<<" @"<<this; return os.str(); }
+	os<<env->val<<"/"<<val<<" @"<<this; return os.str(); }
 Sym* Var::eval(Sym*env) { return nest[0]->eval(env); }
 
 Sym glob("global");
