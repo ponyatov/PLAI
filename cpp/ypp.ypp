@@ -2,42 +2,31 @@
 #include "hpp.hpp"
 %}
 %defines %union { Sym*o; }
-%token <o> SYM NUM				// symbol number
-%token <o> LP RP LQ RQ LC RC	// (exp) [vector] {lambda}
-%token <o> ADD MUL POW			// + * ^
-%token <o> EQ AT				// = @
-%token <o> COMMA COLON			// , :
-
-%type <o> ex scalar vector lambda tuple
+%token <o> SYM NUM STR				// symbol number string
+%token <o> LP RP LQ RQ LC RC		// (expression) [vector] {lambda}
+%token <o> EQ						// =
+%token <o> ADD SUB MUL DIV POW		// + - * / ^
+%type <o> ex scalar vector
 
 %right EQ
-%left ADD
-%left MUL
+%left ADD SUB
+%left MUL DIV
 %left POW
 %left PFX
 %%
-REPL : | REPL ex { cout << $2->dump() << endl; } ;
-scalar : SYM | NUM ;
-ex : scalar | tuple
-	| LP ex RP		{ $$=$2; }
-	| LQ vector RQ	{ $$=$2; }
-	| LC lambda RC	{ $$=$2; }
-	| SYM LP ex RP	{ $$=new Op("@"); $$->push($1); $$->push($3); }
-	| ex AT ex		{ $$=$2; $2->push($1); $2->push($3); }
-	| ex EQ  ex		{ $$=$2; $2->push($1); $2->push($3); }
-	| ex ADD ex		{ $$=$2; $2->push($1); $2->push($3); }
-	| ex MUL ex		{ $$=$2; $2->push($1); $2->push($3); }
-	| ex POW ex		{ $$=$2; $2->push($1); $2->push($3); }
+REPL : | REPL ex			 { cout << $2->eval()->dump() << endl; };
+scalar : SYM | NUM | STR ;
+ex : scalar
+	| LQ vector RQ			{ $$=$2; }
+	| ex EQ ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ADD ex %prec PFX		{ $$=$1; $$->push($1); }
+	| ex ADD ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| SUB ex %prec PFX		{ $$=$1; $$->push($1); }
+	| ex SUB ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ex MUL ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ex DIV ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ex POW ex				{ $$=$2; $$->push($1); $$->push($3); }
 ;
-vector : 			{ $$=new Vector(); }
-	| vector ex		{ $$=$1; $$->push($2); }
+vector:						{ $$=new Vector(); }
+	| vector ex				{ $$=$1; $$->push($2); }
 ;
-lambda :					{ $$=new Lambda(); }
-	| lambda SYM COLON		{ $$=$1; $$->lookup[$2->val]=$2; }
-	| lambda SYM COMMA		{ $$=$1; $$->lookup[$2->val]=$2; }
-	| lambda ex				{ $$=$1; $$->push($2); }
-;
-tuple :	ex COMMA ex			{ $$=new Tuple($1,$3); }
-	| tuple COMMA ex		{ $$=$1; $$->push($3); }
-;
-

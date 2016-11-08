@@ -8,29 +8,30 @@
 #include <map>
 using namespace std;
 
+struct Sym;
+extern Sym env;
+extern void env_init();
 struct Sym {
 	string val;
 	Sym(string);
 	vector<Sym*> nest; void push(Sym*);
-	map<string,Sym*> lookup;
-	virtual string head(); string pad(int);
-	virtual string dump(int=0);
+	virtual string head(); string pad(int); virtual string dump(int=0);
+	virtual Sym* eval(Sym*E=&env);
 };
 
-struct Num:Sym { Num(string); string head(); double val; };
+struct Num:Sym { Num(string); };
+struct Str:Sym { Str(string); };
 
 struct Op:Sym { Op(string); };
 
-struct Vector:Sym { Vector(); };
-struct Lambda:Sym { Lambda(); };
-struct Tuple:Sym { Tuple(Sym*,Sym*); };
+struct Vector:Sym { Vector(); string head(); };
 
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
 #define TOC(C,X) { yylval.o = new C(yytext); return X; }
 extern int yyparse();
-extern int yyerror(string);
+extern void yyerror(string);
 #include "ypp.tab.hpp"
 
 #endif // _H_HPP

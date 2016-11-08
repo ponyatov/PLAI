@@ -1,13 +1,26 @@
-# comment
+core = [
+	ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile
+]
 
--02 + +03.400 * 5e-06
+files = [
+	src.src log.log 
+	core
+	.gitignore bat.bat 
+]
 
-mult = {x,y: x*y}
+touch = files
 
-sin(pi)*mult(
-	cos(x),
-	{x:x^2}@z
-)
+bat.bat = [
+	@start .
+	@gvim '-p' core-Makefile
+]
 
-1+1
+.gitignore = [
+	'*~'
+	'*.swp'
+	exe.exe
+	log.log
+	ypp.tab.?pp
+	lex.yy.c
+]
 
