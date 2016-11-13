@@ -1,10 +1,20 @@
-\secrel{6.5 Exposing the Environment  . . 31}
+\secrel{Exposing the Environment\\
+\ru{Экспортирование среды}}
 
-If we were building the implementation for others to use, it would be wise and a
-courtesy for the exported interpreter to take only an expression and list of
-function definitions, and invoke our defined interp with the empty environment.
-This both spares users an implementation detail, and avoids the use of an
-interpreter with an incorrect environment. In some contexts, however, it can be
-useful to expose the environment parameter. For instance, the environment can
-represent a set of pre-defined bindings: e.g., if the language wishes to provide
-pi automatically bound to 3.2 (in Indiana).
+If we were building the implementation \ru{Если мы строим реализацию} for others
+to use \ru{для использования другими людьми}, it would be wise and a courtesy
+\ru{будет мудро и учтиво} the exported interpreter \ru{для распространяемого
+интерпретатора} to take only an expression and list of function definitions
+\ru{принимать только выражение и список определений функций}, and invoke our
+defined \ru{и вызывать наш} \verb|interp| with the empty environment \ru{с
+пустой средой}. This both spares users an implementation detail \ru{Это
+предохраняет пользователей от деталей реализации}, and avoids the use of an
+interpreter \ru{и предотвращает использование интерпретатора} with an incorrect
+environment \ru{с некорректной средой}. In some contexts, however, \ru{Тем не
+менее в некоторых контекстах} it can be useful \ru{может быть полезно} to expose
+the environment parameter \ru{открывать параметры среды}. For instance
+\ru{Например}, the environment can represent a set of pre-defined bindings
+\ru{среда может представлять набор предопределенных связок}: e.g., if the
+language wishes to provide \ru{например, если язык желает предоставить
+константу} \verb|pi| automatically bound to \ru{автоматически привязанную на
+число} 3.2 (in Indiana \ru{в Чуркестане}).
