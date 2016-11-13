@@ -1,55 +1,86 @@
-\secrel{6.2 Interpreting with Environments  27}
+\secrel{Interpreting with Environments\\
+\ru{Интерпретация со средами}}
 
-Now we can tackle the interpreter. One case is easy, but we should revisit all
-the others:
+Now we can tackle the interpreter \ru{Теперь мы можем реализовать
+интерпретатор}. One case is easy \ru{Одна ветка простая}, but we should revisit
+all the others \ru{но другие нам нужно будет обсудить отдельно}:
 \lsts{6/2/1.rkt}{rkt}
-The arithmetic operations are easiest. Recall that before, the interpreter
-recurred without performing any new substitutions. As a result, there are no new
-deferred substitutions to perform either, which means the environment does not
-change:
+The arithmetic operations are easiest \ru{Арифметические опреации проще всего}.
+Recall that before \ru{Как мы сказали ранее}, the interpreter recurred
+\ru{интерпретатор вызывается рекурсивно} without performing any new
+substitutions \ru{без выполнения новых подстановок}. As a result \ru{в
+результате}, there are no new deferred substitutions to perform either \ru{нет
+никаких отсроченных подстановок которые нужно выполнить}, which means the
+environment does not change \ru{что значит что среда не меняется}:
 \lsts{6/2/2.rkt}{rkt}
 
-Now let’s handle identifiers. Clearly, encountering an identifier is no longer
-an error: this was the very motivation for this change. Instead, we must look up
-its value in the directory:
+Now let’s handle identifiers \ru{Теперь обработаем идентификаторы}. Clearly
+\ru{Ясно что}, encountering an identifier is no longer an error
+\ru{неопределенный идентификатор больше не является ошибкой}:
+this was the very motivation for this change \ru{это было одной из причин
+изменения принципа интерпретации}. Instead, we must look up its value in the
+directory \ru{Вместо этого мы должны выполнить поиск его значения в каталоге}:
 \lsts{6/2/3.rkt}{rkt}
 
 \DoNow{
-Implement lookup.
+Implement lookup.\\\ru{Реализуйте поиск.}
 }
 
-Finally, application. Observe that in the substitution interpreter, the only
-case that caused new substitutions to occur was application. Therefore, this
-should be the case that constructs bindings. Let’s first extract the function
-definition, just as before:
+Finally, application \ru{И наконец, применение}. Observe that in the
+substitution interpreter \ru{Обратите внимание что в интерпретатор с
+подстановкой}, the only case that caused new substitutions to occur was
+application \ru{единственным случаем вызывающим новые подстановки было
+применение}. Therefore, this should be the case that constructs bindings
+\ru{Таким образом, это должно быть случаем, когда создаются связки}. Let’s first
+extract the function definition \ru{Давайте сначала выделим определение
+функции}, just as before \ru{также как и раньше}:
 \lsts{6/2/4.rkt}{rkt}
-Previously, we substituted, then interpreted. Because we have no substitution
-step, we can proceed with interpretation, so long as we record the deferral of
-substitution.
+Previously, we substituted, then interpreted \ru{Раньше мы сначала подставляли,
+а потом интерпретировали}. Because we have no substitution step \ru{Так как
+теперь у нас нет шага подстановки}, we can proceed with interpretation \ru{мы
+можем продолжать интерпретацию}, so long as we record the deferral of
+substitution \ru{как только мы записали отсрочку подстановки}.
 \lsts{6/2/5.rkt}{rkt}
-That is, the set of function definitions remains unchanged; we’re interpreting
-the body of the function, as before; but we have to do it in an environment that
-binds the formal parameter. Let’s now define that binding process:
+That is \ru{То есть}, the set of function definitions remains unchanged
+\ru{множество определений функций остается неизменным}; we’re interpreting the
+body of the function, as before \ru{мы интерпретируем тело функции как и
+раньше}; but we have to do it in an environment that binds the formal parameter
+\ru{но мы должны делать это в среде, связывающей формальный параметр}. Let’s now
+define that binding process \ru{Давайте определим процесс связывания}:
 \lsts{6/2/6.rkt}{rkt}
-the name being bound is the formal parameter (the same name that was substituted
-for, before). It is bound to the result of interpreting the argument (because
-we’ve decided on an eager application semantics). And finally, this extends the
-environment we already have. Type-checking this helps to make sure we got all
-the little pieces right.
+the name being bound is the formal parameter \ru{имя было связано как формальный
+параметр} (the same name that was substituted for, before \ru{это то же самое
+имя которое подставлялось ранее}). It is bound to the result of interpreting the
+argument \ru{Оно связано с результатом интерпретации аргумента} (because we’ve
+decided on an eager application semantics \ru{потому что мы решили использовать
+семантику жадного применения}). And finally, this extends the environment we
+already have \ru{И наконец, оно расширяет среду которая у нас уже есть}.
+Type-checking this helps to make sure \ru{Контроль типов помогает нам убедиться
+что} we got all the little pieces right \ru{мы совместили все эти маленькие
+кусочки правильно}.
 
-Once we have a definition for lookup, we’d have a full interpreter. So here’s
-one:
+Once we have a definition for lookup \ru{Как только мы получаем определение
+для поиска}, we’d have a full interpreter \ru{мы получаем полный интерпретатор}.
+So here’s one \ru{Вот он}:
 \lsts{6/2/7.rkt}{rkt}
-Observe that looking up a free identifier still produces an error, but it has
-moved from the interpreter—which is by itself unable to determine whether or not
-an identifier is free—to lookup, which determines this based on the content of
-the environment.
 
-Now we have a full interpreter. You should of course test it make sure it works
-as you’d expect. For instance, these tests pass:
-\lsts{6/2/8.rkt}{rkt}
-So we’re done, right?
+Observe that looking up a free identifier still produces an error \ru{Обратите
+внимание что поиск свободного идентификатора все еще вызывает ошибку}, but it
+has moved from the interpreter \ru{но она переместилась из интерпретатора}\ ---
+which is by itself unable to determine whether or not an identifier is free
+\ru{который сам по себе не способен определить свободен ли идентификатор}\ ---
+to \ru{в} \verb|lookup|, which determines this based on the content of the
+environment \ru{который определяет это на основе содержимого среды}.
+
+Now we have a full interpreter \ru{Теперь у нас есть полный интерпретатор}. You
+should of course test it make sure it works as you’d expect \ru{Естественно вы
+должны протестировать его чтобы убедиться что он работает как вы ожидаете}.
+For instance, these tests pass \ru{Например, с помощью этих тестов}:
+\lsts{6/2/8_1.rkt}{rkt}
+\lsts{6/2/8_2.rkt}{rkt}
+\lsts{6/2/8_3.rkt}{rkt}
+So we’re done, right \ru{Так что все сделано, правильно}\,?
 
 \DoNow{
-Spot the bug.
+Spot the bug.\\\ru{Найдите ошибку.}
 }
