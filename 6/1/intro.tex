@@ -1,38 +1,72 @@
-\secrel{6.1 Introducing the Environment  . 26}
+\secrel{Introducing the Environment\\\ru{Введение понятия ``Среда''}}
 
-The intuition that addresses the first concern is to have the interpreter “look
-up” an identifier in some sort of directory. The intuition that addresses the
-second concern is to defer the substitution. Fortunately, these converge nicely
-in a way that also addresses the third. The directory records the intent to
-substitute, without actually rewriting the program source; by recording the
-intent, rather than substituting immediately, we can defer substitution; and the
-resulting data structure, which is called an environment, avoids the need for
-source-to-source rewriting and maps nicely to low-level machine representations.
-Each name association in the environment is called a binding.
+The intuition that addresses the first concern is to have \ru{Во-первых
+интуитивно хочется иметь} the interpreter ``look up'' an identifier in some sort
+of directory \ru{интерпретатор с процедурой ``поиска'' идентификатора в
+некотором подобии каталога}. The intuition that addresses the second concern
+\ru{Во-вторых интуиция подсказывает} is to \emph{defer} the substitution
+\ru{\emph{избавиться} от подстановки}. Fortunately, these converge nicely in a
+way that also addresses the third \ru{К счастью выполнение этих двух целей
+сводится к третьей}. The directory records the \emph{intent to substitute}
+\ru{Каталог хранит \emph{намерение замены}}, without actually rewriting the
+program source \ru{без реального переписывания исходной программы}; by recording
+the intent \ru{храня намерение замены}, rather than substituting immediately
+\ru{без выполнения самой замены}, we can defer substitution \ru{мы можем
+избавиться от замены}; and the resulting data structure \ru{и результирующая
+структура}, which is called an \termdef{environment}{environment} \ru{которая
+называется \termdef{среда}{среда}}, avoids the need for source-to-source
+rewriting \ru{избавляет от необходимости source-to-source переписывания} and
+maps nicely to low-level machine representations \ru{и хорошо отображается на
+низкоуровневое машинное представление}. Each name association in the environment
+\ru{Каждая ассоциация имени в среде} is called a \termdef{binding}{binding}
+\ru{называется \termdef{связка}{связка}}.
 
-Observe carefully that what we are changing is the implementation strategy for
-the programming language, not the language itself. Therefore, none of our
-datatypes for representing programs should change, nor even should the answers
-that the interpreter provides. As a result, we should think of the previous
-interpreter as a “reference implementation” that the one we’re about to write
-should match. Indeed, we should create a generator that creates lots of tests,
-runs them through both interpreters, and makes sure their answers are the same.
-Ideally, we should prove that the two interpreters behave the same, which is a
-good topic for advanced study.
-
-Let’s first define our environment data structure. An environment is a list of
-pairs of names associated with...what?
+Observe carefully \ru{Аккуратно рассмотрим} that what we are changing \ru{что мы
+поменяли} is the \emph{implementation strategy} \ru{в \emph{стратегии
+реализации}} for the programming language \ru{языка программирования}, \emph{not
+the language itself} \ru{но \emph{не в самом языке}}. Therefore \ru{Таким
+образом}, none of our datatypes for representing programs should change
+\ru{никаких изменений не должно быть в наших типах данных представляющих
+програму}, nor even should the answers \ru{также как и в результатах} that the
+interpreter provides \ru{которые возвращает интерпретатор}. As a result \ru{В
+результате}, we should think of the previous interpreter \ru{мы должны
+рассматривать предыдущий интерпретатор} as a ''reference implementation''
+\ru{как ``эталонную реализацию''} that the one we’re about to write should match
+\ru{с поведением которой должно совпадать все что мы напишем}. Indeed \ru{В
+самом деле}, we should create a generator \ru{нам следовало бы создать
+генератор} that creates lots of tests \ru{который создает множество тестов},
+runs them through both interpreters \ru{прогоняет их на обоих интерпретаторах},
+and makes sure their answers are the same \ru{и подтверждает что их результаты
+одинаковы}. Ideally \ru{В идеале}, we should \emph{prove} that the two
+interpreters behave the same \ru{нам нужно \emph{доказать} что эти два
+интерпретатора \term{эквивалентны}}, which is a good topic for advanced study
+\ru{что является хорошей темой для отдельного исследования}.
 \note{One subtlety is in defining precisely what “the same” means, especially
 with regards to failure.}
+\note{\ru{Одна из тонкостей\ --- что точно обозначает фраза ``то же
+самое поведение'', особенно в случае ошибочных ситуаций.}}
+
+Let’s first define our environment data structure \ru{Для начала давайте
+определим структуру данных для нашей среды}.
+An environment is a list of pairs of names associated with\ldots what\,?
+\ru{Среда это список пар имен, ассоциированных с\ldots чем\,?}
 
 \DoNow{
 A natural question to ask here might be what the environment maps names to. But
 a better, more fundamental, question is: How to determine the answer to the
-“natural” question?
+“natural” question\,?\\
+\ru{Здесь возникает естественный вопрос, на что именно среда отображает имена.
+Но лучший, более фундаментальный вопрос: Как определить ответ на
+``естественный'' вопрос\,?}
 }
 
-Remember that our environment was created to defer substitutions. Therefore, the
-answer lies in substitution. We discussed earlier (Oh Wait, There’s More!) that
-we want substitution to map names to answers, corresponding to an eager function
-application strategy. Therefore, the environment should map names to answers.
+Remember that our environment was created to defer substitutions \ru{Вспомним,
+что наша среда была создана чтобы избавиться от подстановки}. Therefore, the
+answer lies in substitution \ru{Таким образом, ответ заключается в подстановке}.
+We discussed earlier \ru{Ранее мы обсудили} \ref{waitmore} that we want
+substitution to map names to answers \ru{что мы хотим чтобы подстановка
+отображала имена на результаты вычислений}, corresponding to an eager function
+application strategy \ru{в соответствие с жадной стратегией применения функций}.
+Therefore, the environment should map names to answers \ru{Таким образом,
+среда должна отображать имена на результаты вычислений}.
 \lsts{6/1/1.rkt}{rkt}
