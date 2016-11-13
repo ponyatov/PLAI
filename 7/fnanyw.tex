@@ -1,43 +1,73 @@
-\secrel{7 Functions Anywhere 31}\secdown
+\secrel{Functions Anywhere\\
+\ru{Функции везде}}\secdown
 
-The introduction to the Scheme programming language definition establishes this
-design principle:
+The introduction to the \ru{Введение в язык программирования} $Scheme$
+programming language definition establishes this design principle \ru{предлагает
+следующий принцип дизайна}:
 \begin{framed}
-Programming languages should be designed not by piling feature on top of
-feature, but by removing the weaknesses and restrictions that make additional
-features appear necessary. \ref{}
+Programming languages \ru{Языки программирования} should be designed \ru{должны
+создаваться} not by piling feature on top of feature \ru{не нагромождением фичи
+на фичу}, but by removing the weaknesses and restrictions \ru{но путем
+устранения недостатков и ограничений} that make additional features appear
+necessary \ru{которые делают необходимым появление дополнительных возможностей}.
+\ref{}
 \end{framed}
-As design principles go, this one is hard to argue with. (Some restrictions, of
-course, have good reason to exist, but this principle forces us to argue for
-them, not admit them by default.) Let’s now apply this to functions.
+As design principles go, this one is hard to argue with \ru{с этим принципом
+трудно спорить}. (Some restrictions \ru{Некоторые ограничения}, of course
+\ru{конечно}, have good reason to exist \ru{имеют хорошо обоснованные причины
+существования}, but this principle forces us to argue for them \ru{но этот
+принцип заставляет нас аргументировать их}, not admit them by default \ru{а не
+слепо следовать}.) Let’s now apply this to functions \ru{Давайте применим этот
+принцип к функциям}.
 
-One of the things we stayed coy about when introducing functions (section 5) is
-exactly where functions go. We may have suggested we’re following the model of
-an idealized DrRacket, with definitions and their uses kept separate. But,
-inspired by the Scheme design principle, let’s examine how necessary that is.
+One of the things \ru{Одна из вещей} we stayed coy about \ru{на которую мы не
+обратили внимания} when introducing functions \ru{при введении функций}
+\ref{sec5} is exactly where functions go \ru{это когда функции используются}.
+We may have suggested we’re following the model \ru{Мы предполагали следовать
+модели} of an idealized \ru{идеализированного} Dr\racket, with definitions and
+their uses kept separate \ru{с раздельным определением функций, и их
+использованием}. But, inspired by the \ru{Но вдохновляясь принципом} $Scheme$
+design principle, let’s examine how necessary that is \ru{давайте ближе
+рассмотрим насколько это необходимо}.
 
-Why can’t functions definitions be expressions? In our current
-arithmetic-centric language we face the uncomfortable question “What value does
-a function definition represent?”, to which we don’t really have a good answer.
-But a real programming language obviously computes more than numbers, so we no
-longer need to confront the question in this form; indeed, the answer to the
-above can just as well be, “A function value”. Let’s see how that might work
-out.
+Why can’t functions definitions be expressions \ru{Почему бы не определять
+функции через выражения}\,? In our current arithmetic-centric language \ru{В
+нашем текущем арифметическом языке} we face the uncomfortable question \ru{мы
+сталкиваемся с неудобным вопросом} ``What value does a function definition
+represent \ru{Какое значение должно соответствовать определению функции}\,?'',
+to which we don’t really have a good answer \ru{на который у нас на самом деле
+нет подходящего ответа}. But a real programming language \ru{Но реальный язык
+программирования} obviously computes more than numbers \ru{очевидно работает не
+только с числами}, so we no longer need \ru{так что больше нет необходимости} to
+confront the question in this form \ru{связываться с вопросом в такой
+постановке}; indeed \ru{вместо этого}, the answer to the above can just as well
+be \ru{ответ на него может быть}, ``A function value \ru{Объект-функция}''.
+Let’s see how that might work out \ru{Давайте посмотрим как это может работать}.
 
-What can we do with functions as values? Clearly, functions are a distinct kind
-of value than a number, so we cannot, for instance, add them. But there is one
-evident thing we can do: apply them to arguments! Thus, we can allow function
-values to appear in the function position of an application. The behavior would,
-naturally, be to apply the function. Thus, we’re proposing a language where the
-following would be a valid program (where I’ve used brackets so we can easily
-identify the function)
+What can we do with functions as values \ru{Что мы можем делать с функциями
+как значениями}\,? Clearly \ru{Ясно что}, functions are a distinct kind of value
+than a number \ru{функция это другой тип значения чем число}, so we cannot
+\ru{так что мы не можем}, for instance \ru{например}, add them \ru{складывать
+их}. But there is one evident thing we can do \ru{Есть особенная вещь которую мы
+можем делать}: apply them to arguments \ru{применять их к аргументам}\,! Thus
+\ru{Таким образом}, we can allow function values \ru{мы можем позволить появляться
+функциональным значениям} to appear in the function position \ru{на месте имени
+функции} of an application \ru{при применении}.
+The behavior would, naturally, be to apply the function \ru{При этом поведение
+будет, естественно, применение функции}.
+Thus, we’re proposing a language \ru{итак, мы предлагаем язык} where the
+following would be a valid program \ru{в котором следующий код будет валидной
+программой} (where I’ve used brackets \ru{я использовал тут квадратные скобки}
+so we can easily identify the function \ru{так что мы можем легко визуально
+идентифицировать функцию})
 \lsts{7/1.rkt}{rkt}
-and would evaluate to \verb|(+ 2 (* 4 3))|, or 14.\note{Did you see that I just
-used substitution\,?}
+and would evaluate to \ru{что раскроется в} \verb|(+ 2 (* 4 3))|, or \ru{или}
+14.\note{Did you see that I just used substitution\,?}\note{\ru{Вы заметили
+что я только что использовал подстановку\,?}}
 
-\input{7/1/exval}
-\input{7/2/nested}
-\input{7/3/closures}
-\input{7/4/subst}
-\input{7/5/sugar}
+% \input{7/1/exval}
+% \input{7/2/nested}
+% \input{7/3/closures}
+% \input{7/4/subst}
+% \input{7/5/sugar}
 \secup
