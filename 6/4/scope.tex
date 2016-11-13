@@ -1,60 +1,103 @@
-\secrel{6.4 Scope   . 30}
+\secrel{Scope\\\ru{Область видимости}}
 
-The broken environment interpreter above implements what is known as dynamic
-scope. This means the environment accumulates bindings as the program executes.
-As a result, whether an identifier is even bound depends on the history of
-program execution. We should regard this unambiguously as a flaw of programming
-language design. It adversely affects all tools that read and process programs:
-compilers, IDEs, and humans.
+The broken environment interpreter above \ru{Сломанный интерпретатор на средах
+выше} implements what is known as \termdef{dynamic scope}{dynamic scope}
+\ru{реализовывал то что называется \termdef{динамическая область
+видимости}{динамическая область видимости}}. This means \ru{Это значит что} the
+environment accumulates bindings as the program executes \ru{среда аккумулирует
+связки в процессе выполнения программы}. As a result \ru{В результате}, whether
+an identifier is even bound \ru{определение того является ли идентификатор
+связанным} depends on the history of program execution \ru{зависит от истории
+исполнения программы}. We should regard this unambiguously \ru{Мы должны
+рассматривать это} as a flaw of programming language design \ru{как недостаток
+дизайна языка программирования}. It adversely affects all tools \ru{Это
+отрицательно влияет на все инструменты} that read and process programs
+\ru{которые читают и обрабатывают программы}: compilers, IDEs, and humans
+\ru{компиляторы, IDE и человеки}.
 
-In contrast, substitution—and environments, done correctly—give us lexical scope
-or static scope. “Lexical” in this context means “as determined from the source
-program”, while “static” in computer science means “without running the
-program”, so these are appealing to the same intuition. When we examine an
-identifier, we want to know two things: (1) Is it bound? (2) If so, where? By
-“where” we mean: if there are multiple bindings for the same name, which one
-governs this identifier? Put differently, which one’s substitution will give a
-value to this identifier? In general, these questions cannot be answered
-statically in a dynamically-scoped language: so your IDE, for instance, cannot
-overlay arrows to show you this information (as DrRacket does). Thus, even
-though the rules of scope become more complex as the space of names becomes
-richer (e.g., objects, threads, etc.), we should always strive to preserve the
-spirit of static scoping.
+In contrast \ru{Наоборот}, substitution \ru{подстановка}\ --- and environments,
+done correctly \ru{правильно реализованные среды}\ --- give us \termdef{lexical
+scope}{lexical scope} or \termdef{static scope}{static scope} \ru{дают нам
+\termdef{лексеческую}{лексическая область видимости} или
+\termdef{статическую}{статическая область видимости} области видимости}.
+``Lexical'' in this context means \ru{``Лексическая'' в этом контексте значит}
+``as determined from the source program'' \ru{``определенная из исходного кода
+программы''}, while ``static'' in computer science means \ru{в то время как
+``статическая'' в информатике значит} ``without running the program'' \ru{``без
+запуска программы''}, so these are appealing to the same intuition \ru{эти
+названия следуют той же идее}. When we examine an identifier \ru{Когда мы
+встречаем идентификатор}, we want to know two things \ru{мы хотим знать две
+вещи}: (1) Is it bound \ru{Связан ли он}\,? (2) If so, where \ru{и если связан,
+то где}\,? By “where” we mean \ru{``Где'' мы имеем в виду}: if there are
+multiple bindings for the same name \ru{если существуют множественные связки для
+одного имени}, which one governs this identifier \ru{какая из них контролирует
+этот идентификатор}\,? Put differently \ru{Другими словами}, which one’s
+substitution \ru{какая из подстановок} will give a value to this identifier
+\ru{даст значение для этого идентификатора}\,? In general \ru{В общем}, these
+questions cannot be answered statically \ru{на эти вопросы нельзя дать
+статические ответы} in a dynamically-scoped language \ru{в языке с динамическими
+областями видимости}: so your IDE \ru{так что ваша IDE}, for instance
+\ru{например}, cannot overlay arrows to show you this information \ru{не может
+расставить стрелки чтобы показать эту информацию} (as Dr\racket\ does \ru{как
+это делает Dr\racket}).
 \note{A different way to think about it is that in a dynamically-scoped
 language, the answer to these questions is the same for all identifiers, and it
 simply refers to the dynamic environment. In other words, it provides no useful
 information.}
+\note{\ru{Другой способ думать об этом для языка с динамической областью
+видимости\ --- ответ на вопрос один для всех идентификаторов: так как указано
+в динамической среде. То есть он не дает никакой полезной информации.}}
+Thus \ru{Таким образом}, even though the rules of scope become more complex
+\ru{по мере того как правила области видимости становятся сложнее} as the space
+of names becomes richer \ru{и пространство типов имен становится богаче} (e.g.,
+objects, threads, etc. \ru{например объекты, нити, и т.д.}), we should always
+strive to preserve the spirit of static scoping \ru{мы всегда должны стремиться
+сохранить дух статической области видимости}.
 
 \secdown
-\secrel{6.4.1 How Bad Is It?   . 30}
+\secrel{How Bad Is It\,?\\\ru{Насколько это плохо\,?}}
 
-You might look at our running example and wonder whether we’re creating a
-tempest in a teapot. In return, you should consider two situations:
+You might look at our running example \ru{Вы можете посмотреть на наш рабочий
+пример} and wonder whether we’re creating a tempest in a teapot \ru{и удивиться
+почему мы создаем бурю в стакане воды}. In return \ru{В свою очередь}, you
+should consider two situations \ru{мы должны рассмотреть две ситуации}:
 \begin{enumerate}
 
-\item To understand the binding structure of your program, you may need to look
-at the whole program. No matter how much you’ve decomposed your program into
-small, understandable fragments, it doesn’t matter if you have a free identifier
-anywhere.
+\item To understand the binding structure of your program \ru{Для понимания
+структуры привязок в вашей программе}, you may need to look \emph{at the whole
+program} \ru{вам потребуется рассматривать \emph{целиком всю программу}}. No
+matter how much you’ve decomposed your program \ru{Не важно что вы разбили
+программу} into small, understandable fragments \ru{на маленькие понятные
+фрагменты}, it doesn’t matter if you have a free identifier anywhere \ru{не
+важно если у вас есть где-то свободные идентификаторы}.
 
-\item Understanding the binding structure is not only a function of the size of
-the program but also of the complexity of its control flow. Imagine an
-interactive program with numerous callbacks; you’d have to track through every
-one of them, too, to know which binding governs an identifier.
+\item Understanding the binding structure \ru{Понимание структуры привязок} is
+not only a function of the size of the program \ru{не только функция от размера
+программы} but also of the complexity of its control flow \ru{но и от сложности
+ее структур управления}. Imagine an interactive program with numerous callbacks
+\ru{Представьте интерактивную программу со множеством обработчиков событий};
+you’d have to track through every one of them \ru{вы должны отслеживать ее
+поведение при срабатывании обработчиков в любом порядке}, too, to know which
+binding governs an identifier \ru{чтобы понять как срабатывают привязки
+идентификаторов}.
 
 \end{enumerate}
 
-Need a little more of a nudge? Let’s replace the expression of our example
-program with this one:
+Need a little more of a nudge \ru{Хотите еще пендаль}\,? Let’s replace the
+expression of our example program with this one \ru{Давайте заменим выражение
+в нашей программе-примере вот этим}:
 \lsts{6/4/1.rkt}{rkt}
-
-Suppose moon-visible? is a function that presumably evaluates to false on
-new-moon nights, and true at other times. Then, this program will evaluate to an
-answer except on new-moon nights, when it will fail with an unbound identifier
-error.
+Suppose \ru{Предположим} \verb|moon-visible?| is a function \ru{это функция}
+that presumably evaluates to \ru{которая предположительно вычисляется в}
+\verb|false| on new-moon nights \ru{в ночи новолуния}, and \ru{и} \verb|true| at
+other times \ru{в другое время}. Then \ru{Так что}, this program will evaluate
+to an answer \ru{эта программа будет вычисляться до значения} except on new-moon
+nights \ru{в зависимости от фазы луны}, when it will fail with an unbound
+identifier error \ru{иногда она будет падать в ошибку несвязанного
+идентификатора}.
 
 \Exercise{
-What happens on cloudy nights?
+What happens on cloudy nights\,?\\\ru{Что случиться в облачную ночь}\,?
 }
 
 \secrel{6.4.2 The Top-Level Scope  . 31}
