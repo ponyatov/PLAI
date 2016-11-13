@@ -100,28 +100,46 @@ identifier error \ru{иногда она будет падать в ошибку
 What happens on cloudy nights\,?\\\ru{Что случиться в облачную ночь}\,?
 }
 
-\secrel{6.4.2 The Top-Level Scope  . 31}
+\secrel{The Top-Level Sco\\\ru{Область видимости верхнего уровня}}
 
-Matters become more complex when we contemplate top-level definitions in many
-languages. For instance, some versions of Scheme (which is a paragon of lexical
-scoping) allow you to write this:
+Matters become more complex \ru{Вопросы становятся более сложными} when we
+contemplate top-level definitions \ru{когда мы рассматриваем определения
+верхнего уровня} in many languages \ru{во многих языках}. For instance
+\ru{Например}, some versions of \ru{некоторые версии} $Scheme$ (which is a
+paragon of lexical scoping \ru{образец лексической области видимости}) allow you
+to write this \ru{позволяет написать вот так}:
 \lsts{6/4/2.rkt}{rkt}
-which seems to pretty clearly suggest where the y in the body of f will come
-from, except:
+which seems to pretty clearly suggest \ru{что отлично показывает} where the
+\ru{откуда берется} \verb|y| in the body of \ru{в теле} \verb|f| will come from,
+except \ru{за исключением}:
 \lsts{6/4/3.rkt}{rkt}
-is legal and (f 10) produces 12. Wait, you might think, always take the last
-one! But:
+is legal and \ru{что легально и} \verb|(f 10)| produces \ru{вычислиться в} 12.
+Wait, you might think, always take the last one \ru{Подождите, вы можете
+думать что всегда берется последнее значение}\,! But \ru{Но}:
 \lsts{6/4/4.rkt}{rkt}
 
-Here, z is bound to the first value of y whereas the inner y is bound to the
-second value. There is actually a valid explanation of this behavior in terms of
-lexical scope, but it can become convoluted, and perhaps a more sensible option
-is to prevent such redefinition. Racket does precisely this, thereby offering
-the convenience of a top-level without its pain.
-\note{Most “scripting” languages exhibit similar problems. As a result, on the
+Here \ru{Здесь}, \verb|z| is bound to the first value of \ru{привязан на первое
+значение} \verb|y| whereas the inner \ru{в то время как внутренний} \verb|y| is
+bound to the second value \ru{привязан на второе значение}. There is actually a
+valid explanation of this behavior \ru{На самом деле существует правильное
+объяснение этого поведеления} in terms of lexical scope \ru{в терминах
+лексической области видимости}, but it can become convoluted \ru{но все
+становится слишком извилистым}, and perhaps a more sensible option \ru{и
+возможно более разумный вариант} is to prevent such redefinition
+\ru{предотвращать такие переопределения}. \racket\ does precisely this
+\ru{делает именно это}, thereby offering the convenience of a top-level without
+its pain \ru{предлагая удобство определений верхнего уровня, без его головной
+боли}.
+\note{Most ``scripting'' languages exhibit similar problems. As a result, on the
 Web you will find enormous confusion about whether a certain language is
 statically- or dynamically-scoped, when in fact readers are comparing behavior
 inside functions (often static) against the top-level (usually dynamic).
-Beware!}
+Beware\,!}
+\note{\ru{Большинство ``скриптовых'' языков испытывают те же проблемы. В
+результате в Вебе вы найдете огромную путаницу по поводу того, является ли
+определенный язык языком статической\ --- или динамической\ --- области
+видимости, когда читатели сравнивают поведение внутри функций (часто
+статическое) с поведением в верхнем уровне (обычно динамическое). Будьте
+осторожны\,!}}
 
 \secup
