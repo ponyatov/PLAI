@@ -1,18 +1,30 @@
-\secrel{7.1 Functions as Expressions and Values  32}
+\secrel{Functions as Expressions and Values\\
+\ru{Функции как выражения и значения}}
 
-Let’s first define the core language to include function definitions:
+Let’s first define the core language \ru{Для начала давайте определим ядреный
+язык} to include function definitions \ru{включающий определения функций}:
 \lsts{7/1/1.rkt}{rkt}
 
-For now, we’ll simply copy function definitions into the expression language.
-We’re free to change this if necessary as we go along, but for now it at least
-allows us to reuse our existing test cases.
+For now \ru{Теперь}, we’ll simply copy function definitions \ru{мы просто
+скопируем определения функций} into the expression language \ru{в язык
+выражений}. We’re free to change this \ru{Мы свободно можем изменить это} if
+necessary \ru{при необходимости} as we go along \ru{далее}, but for now \ru{но
+сейчас} it at least \ru{это как минимум} allows us \ru{позволяет нам} to reuse
+\ru{повторно использовать} our existing test cases \ru{наши существующие наборы
+тестов}.
 \lsts{7/1/2.rkt}{rkt}
 
-We also need to determine what an application looks like. What goes in the
-function position of an application? We want to allow an entire function
-definition, not just its name. Because we’ve lumped function definitions in with
-all other expressions, let’s allow an arbitrary expression here, but with the
-understanding that we want only function definition expressions:
+We also need to determine \ru{Нам также нужно определить} what an application
+looks like \ru{как должно выглядить применение}. What goes in the function
+position of an application \ru{Где находится позиция применяемой функции}\,? We
+want to allow an entire function definition \ru{Мы хотим иметь возможность
+использовать здесь определение функции}, not just its name \ru{а не только ее
+имя}. Because we’ve lumped function definitions \ru{Так как мы скомпоновали
+определения функций} in with all other expressions \ru{со всеми другими видами
+выражений}, let’s allow an arbitrary expression here \ru{давайте позволим здесь
+произвольное выражение}, but with the understanding \ru{но с пониманием} that we
+want only function definition expressions \ru{что нас интересуют только
+выражения определения функций}:
 \note{We might consider more refined datatypes that split function definitions
 apart from other kinds of expressions. This amounts to trying to classify
 different kinds of expressions, which we will return to when we study types.
