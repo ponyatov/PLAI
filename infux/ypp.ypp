@@ -1,0 +1,35 @@
+%{
+#include "hpp.hpp"
+%}
+%defines %union { Sym*o; }
+%token <o> SYM NUM STR
+%token <o> LP RP LQ RQ LC RC
+%token <o> EQ AT COLON TILD
+%token <o> ADD SUB MUL DIV POW
+%type <o> ex scalar vector lambda
+
+%right EQ
+%left AT
+%left ADD SUB
+%left MUL DIV
+
+%%
+REPL : | REPL ex { cout << $2->eval(&glob)->dump() << endl; } ;
+scalar : SYM | NUM | STR ;
+ex : scalar
+	| TILD ex			{ $$=$1; $$->push($2); }
+	| LP ex RP			{ $$=$2; }
+	| LQ vector RQ		{ $$=$2; }
+	| LC lambda RC		{ $$=$2; }
+	| ex EQ ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex AT ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex ADD ex			{ $$=$2; $$->push($1); $$->push($3); }
+;
+vector:					{ $$=new Vector(); }
+	| vector ex			{ $$=$1; $$->push($2); }
+;
+lambda:					{ $$=new Lambda(); }
+	| lambda SYM COLON	{ $$=$1; $$->lookup[$2->val]=$2; }
+	| lambda ex			{ $$=$1; $$->push($2); }
+;
+
