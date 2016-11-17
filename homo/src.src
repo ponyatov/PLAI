@@ -1,0 +1,71 @@
+
+core @0x351150 [
+	ypp.ypp @0x351200
+	lpp.lpp @0x351240
+	hpp.hpp @0x351290
+	cpp.cpp @0x3512e0
+	Makefile @0x351338
+]
+
+files [ src.src log.log core bat.bat .gitignore ]
+
+bat.bat [
+	'@gvim -p' [ src.src log.log - [ core Makefile ]]
+]
+
+.end
+
+.gitignore
+	*~ *.swp exe.exe log.log ypp.tab.?pp lex.yy.c
+
+Makefile
+log.log: src.src ./exe.exe
+	./exe.exe < $< > $@ && tail $(TAIL) $@
+C = cpp.cpp ypp.tab.cpp lex.yy.c
+H = hpp.hpp ypp.tab.hpp
+./exe.exe: $(C) $(H)
+	$(CXX) $(CXXFLAGS) -o $@ $(C)
+ypp.tab.cpp: ypp.ypp
+	bison $<
+lex.yy.c: lpp.lpp
+	flex $<
+
+hpp.hpp
+
+#ifndef _H_HPP
+#define _H_HPP
+
+#include <iostream>
+#include <cstdlib>
+#include <vector>
+#include <map>
+using namespace std;
+
+struct Sym {
+	string val;
+	Sym(string);
+	virtual string head(); string pad(int); virtual string dump(int=0);
+};
+
+extern int yylex();
+extern int yylineno;
+extern char* yytext;
+#define TOC(C,X) { yylval.o = new C(yytext); return X; }
+extern int yyparse();
+extern void yyerror(string);
+#include "ypp.tab.hpp"
+
+#endif // _H_HPP
+
+cpp.cpp
+
+#include "hpp.hpp"
+#define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
+void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
+int main() { return yyparse(); }
+
+string Sym::head() { return "<"+val+">"; }
+string Sym::pad(int n) { string S; for (int i=0;i<n;i++) S+='\t'; return S; }
+string Sym::dump(int depth) { string S = "\n"+pad(depth)+head();
+	return S; }
+

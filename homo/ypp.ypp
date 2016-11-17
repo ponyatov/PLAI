@@ -1,0 +1,18 @@
+%{
+#include "hpp.hpp"
+%}
+%defines %union { Sym*o; }
+%token <o> SYM NUM STR
+%token <o> LQ RQ
+%type <o> ex scalar vector
+%%
+REPL : | REPL ex { cout << $2->dump() << endl; }; 
+scalar : SYM | NUM | STR ;
+ex : scalar
+	| ex LQ vector RQ		{ $$=$1;
+			for (auto it=$3->nest.begin(),e=$3->nest.end();it!=e;it++)
+				$$->push(*it); }
+;
+vector :					{ $$=new Vector(); }
+	| vector ex				{ $$=$1; $$->push($2); }
+;
