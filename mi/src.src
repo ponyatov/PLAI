@@ -1,1 +1,94 @@
-touch src.src log.log ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile .gitignore bat.bat 
+core	= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
+files	= [ src.src log.log core .gitignore bat.bat ]
+
+ypp.ypp = [
+
+%{
+#include "hpp.hpp"
+%}
+%defines %union { Sym*o; }
+%token <o> SYM NUM STR
+%type <o> ex scalar
+%%
+REPL : | REPL ex { cout << $2->dump() << endl; };
+scalar : SYM | NUM | STR ;
+ex : scalar ;
+
+]
+
+lpp.lpp = [
+
+%{
+#include "hpp.hpp"
+%}
+%option noyywrap yylineno
+%%
+
+]
+
+hpp.hpp = [
+
+#ifndef _H_HPP
+#define _H_HPP
+
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+struct Sym {
+	string val;
+	Sym(string);
+	virtual string head();
+	virtual string dump(int=0);
+};
+
+extern int yylex();
+extern int yylineno;
+extern char* yytext;
+#define TOC(C,X) { yylval.o = new C(yytext); return X; }
+extern int yyparse();
+extern void yyerror(string);
+#include "ypp.tab.hpp"
+
+#endif // _H_HPP
+
+]
+
+cpp.cpp = [
+
+#include "hpp.hpp"
+#define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
+void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
+int main() { return yyparse(); }
+
+]
+
+Makefile = [
+
+log.log: src.src ./exe.exe
+	./exe.exe < $< > $@ && tail $(TAIL) $@
+C = cpp.cpp ypp.tab.cpp lex.yy.c
+H = hpp.hpp ypp.tab.hpp
+CXXFLAGS += -std=gnu++11
+./exe.exe: $(C) $(H)
+	$(CXX) $(CXXFLAGS) -o $@ $(C)
+ypp.tab.cpp: ypp.ypp
+	bison $<
+lex.yy.c: lpp.lpp
+	flex $<
+
+]
+
+.gitignore = [
+
+*~
+*.swp
+exe.exe
+log.log
+ypp.tab.?pp
+lex.yy.c
+
+]
+
+bat.bat = [ @gvim -p files ]
+
