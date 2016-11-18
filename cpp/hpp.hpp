@@ -2,31 +2,28 @@
 #define _H_HPP
 
 #include <iostream>
-#include <sstream>
 #include <cstdlib>
 #include <vector>
 #include <map>
 using namespace std;
 
-struct Sym;
-extern Sym glob;
-extern void glob_init();
 struct Sym {
-	string val;
-	Sym(string);
+	string tag; string val;
+	Sym(string,string); Sym(string);
 	vector<Sym*> nest; void push(Sym*);
-	map<string,Sym*> lookup;
 	virtual string head(); string pad(int); virtual string dump(int=0);
-	virtual Sym* eval(Sym*env=&glob);
+	virtual Sym* eval();
+	virtual Sym* neg();
+	virtual Sym* add(Sym*);
+	virtual Sym* mul(Sym*);
 };
 
-struct Num:Sym { Num(string); };
-struct Str:Sym { Str(string); string head(); };
+struct Error:Sym { Error(string); };
 
-struct Vector:Sym { Vector(); string head(); };
+struct Num:Sym { Num(string); Num(float); float val; string head();
+	Sym*neg(); Sym*add(Sym*); Sym*mul(Sym*); };
 
-struct Op:Sym { Op(string); string head(); Sym*eval(Sym*); };
-struct Lambda:Sym { Lambda(); string head(); };
+struct Op:Sym { Op(string); Sym*eval(); };
 
 extern int yylex();
 extern int yylineno;
