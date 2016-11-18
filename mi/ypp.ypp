@@ -2,9 +2,30 @@
 #include "hpp.hpp"
 %}
 %defines %union { Sym*o; }
-%token <o> SYM NUM STR
-%type <o> ex scalar
+%token <o> SYM NUM STR DOC			/* symbol number 'string' "doc"	*/
+%token <o> LP RP LQ RQ LC RC		/* (expr) [vector] {la:mbda}	*/
+%token <o> EQ PERC COLON			/* = % :						*/
+%type <o> ex scalar vector lambda	/* expression scalar [vector]	*/
+
+%left PERC
+%left DOC
+%left COLON
 %%
-REPL : | REPL ex { cout << $2->dump() << endl; };
+REPL : | REPL ex 			{ cout << $2->dump() << endl; };
 scalar : SYM | NUM | STR ;
-ex : scalar ;
+ex : scalar
+	| ex DOC				{ $$=$1; $$->doc=$2->val; }
+	| LP ex RP				{ $$=$2; }
+	| LP RP					{ $$=new Sym("()"); }
+	| LQ vector RQ			{ $$=$2; }
+	| LC lambda RC			{ $$=$2; }
+	| ex PERC ex			{ $$=$1; $$->push($3); }
+	| ex EQ ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ex COLON ex			{ $$=new Sym($1,$3); }
+;
+vector :					{ $$=new Vector(); }
+	| vector ex				{ $$=$1; $$->push($2); }
+;
+lambda :					{ $$=new Lambda(); }
+	| lambda ex				{ $$=$1; $$->push($2); }
+;

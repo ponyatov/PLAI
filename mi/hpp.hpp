@@ -3,14 +3,24 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <map>
 using namespace std;
 
 struct Sym {
-	string val;
-	Sym(string);
-	virtual string head();
-	virtual string dump(int=0);
+	string tag; string val; string doc;
+	Sym(string,string); Sym(string); Sym(Sym*,Sym*);
+	vector<Sym*> nest; void push(Sym*);
+	map<string,Sym*> lookup;
+	virtual string head(); string pad(int); virtual string dump(int=0);
 };
+
+struct Str:Sym { Str(string); string head(); };
+
+struct Vector:Sym { Vector(); string head(); };
+
+struct Op:Sym { Op(string); string head(); };
+struct Lambda:Sym { Lambda(); string head(); };
 
 extern int yylex();
 extern int yylineno;

@@ -1,5 +1,46 @@
 %{
 #include "hpp.hpp"
+string LexString;
 %}
+%x lexstring docstring
 %option noyywrap yylineno
 %%
+#[^\n]*			{}						/* comment */
+
+'				{BEGIN(lexstring); LexString="";}
+<lexstring>'	{BEGIN(INITIAL); yylval.o=new Str(LexString); return STR; }
+<lexstring>.	{LexString+=yytext[0];}
+
+\"				{BEGIN(docstring); LexString="";}
+<docstring>\"	{BEGIN(INITIAL); yylval.o=new Str(LexString); return DOC; }
+<docstring>.	{LexString+=yytext[0];}
+
+\(				TOC(Op,LP)				/* brackets */
+\)				TOC(Op,RP)
+\[				TOC(Op,LQ)
+\]				TOC(Op,RQ)
+\{				TOC(Op,LC)
+\}				TOC(Op,RC)
+
+\=				TOC(Op,EQ)				/* operators */
+\%				TOC(Op,PERC)
+\:				TOC(Op,COLON)
+
+[a-zA-Z0-9_.]+	TOC(Sym,SYM)			/* symbol */
+
+%[{%}]			TOC(Sym,SYM)			/* misc */
+%[a-z]+			TOC(Sym,SYM)
+\+				TOC(Sym,SYM)
+\-				TOC(Sym,SYM)
+\*				TOC(Sym,SYM)
+\/				TOC(Sym,SYM)
+\|				TOC(Sym,SYM)
+\-\>			TOC(Sym,SYM)
+\<\<			TOC(Sym,SYM)
+$[$0-9]			TOC(Sym,SYM)
+\;				TOC(Sym,SYM)
+"<o>"			TOC(Sym,SYM)
+\/\*.*\*\/		TOC(Sym,SYM)
+
+[ \t\r\n]+		{}
+.				{yyerror("lexer");}
