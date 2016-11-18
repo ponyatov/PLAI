@@ -11,7 +11,8 @@
 %left POW
 %left PFX
 %%
-REPL : | REPL ex				{ cout << $2->dump() << endl; };
+REPL : | REPL ex				{ cout << $2->dump() << endl; 
+	 							cout << $2->eval()->dump() << endl; };
 scalar : SYM | NUM | STR ;
 ex : scalar
 	| ADD ex %prec PFX			{ $$=$1; $$->push($2); }

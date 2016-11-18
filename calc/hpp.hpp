@@ -8,15 +8,22 @@
 using namespace std;
 
 struct Sym {
-	string val;
-	Sym(string);
+	string tag; string val;
+	Sym(string,string); Sym(string);
 	vector<Sym*> nest; void push(Sym*);
 	virtual string head(); string pad(int); virtual string dump(int=0);
+	virtual Sym* eval();
+	virtual Sym* neg();
+	virtual Sym* add(Sym*);
+	virtual Sym* mul(Sym*);
 };
 
-struct Num:Sym { Num(string); float val; string head(); };
+struct Error:Sym { Error(string); };
 
-struct Op:Sym { Op(string); string head(); };
+struct Num:Sym { Num(string); Num(float); float val; string head();
+	Sym*neg(); Sym*add(Sym*); Sym*mul(Sym*); };
+
+struct Op:Sym { Op(string); Sym*eval(); };
 
 extern int yylex();
 extern int yylineno;
