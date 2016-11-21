@@ -10,4 +10,5 @@
 *.i*
 PLAI.rkt
  
-.pydevproject 
+.pydevproject
+*.synctex.gz

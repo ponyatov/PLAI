@@ -29,16 +29,28 @@ want only function definition expressions \ru{что нас интересуют
 apart from other kinds of expressions. This amounts to trying to classify
 different kinds of expressions, which we will return to when we study types.
 \ref{}}
+\note{\ru{Мы могли бы рассмотреть более изощренные типы данных, которые
+выделяют определения функций среди других видов выражений. Это равносильно
+попытке классификации различных видов выражений, мы вернемся к этому когда будем
+изучать типизацию \ref{}}}
 \lsts{7/1/3.rkt}{rkt}
 
-With this definition of application, we no longer have to look up functions by
-name, so the interpreter can get rid of the list of function definitions. If we
-need it we can restore it later, but for now let’s just explore what happens
-with function definitions are written at the point of application: so-called
-immediate functions.
+With this definition of application \ru{С таким определением применения}, we no
+longer have to look up functions by name \ru{нам больше не нужно искать функции
+по имени}, so the interpreter can get rid of the list of function definitions
+\ru{поэтому интерпретатор может избавиться от списка определений функций}.
+If we need it \ru{Если нам нужно} we can restore it later \ru{мы позже сможем
+его восстановить}, but for now \ru{но пока} let’s just explore \ru{просто
+давайте посмотрим} what happens \ru{что получиться} with function definitions
+are written at the point of application \ru{когда определения функций написаны с
+точки зрения применения}: so-called \ru{так называемые} \termdef{immediate
+functions}{immediate function} \ru{\termdef{непосредственные
+функции}{непосредственная функция}}.
 
-Now let’s tackle interp. We need to add a case to the interpreter for function
-definitions, and this is a good candidate:
+Now let’s tackle \ru{Терерь давайте возьмемся за} \verb|interp|. We need to add
+a case to the interpreter for function definitions \ru{Нам нужно добавить к
+интерпретатору обработку случая определения функции}, and this is a good
+candidate \ru{и вот это хороший кандидат}:
 \lsts{7/1/4.rkt}{rkt}
 
 \DoNow{
