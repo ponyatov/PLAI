@@ -54,19 +54,29 @@ candidate \ru{и вот это хороший кандидат}:
 \lsts{7/1/4.rkt}{rkt}
 
 \DoNow{
-What happens when you add this?
+What happens when you add this\,?\\
+\ru{Что будет, если вы добавите это}\,?
 }
-Immediately, we see that we have a problem: the interpreter no longer always
-returns numbers, so we have a type error.
+Immediately \ru{Внезапно}, we see that we have a problem \ru{мы видим что
+получили проблему}: the interpreter no longer always returns numbers
+\ru{интерпретатор не всегда подвзращает числа}, so we have a type error \ru{так
+что мы получаем ошибку типов}.
 
-We’ve alluded periodically to the answers computed by the interpreter, but never
-bothered gracing these with their own type. It’s time to do so now.
+We’ve alluded periodically to the answers computed by the interpreter \ru{У нас
+периодически были намеки по поводу значений вычислияемых интерпретатором}, but
+never bothered gracing these with their own type \ru{но мы никогда не
+сталкивались непосредственно с их собственным типом}. It’s time to do so now
+\ru{Сейчас пришло время это сделать}.
 \lsts{7/1/5.rkt}{rkt}
 
-We’re using the suffix of V to stand for values, i.e., the result of evaluation.
-The pieces of a funV will be precisely those of a fdC: the latter is input, the
-former is output. By keeping them distinct we allow each one to evolve
-independently as needed.
+We’re using the suffix of \ru{Мы используем суффикс} \verb|V| to stand for
+\emph{values} \ru{для обозначения \emph{значений}} , i.e. \ru{т.е.}, the result
+of evaluation \ru{результата вычислений}. The pieces of a \ru{Части} \verb|funV|
+will be precisely those of a \ru{будут исключительно те} \verb|fdC|: the latter
+is input \ru{последним вошел}, the former is output \ru{первый вышел} (FIFO). By
+keeping them distinct \ru{Поддерживая их различие} we allow each one \ru{мы
+позволяем каждому} to evolve independently \ru{развиваться независимо} as needed
+\ru{по необходимости}.
 
 Now we must rewrite the interpreter. Let’s start with its type:
 \lsts{7/1/6.rkt}{rkt}
