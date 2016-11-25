@@ -3,14 +3,14 @@
 %}
 %option noyywrap yylineno
 %%
-#[^\n]*				{}
+#[^\n]*					{}
 
-^.end				{yyterminate();}
+^.end					{yyterminate();}
 
-\{					TOC(Sym,LC)
-\}					TOC(Sym,RC)
+\{						TOC(Sym,LC)
+\}						TOC(Sym,RC)
 
-[a-zA-z0-9_.*?~@-]+	TOC(Sym,SYM)
+[a-zA-z0-9_.*?~@-]+		TOC(Sym,SYM)
 
-[ \t\r\n]+			{}
-.					{yyerror("lexer");}
+[ \t\r\n]+				{}
+.						{yyerror("lexer");}
