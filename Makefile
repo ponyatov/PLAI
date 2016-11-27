@@ -2,15 +2,19 @@ include ../texheader/head.mk
 TEX +=../texheader/lstrkt.sty
 
 TEX += 1/intro.tex 1/trans.tex
-TEX += 1/1/philo.tex 1/1/meta.tex 1/2/struc.tex 1/3/lang.tex 1/3/homotree.tex
+TEX += 1/1/philo.tex 1/1/meta.tex 1/2/struc.tex 1/3/lang.tex 1/4/homotree.tex
 TEX += 17/alter.tex
 
 SRC = 1/3/p8_1.rkt 1/3/p8_2.rkt 1/3/p8_3.rkt 1/3/p8_4.rkt
 SRC += 1/3/p9_1.rkt 1/3/p9_2.rkt 1/3/p9_3.rkt 1/3/p9_4.rkt
 
+SRC += 1/4/mk.mk
+
 TEX += 2/parsing.tex 2/1/lwtparser.tex
 
 FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
+
+FIG += tmp/1_4_files.pdf
 
 SRC += 2/p10_1.rkt
 
