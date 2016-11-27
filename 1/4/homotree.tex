@@ -1,4 +1,5 @@
-\secrel{\ru{Реализация динамического языка на \cpp}}\secdown
+\secrel{[D]ynamic [L]anguage [R]untime/core in \cpp\\
+\ru{Реализация ядра динамического языка на \cpp}}\secdown
 
 Параллельно с основным текстом оригинальной книги были добавлены разделы по
 реализации динамического языка на паре mainstream языков; прежде всего это
@@ -23,7 +24,8 @@
 %   мета-про\-грам\-ми\-ро\-ва\-ния.
 % \end{enumerate}
 
-\secrel{\ru{Структура проекта ``лексической'' программы}}
+\secrel{Lexical program skeleton \& [\make] tool usage\\
+\ru{Структура проекта ``лексической'' программы}}
 
 \begin{tabular}{l l l}
 src.src & & исходный код нашего языка \\
@@ -36,13 +38,70 @@ hpp.hpp & \cpp & хедеры и определения типов \\
 cpp.cpp & \cpp & код ядра интерпретатора \\
 Makefile & \make & скрипт сборки проекта \\
 bat.bat & \gvim & запуск \gvim\ для \win \\
-.gitignore & \git & маски игнорируемых файлов \\&&(временные и производные)\\
+.gitignore & \git & маски временных и производных файлов \\
 \end{tabular}
 
 \noindent\fig{}{tmp/1_4_files.pdf}{width=\textwidth}
 
 Сборка проекта выполняется типовой утилитой \make\note{mingw32-make под
-\win}\ и управляется файлом
+\win}\ :
 \lstxl{Makefile}{1/4/mk.mk}{mk}
+
+Используется два вида блоков:
+
+\begin{description}
+\item[присвоение переменной]
+\begin{verbatim}
+VAR = значение
+\end{verbatim}
+или модификация: \emph{добавление} значения
+\verb|VAR += значение|
+\item[обновление файлов] выполняется если файл-\term{источник} \emph{новее}
+файла-\term{цели}\\
+\begin{verbatim}
+target1 [target2 ...] <colon> [ source1 source2 ... ]
+[ <tab><command1> ]
+[ <tab><command2> ]
+... 
+\end{verbatim}
+\end{description}
+
+\begin{tabular}{l l}
+target & файл-цель (можеть быть несколько) \\
+source & файл-источник\\&(иногда источников нет, например для цели
+\verb|make all|)
+\\
+<colon> & двоеточие \\
+<tab> & \emph{обязательный символ табуляции}\\&замена на пробелы не
+допускается\\
+\verb|$(...)| & переменная \\ 
+\verb|C| & \cpp\ файлы \\ 
+\verb|H| & хедеры \\ 
+\verb|L| & дополнительные библиотеки (пустая переменная) \\
+\end{tabular}
+
+\paragraph{стандартные переменные}\ \\
+
+\begin{tabular}{l l}
+\verb|CXX = g++| & компилятор GNU \cpp\\
+& (для \win\ испольуется пакет \textbf{mingw32})\\
+\verb|CXXFLAGS| & флаги компилятора \cpp\\
+\hline
+\verb|CC = gcc| & компилятор GNU \ci\\
+\verb|CFLAGS| & флаги компилятора \ci\\
+\hline
+\verb|LD = ld| & линкер \\
+\verb|LDFLAGS| & флаги линкера\\
+\hline
+\verb|AS = as| & ассемблер \\
+\end{tabular}
+
+\paragraph{В командах} могут использоваться следующие переменные-подстановки:\\
+
+\begin{tabular}{l l}
+\verb|$@| & имя первого файла-цели \\
+\verb|$<| & имя первого файла-источника \\
+\end{tabular}
+
 
 \secup

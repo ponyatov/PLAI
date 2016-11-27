@@ -5,7 +5,7 @@ H = hpp.hpp ypp.tab.hpp
 CXXFLAGS += -std=gnu++11
 ./exe.exe : $(C) $(H)
 	$(CXX) $(CXXFLAGS) -o $@ $(C) $(L)
-ypp.tab.cpp ypp.tab.hpp : ypp.ypp
+ypp.tab.cpp : ypp.ypp
 	bison $<
 lex.yy.c : lpp.lpp
 	flex $<
