@@ -33,6 +33,11 @@ SRC += 2/v1.rkt 2/v2.rkt
 
 TEX += 2/5/coda.tex
 
+TEX += 2/6/bison.tex 2/6/lexer.tex 2/6/sym.tex
+
+SRC += arith/rc.rc arith/bat.bat arith/Makefile arith/src.src
+SRC += 2/6/struc.lpp
+
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
 TEX += 4/desugaring.tex 4/1/subtract.tex 4/2/negation.tex

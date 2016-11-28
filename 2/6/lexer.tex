@@ -1,0 +1,71 @@
+\secrel{\file{lpp.lpp} \ru{лексер}}
+
+Для начала реализуем только лексер, который будет читать файл с простыми
+выражениями, и выводить распознанные элементы:
+
+\lstt{arith/src.src}{arith/src.src}
+
+Для его компиляции и запуска используйте команды:
+
+\begin{verbatim}
+flex lpp.lpp
+g++ -o ./exe.exe lex.yy.c
+./exe.exe < src.src
+\end{verbatim}
+
+Под \linux\ их удобно записать в одну строку через \verb|&&|
+
+\clearpage
+При запуске на пустом файле \file{lpp.lpp} вы получите сообщение:
+\begin{verbatim}
+$> flex lpp.lpp && g++ -o ./exe.exe lex.yy.c && ./exe.exe < src.src 
+lpp.lpp:1: premature EOF
+\end{verbatim}
+
+То есть для успешной трансляции у \term{файла лексера} \file{lpp.lpp} должна
+быть определенная структура:
+
+\verbatiminput{2/6/struc.lpp}
+
+В простейшем случае мы можем попытаться скомпилировать самый элементарный
+пустой лексер из одного обязального элемента: маркера начала блока правил
+\lstt{arith/lpp.lp}{2/6/minimal0.lpp}
+
+Команда \verb|flex lpp.lpp| выполнится без ошибок, и создаст 
+\file{lex.yy.c}
+
+Попытка его компиляции завершится ошибкой:
+\begin{verbatim}
+ponyatov@gac:~/PLAI/arith$ g++ -o ./exe.exe lex.yy.c 
+/usr/lib/gcc/x86_64-linux-gnu/4.9/../../../x86_64-linux-gnu/crt1.o: In function `_start':
+(.text+0x20): undefined reference to `main'
+/tmp/cceTYbuX.o: In function `yylex()':
+lex.yy.c:(.text+0x3d6): undefined reference to `yywrap'
+collect2: error: ld returned 1 exit status
+\end{verbatim}
+
+Из отчета об ошибках вы видим проблемы со следующими функциями:
+
+\begin{description}
+\item[\fn{main()}]\ \\
+отсутствует функция \fn{main()} которая должна вызывать лексер, и возможно
+выполнить перед этим какую-то инициализацию, или завершающие операции. \flex\
+предоставляет типовую реализацию \fn{main()} при использовании опции \var{main}.
+\item[\fn{yywrap()}]\ \\
+вызывается лексером при достижении конца файла; нам не нужно выполнять какие-то
+особые действия, поэтому применим опцию \var{noyywrap}.
+\item[\fn{yylex()}]\ \\
+эта функция собственно и является лексером:
+\begin{itemize}
+\item 
+каждый ее вызов выделяет из входного потока \emph{одну} \term{лексему},
+\item
+функция возвращает целое значение которое определяется командой \verb|return| в
+каждом правиле,
+\item
+переменная \var{char* yytext} содержит ссылку на выделенную
+строку\note{ASCIIZ-строка: массив 8-битные символов, оканчивающихся 0x00;
+будьте осторожны с кириллицей, \flex\ не умеет из коробки работать с юникодом,
+и поддерживает только младшую половину таблицы ASCII}
+\end{itemize}
+\end{description}
