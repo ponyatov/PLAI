@@ -1,0 +1,4 @@
+%option main noyywrap
+%%
+#[^\n]*		{}			/* comment rule */
+[ \t\r\n]+	{}			/* drop spaces */
