@@ -8,7 +8,7 @@ TEX += 17/alter.tex
 SRC = 1/3/p8_1.rkt 1/3/p8_2.rkt 1/3/p8_3.rkt 1/3/p8_4.rkt
 SRC += 1/3/p9_1.rkt 1/3/p9_2.rkt 1/3/p9_3.rkt 1/3/p9_4.rkt
 
-SRC += 1/4/mk.mk
+SRC += tmp/mk.mk tmp/git.ignore
 
 TEX += 2/parsing.tex 2/1/lwtparser.tex
 
@@ -400,3 +400,8 @@ include ../texheader/foot.mk
 
 #.PHONY: rkt
 #rkt: tmp/MisspelledAnimal.rkt 	
+
+tmp/mk.mk: cpp/Makefile
+	cp $< $@
+tmp/git.ignore: cpp/.gitignore
+	cp $< $@
