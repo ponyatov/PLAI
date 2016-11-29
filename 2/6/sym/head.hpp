@@ -1,0 +1,3 @@
+struct Sym {			// algebraic data type
+	...
+};

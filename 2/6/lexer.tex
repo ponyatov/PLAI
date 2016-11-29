@@ -124,12 +124,13 @@ collect2: error: ld returned 1 exit status
 \lstxl{arith/hpp.hpp}{2/6/nums.hpp}{C++}
 \lstt{arith/log.log}{2/6/nums.log}
 
-Добавим распознавание нескольких видов чисел: 
+Добавим распознавание нескольких видов чисел и знак +/-: 
 
 \lstt{arith/src.src}{arith/src.src}
 \lstxl{arith/lpp.lpp}{2/6/floats.lpp}{C++}
 \begin{tabular}{l l}
 \verb|x?| & 0 или 1 вхождение x \\
+\verb|x+| & 1+ вхождение x \\
 \verb|\x| & экранировка: распознавать x сам по себе \\&(важно для
 спец.символов в регулярных выражениях)\\
 \verb|.| & любой символ \\

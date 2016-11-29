@@ -1,29 +1,18 @@
 %{
 #include "hpp.hpp"
-string LexString;
 %}
-%x lexstring
 %option main noyywrap
 S [\+\-]?
 N [0-9]+
 %%
 #[^\n]*			{}						/* comment rule	*/
 
-'               {BEGIN(lexstring);
-                LexString=""; }
-<lexstring>'    {BEGIN(INITIAL);
-                cout<<"<str:'"<< LexString << "'>"<<endl;}
-<lexstring>\\t	{ LexString += '\t'; }
-<lexstring>\\n	{ LexString += '\n'; }
-<lexstring>\\.	{ LexString += yytext[1]; }
-<lexstring>.	{ LexString += yytext[0]; }
+{S}{N}			 {cout<<Sym(yytext).head()<<endl; }
+{S}{N}\.{N}		 {cout<<Sym(yytext).head()<<endl; }
+{S}{N}[eE]{S}{N} {cout<<Sym(yytext).head()<<endl; }
 
-{N}				 {cout<<"<num:" << yytext << ">"<<endl; }
-{N}\.{N}		 {cout<<"<num:" << yytext << ">"<<endl; }
-{S}{N}[eE]{S}{N} {cout<<"<num:" << yytext << ">"<<endl; }
-
-\+				{cout<< "<plus>" <<endl;}
-\-				{cout<< "<minus>" <<endl;}
-\*				{cout<< "<mult>" <<endl;}
+\+				{cout<<Sym("plus",yytext).head()<<endl; }
+\-				{cout<<Sym("minus",yytext).head()<<endl; }
+\*				{cout<<Sym("mult",yytext).head()<<endl; }
 
 [ \t\r\n]+		{}						/* drop spaces	*/

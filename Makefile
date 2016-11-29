@@ -43,6 +43,10 @@ SRC += 2/6/struc.lpp 2/6/floats.lpp 2/6/floats.log
 SRC += arith/lpp.lpp
 SRC += 2/6/string.lpp 2/6/string.log
 
+SRC += 2/6/sym/head.hpp 2/6/sym/head.cpp
+SRC += 2/6/sym/constv.hpp 2/6/sym/constv.cpp 2/6/sym/constoc.hpp   
+SRC += 2/6/sym/dump.hpp 2/6/sym/dump.cpp
+
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
 TEX += 4/desugaring.tex 4/1/subtract.tex 4/2/negation.tex

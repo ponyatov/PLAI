@@ -18,8 +18,8 @@ N [0-9]+
 <lexstring>\\.	{ LexString += yytext[1]; }
 <lexstring>.	{ LexString += yytext[0]; }
 
-{N}				 {cout<<"<num:" << yytext << ">"<<endl; }
-{N}\.{N}		 {cout<<"<num:" << yytext << ">"<<endl; }
+{S}{N}			 {cout<<"<num:" << yytext << ">"<<endl; }
+{S}{N}\.{N}		 {cout<<"<num:" << yytext << ">"<<endl; }
 {S}{N}[eE]{S}{N} {cout<<"<num:" << yytext << ">"<<endl; }
 
 \+				{cout<< "<plus>" <<endl;}
