@@ -7,7 +7,7 @@ string LexString;
 S [\+\-]?
 N [0-9]+
 %%
-#[^\n]*			{}						/* comment rule	*/
+#[^\n]*			{}					/* comment rule	*/
 
 '               {BEGIN(lexstring);
                 LexString=""; }
@@ -26,4 +26,4 @@ N [0-9]+
 \-				{cout<< "<minus>" <<endl;}
 \*				{cout<< "<mult>" <<endl;}
 
-[ \t\r\n]+		{}						/* drop spaces	*/
+[ \t\r\n]+		{}					/* drop spaces	*/

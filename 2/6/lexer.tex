@@ -3,7 +3,7 @@
 Для начала реализуем только лексер, который будет читать файл с простыми
 выражениями, и выводить распознанные элементы:
 
-\lstt{arith/src.src}{arith/src.src}
+\lstt{arith/src.src}{2/6/0.src}
 
 Для его компиляции и запуска используйте команды:
 
@@ -123,3 +123,30 @@ collect2: error: ld returned 1 exit status
 
 \lstxl{arith/hpp.hpp}{2/6/nums.hpp}{C++}
 \lstt{arith/log.log}{2/6/nums.log}
+
+Добавим распознавание нескольких видов чисел: 
+
+\lstt{arith/src.src}{arith/src.src}
+\lstxl{arith/lpp.lpp}{2/6/floats.lpp}{C++}
+\begin{tabular}{l l}
+\verb|x?| & 0 или 1 вхождение x \\
+\verb|\x| & экранировка: распознавать x сам по себе \\&(важно для
+спец.символов в регулярных выражениях)\\
+\verb|.| & любой символ \\
+\end{tabular}
+\lstt{arith/log.log}{2/6/floats.log}
+
+И наконец, вам скорее всего потребуется распознавание строк. Это делается с
+помощью лексера, работающего в нескольких режимах. Переключение режима
+выполняется макросом \var{BEGIN()}.
+
+\lstt{arith/lpp.lpp}{2/6/string.lpp}
+\begin{tabular}{l l}
+\verb|%x| & определение дополнительных режимов лексера \\
+\verb|INITIAL| & основной режим работы лексера \\
+\verb|lexstring| & режим разбора строк \\
+\verb|\\| & символ \verb|\| \\
+\verb|<mode1[mode2,..]>| & правило действует в режимах \verb|mode1,..| \\
+\verb|<*>| & правило действует во всех режимах \\
+\end{tabular}
+\lstt{arith/log.log}{2/6/string.log}

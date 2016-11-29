@@ -33,13 +33,15 @@ SRC += 2/v1.rkt 2/v2.rkt
 
 TEX += 2/5/coda.tex
 
-TEX += 2/6/bison.tex 2/6/lexer.tex 2/6/sym.tex
-SRC += 2/6/minimal0.lpp 2/6/minimal1.lpp 2/6/minimal1.log
+TEX += 2/6/cparser.tex 2/6/lexer.tex 2/6/sym.tex
+SRC += 2/6/0.src 2/6/minimal0.lpp 2/6/minimal1.lpp 2/6/minimal1.log
 SRC += 2/6/comment.lpp 2/6/comment.log 2/6/spaces.lpp 2/6/spaces.log
 SRC += 2/6/ops.lpp 2/6/ops.log 2/6/nums.lpp 2/6/nums.hpp 2/6/nums.log
 
 SRC += arith/rc.rc arith/bat.bat arith/Makefile arith/src.src
-SRC += 2/6/struc.lpp
+SRC += 2/6/struc.lpp 2/6/floats.lpp 2/6/floats.log
+SRC += arith/lpp.lpp
+SRC += 2/6/string.lpp 2/6/string.log
 
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
