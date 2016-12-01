@@ -11,8 +11,8 @@ struct Sym {			// algebraic data type
 	Sym(string V);				// token constructor
 	vector<Sym*> nest();		// \ nested element
 	void push(Sym*);			// / add nested elememt
+	map<string,Sym*> lookup;	// lookup table
 	virtual string head();		// <T:V> string representation
-
 };
 
 						// lexer interface
