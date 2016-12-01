@@ -33,19 +33,19 @@ SRC += 2/v1.rkt 2/v2.rkt
 
 TEX += 2/5/coda.tex
 
-TEX += 2/6/cparser.tex 2/6/lexer.tex 2/6/sym.tex
-SRC += 2/6/0.src 2/6/minimal0.lpp 2/6/minimal1.lpp 2/6/minimal1.log
-SRC += 2/6/comment.lpp 2/6/comment.log 2/6/spaces.lpp 2/6/spaces.log
-SRC += 2/6/ops.lpp 2/6/ops.log 2/6/nums.lpp 2/6/nums.hpp 2/6/nums.log
+TEX += parse/cparser.tex parse/lexer.tex sym/sym.tex
+SRC += parse/0.src parse/minimal0.lpp parse/minimal1.lpp parse/minimal1.log
+SRC += parse/comment.lpp parse/comment.log parse/spaces.lpp parse/spaces.log
+SRC += parse/ops.lpp parse/ops.log parse/nums.lpp parse/nums.hpp parse/nums.log
 
 SRC += arith/rc.rc arith/bat.bat arith/Makefile arith/src.src
-SRC += 2/6/struc.lpp 2/6/floats.lpp 2/6/floats.log
+SRC += parse/struc.lpp parse/floats.lpp parse/floats.log
 SRC += arith/lpp.lpp
-SRC += 2/6/string.lpp 2/6/string.log
+SRC += parse/string.lpp parse/string.log
 
-SRC += 2/6/sym/head.hpp 2/6/sym/head.cpp
-SRC += 2/6/sym/constv.hpp 2/6/sym/constv.cpp 2/6/sym/constoc.hpp   
-SRC += 2/6/sym/dump.hpp 2/6/sym/dump.cpp
+SRC += sym/head.hpp sym/head.cpp
+SRC += sym/constv.hpp sym/constv.cpp sym/constoc.hpp   
+SRC += sym/dump.hpp sym/dump.cpp sym/nest.hpp
 
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
@@ -419,3 +419,7 @@ tmp/mk.mk: cpp/Makefile
 	cp $< $@
 tmp/git.ignore: cpp/.gitignore
 	cp $< $@
+
+.PHONY: clean
+clean:
+	rm -f *.aux *.toc *.log *.i* *.out

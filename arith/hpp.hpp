@@ -9,7 +9,10 @@ struct Sym {			// algebraic data type
 	string val;					// V: value
 	Sym(string T, string V);	// <T:V> constructor
 	Sym(string V);				// token constructor
+	vector<Sym*> nest();		// \ nested element
+	void push(Sym*);			// / add nested elememt
 	virtual string head();		// <T:V> string representation
+
 };
 
 						// lexer interface

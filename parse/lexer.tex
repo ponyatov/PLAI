@@ -3,7 +3,7 @@
 Для начала реализуем только лексер, который будет читать файл с простыми
 выражениями, и выводить распознанные элементы:
 
-\lstt{arith/src.src}{2/6/0.src}
+\lstt{arith/src.src}{parse/0.src}
 
 Для его компиляции и запуска используйте команды:
 
@@ -25,11 +25,11 @@ lpp.lpp:1: premature EOF
 То есть для успешной трансляции у \term{файла лексера} \file{lpp.lpp} должна
 быть определенная структура:
 
-\verbatiminput{2/6/struc.lpp}
+\verbatiminput{parse/struc.lpp}
 
 В простейшем случае мы можем попытаться скомпилировать самый элементарный
 пустой лексер из одного обязального элемента: маркера начала блока правил
-\lstt{arith/lpp.lp}{2/6/minimal0.lpp}
+\lstt{arith/lpp.lp}{parse/minimal0.lpp}
 
 Команда \verb|flex lpp.lpp| выполнится без ошибок, и создаст 
 \file{lex.yy.c}
@@ -76,14 +76,14 @@ collect2: error: ld returned 1 exit status
 \end{description}
 \clearpage
 
-\lstt{arith/lpp.lp}{2/6/minimal1.lpp}
-\lstt{arith/log.log}{2/6/minimal1.log}
+\lstt{arith/lpp.lp}{parse/minimal1.lpp}
+\lstt{arith/log.log}{parse/minimal1.log}
 
 Намного лучше, по крайней мере оно скомпилировалось и отработало. Как видим, все
 нераспознанные правилами символы проходят насквозь, и попадают в выходной поток.
 
 Для начала добавим правило для удаления комментариев:
-\lstxl{arith/lpp.lpp}{2/6/comment.lpp}{C++}
+\lstxl{arith/lpp.lpp}{parse/comment.lpp}{C++}
 \begin{tabular}{l l}
 \verb|#| & символ \# \\
 \verb|[ ]| & множество символов \\
@@ -92,12 +92,12 @@ collect2: error: ld returned 1 exit status
 \verb|x*| & 0+ повторений x \\
 \verb|{}| & пустой \cpp\ код, распознать, но ничего не делать \\ 
 \end{tabular}
-\lstt{arith/log.log}{2/6/comment.log}
+\lstt{arith/log.log}{parse/comment.log}
 
 Удалим все пробельные символы, которые обычно\note{помним о синтаксисе \py}
 являются разделителями и не несут языкового смысла\ --- пробелы, табуляции,
 концы строк.
-\lstxl{arith/lpp.lpp}{2/6/spaces.lpp}{C++}
+\lstxl{arith/lpp.lpp}{parse/spaces.lpp}{C++}
 \begin{tabular}{l l}
 \verb|[ ]| & один из символов: \\
 \verb|_| & пробел \\
@@ -105,7 +105,7 @@ collect2: error: ld returned 1 exit status
 \verb|\r| & возврат каретки <0x0D> \\
 \verb|\n| & конец строки <0x0A> \\
 \end{tabular}
-\lstt{arith/log.log}{2/6/spaces.log}
+\lstt{arith/log.log}{parse/spaces.log}
 
 Все слиплось, но пробелы все еще выполняют свою разделяющую функцию: две цифры,
 разделенные пробелом, будут распознаны как два отдельных числа.
@@ -113,21 +113,21 @@ collect2: error: ld returned 1 exit status
 \bigskip
 Добавим секцию \cpp\ хедеров, чтобы в правилах можно было использовать потоковый
 вывод, и проиллюстрируем определение интерфейса лексера:
-\lstxl{arith/lpp.lpp}{2/6/ops.lpp}{C++}
-\lstt{arith/log.log}{2/6/ops.log}
+\lstxl{arith/lpp.lpp}{parse/ops.lpp}{C++}
+\lstt{arith/log.log}{parse/ops.log}
 
-\lstxl{arith/lpp.lpp}{2/6/nums.lpp}{C++}
+\lstxl{arith/lpp.lpp}{parse/nums.lpp}{C++}
 
 Выделим хедеры в отдельный файл, так как позднее нам потребуется один и тот же
 файл хедеров для лексера, парсера и \cpp\  части:
 
-\lstxl{arith/hpp.hpp}{2/6/nums.hpp}{C++}
-\lstt{arith/log.log}{2/6/nums.log}
+\lstxl{arith/hpp.hpp}{parse/nums.hpp}{C++}
+\lstt{arith/log.log}{parse/nums.log}
 
 Добавим распознавание нескольких видов чисел и знак +/-: 
 
 \lstt{arith/src.src}{arith/src.src}
-\lstxl{arith/lpp.lpp}{2/6/floats.lpp}{C++}
+\lstxl{arith/lpp.lpp}{parse/floats.lpp}{C++}
 \begin{tabular}{l l}
 \verb|x?| & 0 или 1 вхождение x \\
 \verb|x+| & 1+ вхождение x \\
@@ -135,13 +135,13 @@ collect2: error: ld returned 1 exit status
 спец.символов в регулярных выражениях)\\
 \verb|.| & любой символ \\
 \end{tabular}
-\lstt{arith/log.log}{2/6/floats.log}
+\lstt{arith/log.log}{parse/floats.log}
 
 И наконец, вам скорее всего потребуется распознавание строк. Это делается с
 помощью лексера, работающего в нескольких режимах. Переключение режима
 выполняется макросом \var{BEGIN()}.
 
-\lstt{arith/lpp.lpp}{2/6/string.lpp}
+\lstt{arith/lpp.lpp}{parse/string.lpp}
 \begin{tabular}{l l}
 \verb|%x| & определение дополнительных режимов лексера \\
 \verb|INITIAL| & основной режим работы лексера \\
@@ -150,4 +150,4 @@ collect2: error: ld returned 1 exit status
 \verb|<mode1[mode2,..]>| & правило действует в режимах \verb|mode1,..| \\
 \verb|<*>| & правило действует во всех режимах \\
 \end{tabular}
-\lstt{arith/log.log}{2/6/string.log}
+\lstt{arith/log.log}{parse/string.log}
