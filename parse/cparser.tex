@@ -9,7 +9,7 @@
 \begin{itemize}
   \item \flex: генератор \termdef{лексеров}{лексер}: программа создает
 \cpp\ код в \file{lex.yy.c} на основе набора правил из \file{lpp.lpp}, состоящих
-из двух частей:
+из двух частей, \emph{разделенных 1+ пробелом}:
 \begin{enumerate}
   \item регулярное выражение (regexp)
   \item \cpp\ код выполняемый при обнаружении во \term{входном потоке} группы
@@ -31,11 +31,12 @@ echo gvim -p src.src log.log ... rc.rc >> rc.rc
 chmod +x rc.rc
 \end{verbatim}
 
-Далее нам потребуется одновременно редактировать несколько файлов, поэтому для
-иллюстрации воспользуемся редактором \gvim\note{сборка для \win\ доступна на
-\url{http://www.vim.org/download.php\#pc}}\ и будем запускать его из скрипта
-\file{rc.rc} под \linux.
+Далее нам потребуется одновременно редактировать несколько файлов, поэтому в
+качестве IDE воспользуемся легковесным редактором \gvim\note{сборка для \win\
+доступна на \url{http://www.vim.org/download.php\#pc}}\ и будем запускать его из
+скрипта \file{rc.rc} под \linux\ и \file{bat.bat} под \win.
 
+\clearpage
 \lstt{\file{arith/rc.rc}}{arith/rc.rc}
 \lstt{\file{arith/bat.bat}}{arith/bat.bat}
 
