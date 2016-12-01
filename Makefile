@@ -46,6 +46,9 @@ SRC += parse/string.lpp parse/string.log
 SRC += sym/head.hpp sym/head.cpp
 SRC += sym/constv.hpp sym/constv.cpp sym/constoc.hpp   
 SRC += sym/dump.hpp sym/dump.cpp sym/nest.hpp
+SRC += sym/dumptree.hpp sym/dumptree.cpp
+
+TEX += sym/num.tex
 
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 

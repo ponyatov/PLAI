@@ -7,12 +7,12 @@ N [0-9]+
 %%
 #[^\n]*			{}						/* comment rule	*/
 
-{S}{N}			 {cout<<Sym(yytext).head()<<endl; }
-{S}{N}\.{N}		 {cout<<Sym(yytext).head()<<endl; }
-{S}{N}[eE]{S}{N} {cout<<Sym(yytext).head()<<endl; }
+{S}{N}			 {cout<<Sym(yytext).dump()<<endl; }
+{S}{N}\.{N}		 {cout<<Sym(yytext).dump()<<endl; }
+{S}{N}[eE]{S}{N} {cout<<Sym(yytext).dump()<<endl; }
 
-\+				{cout<<Sym("plus",yytext).head()<<endl; }
-\-				{cout<<Sym("minus",yytext).head()<<endl; }
-\*				{cout<<Sym("mult",yytext).head()<<endl; }
+\+				{cout<<Sym("plus",yytext).dump()<<endl; }
+\-				{cout<<Sym("minus",yytext).dump()<<endl; }
+\*				{cout<<Sym("mult",yytext).dump()<<endl; }
 
 [ \t\r\n]+		{}						/* drop spaces	*/

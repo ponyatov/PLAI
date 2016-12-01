@@ -1,2 +1,2 @@
-	vector<Sym*> nest();	// \ nested element
+	vector<Sym*> nest;		// \ nested element
 	void push(Sym*);		// / add nested elememt
