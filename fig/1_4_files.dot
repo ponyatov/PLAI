@@ -1,4 +1,11 @@
 digraph { rankdir = LR;
+{
+rank=same;
+"ypp.ypp"
+"lpp.lpp"
+"hpp.hpp"
+"cpp.cpp"
+}
 "ypp.ypp" -> "ypp.tab.cpp" [label="\ bison"]
 "ypp.ypp" -> "ypp.tab.hpp" [label="\ bison"]
 "lpp.lpp" -> "lex.yy.c" [label="\n flex"]
@@ -11,8 +18,13 @@ C [shape=box]
 H [shape=box]
 L [shape=box]
 "[libc]" -> L [label="\ by linker"]
-C -> "./exe.exe" [label="\ [C]++ code"]
-H -> "./exe.exe" [label="\ [H]eaders"]
-L -> "./exe.exe" [label="\ [L]ibs"]
-"./exe.exe" -> "log.log" [label="\ src.src"] 
+C -> "g++" [label="\ [C]++ code"]
+H -> "g++" [label="\ [H]eaders"]
+L -> "g++" [label="\ [L]ibs"]
+"g++" -> "./exe.exe"
+{
+rank=same
+"src.src" -> "./exe.exe"
+"./exe.exe" -> "log.log"
+}
 }
