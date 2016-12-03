@@ -7,9 +7,9 @@ N [0-9]+
 %%
 #[^\n]*			{}						/* comment rule	*/
 
-{S}{N}			 {cout<<Sym(yytext).dump()<<endl; }
-{S}{N}\.{N}		 {cout<<Sym(yytext).dump()<<endl; }
-{S}{N}[eE]{S}{N} {cout<<Sym(yytext).dump()<<endl; }
+{S}{N}			 {cout<<Num(yytext).dump()<<endl; }
+{S}{N}\.{N}		 {cout<<Num(yytext).dump()<<endl; }
+{S}{N}[eE]{S}{N} {cout<<Num(yytext).dump()<<endl; }
 
 \+				{cout<<Sym("plus",yytext).dump()<<endl; }
 \-				{cout<<Sym("minus",yytext).dump()<<endl; }

@@ -17,3 +17,8 @@ string Sym::dump(int depth) { string S = "\n"+pad(depth)+head();
 	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
 		S += (*it)->dump(depth+1);
 	return S; }
+
+Num::Num(string V):Sym("num",V) { val = atof(V.c_str()); }
+Num::Num(float F):Sym("num","") { val = F; }
+string Num::head() { ostringstream os;
+	os << "<"<<tag<<":"<<val<<">"; return os.str(); }

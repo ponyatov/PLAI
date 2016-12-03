@@ -1,1 +1,18 @@
 \secrel{\class{Num}: [num]bers \ru{числа}}
+
+Базовый класс \class{Sym} хорошо подходит для хранения строк и идентификаторов,
+числа также можно хранить в виде строк, но лучше определить отдельный
+\term{класс-обертку} заменив тип \var{val} на \class{float}:
+
+\lstxl{hpp.hpp}{sym/num.hpp}{C++}
+\lstxl{cpp.cpp}{sym/num.cpp}{C++}
+\begin{tabular}{l l}
+\class{float} \var{val} & обернутый объект \\
+\fn{Num(string)} & токен-конструктор (используется в лексере) \\
+\fn{Num(float)} & конструктор обертки (будет использоваться при\\&упаковке
+результатов вычислений в интерпретаторе \ref{cppinterp})\\
+\fn{head()} & так как у нас изменился тип хранимого значения,\\&необходимо
+переопределить функцию \var{val} $\rightarrow$ \class{string}\\ 
+\end{tabular}
+
+\lstxl{lpp.lpp}{parse/num.lpp}{C++}

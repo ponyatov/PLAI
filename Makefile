@@ -48,7 +48,8 @@ SRC += sym/constv.hpp sym/constv.cpp sym/constoc.hpp
 SRC += sym/dump.hpp sym/dump.cpp sym/nest.hpp
 SRC += sym/dumptree.hpp sym/dumptree.cpp
 
-TEX += sym/num.tex
+TEX += sym/num.tex sym/wrap.tex
+SRC += sym/num.hpp sym/num.cpp parse/num.lpp
 
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 

@@ -1,0 +1,3 @@
+{S}{N}			 {cout<<Num(yytext).dump()<<endl; }
+{S}{N}\.{N}		 {cout<<Num(yytext).dump()<<endl; }
+{S}{N}[eE]{S}{N} {cout<<Num(yytext).dump()<<endl; }
