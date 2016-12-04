@@ -1,0 +1,5 @@
+$> flex lpp.lpp && g++ -o ./exe.exe lex.yy.c
+$> ./exe.exe < src.src
+ 
+# comment line
+1*2 + 2+3               # see section 2.4
