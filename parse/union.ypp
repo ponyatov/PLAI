@@ -1,0 +1,6 @@
+%defines %union {
+	int i;
+	float f;
+	string* s;
+	Sym* o;		// [o]bject
+}
