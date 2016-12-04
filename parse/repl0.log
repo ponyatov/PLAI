@@ -1,0 +1,5 @@
+ypp.ypp:3.16-18: error: symbol SYM is used, but is not
+                 defined as a token and has no rules
+    | REPL SYM  /* recursive: SYM after REPL ... after <empty> */
+                ^^^
+Makefile:9: recipe for target 'ypp.tab.cpp' failed

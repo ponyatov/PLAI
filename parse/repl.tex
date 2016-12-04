@@ -1,0 +1,28 @@
+\secrel{REPL: \ru{цикл} [R]ead/[E]val/[P]rint/[L]oop}
+
+\begin{description}[nosep]
+\item[R]ead \ru{\emph{читать} (и синтаксически разбирать) входной поток}
+\item[E]val \ru{\emph{вычислять} полученное выражение}
+\item[P]rint \ru{\emph{выводить} результат}
+\item[L]oop \ru{\emph{повторить}}
+\end{description}\bigskip
+
+Обычно для интерактивных\note{и программ работающих в \term{пакетном режиме}: из
+скриптов и ``батников''} лексических программ первым (стартовым\note{может
+быть переназначено опцией \textbf{\%start}}) правилом идет реализация
+\termdef{REPL}{REPL}-цикла в виде правила \emph{с левой рекурсией}:
+\lstx{arith/ypp.ypp}{parse/repl0.ypp}{C++}
+
+\begin{tabular}{l l}
+\verb|REPL| & имя правила или \term{нетерминала} (*) \\
+\verb|A   B| & B идет после A \\
+\verb$A | B$ & A или B \\
+\verb|SYM| & \term{терминал} который \emph{возвращает лексер} через вызов 
+\fn{yylex()}\\
+ \verb|{}| & \cpp\ код срабатывающий для части правила между
+\verb$|$ или \verb|;|\\
+\end{tabular}
+
+\noindent(*)\note{правило, возвращающее какое-либо значение}
+
+\lstt{arith/log.log}{parse/repl0.log}

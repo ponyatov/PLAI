@@ -1,1 +1,4 @@
 %%
+REPL :				/* empty */
+	| REPL SYM		/* recursive: SYM after REPL ... after <empty> */
+;
