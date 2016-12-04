@@ -1,0 +1,5 @@
+ponyatov@gac:~/PLAI/arith$ make
+ypp.ypp:1.3: error: syntax error, unexpected end of file
+ %%
+   ^
+Makefile:9: recipe for target 'ypp.tab.cpp' failed
