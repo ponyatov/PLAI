@@ -16,3 +16,11 @@
 
 \lstx{arith/ypp.ypp}{parse/union.ypp}{C++}
 
+\prog{bison} создаст фай	л \file{ypp.tab.hpp}, который нужно подключить в
+\file{hpp.hpp}:
+
+\lstx{arith/ypp.ypp}{parse/lexyacc.ypp}{C++}
+\lstx{arith/lpp.lpp}{parse/lexyacc.lpp}{C++}
+\lstx{arith/hpp.hpp}{parse/parsinterface.hpp}{C++}
+\lstx{arith/hpp.hpp}{parse/lexyacc.hpp}{C++}
+\lstx{arith/hpp.cpp}{parse/lexyacc.cpp}{C++}

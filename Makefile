@@ -58,6 +58,8 @@ SRC += parse/repl0.ypp parse/repl0.log
 TEX += parse/lexyacc.tex
 SRC += parse/union.ypp
 
+SRC += parse/lexyacc.ypp parse/lexyacc.lpp parse/lexyacc.hpp parse/lexyacc.cpp 
+
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
 TEX += 4/desugaring.tex 4/1/subtract.tex 4/2/negation.tex

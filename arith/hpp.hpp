@@ -3,6 +3,7 @@
 						// standard includes
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 #include <deque>
 #include <map>
 using namespace std;
@@ -27,9 +28,13 @@ struct Num:Sym {		// number wrap class
 	string head();				// redefine for float val
 };
 
-						// lexer interface
+						// lexer/parser interface
 extern int yylex();
 extern char* yytext;
 extern int yylineno;
+#define TOC(C,X) { yylval.o = new C(yytext); return X; }
+extern int yyparse();
+extern void yyerror(string);
+#include "ypp.tab.hpp"
 
 #endif // _H_HPP
