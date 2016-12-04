@@ -51,6 +51,9 @@ SRC += sym/dumptree.hpp sym/dumptree.cpp
 TEX += sym/num.tex sym/wrap.tex
 SRC += sym/num.hpp sym/num.cpp parse/num.lpp
 
+TEX += parse/parser.tex
+SRC += parse/struc.ypp
+
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
 TEX += 4/desugaring.tex 4/1/subtract.tex 4/2/negation.tex
