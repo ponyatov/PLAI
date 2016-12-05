@@ -39,38 +39,30 @@ Sym* Num::pfxplus() { return this; }
 Sym* Num::pfxminus() { return new Num(-val); }
 Sym* Num::add(Sym*o) {
 	if (o->tag=="num") return new Num(val + dynamic_cast<Num*>(o)->val);
-	else return new Error(this->dump());
+	else return new Error(this->head()+" + "+o->head());
 }
 Sym* Num::mul(Sym*o) {
 	if (o->tag=="num") return new Num(val * dynamic_cast<Num*>(o)->val);
-	else return new Error(this->dump());
+	else return new Error(this->head()+" - "+o->head());
 }
 
 Op::Op(string V):Sym("op",V) {}
-
-Add::Add(string V):Op(V){}
-Sym* Add::eval() { Sym::eval();
-	switch (nest.size()) {
-		case 1: return nest[0]->pfxplus();
-		case 2: return nest[0]->add(nest[1]);
-		default: return new Error(this->dump());
+Sym* Op::eval() { Sym::eval();
+	if (val=="+") {
+		switch (nest.size()) {
+			case 1: return nest[0]->pfxplus();
+			case 2: return nest[0]->add(nest[1]);
+		}
 	}
-}
-
-Sub::Sub(string V):Op(V){}
-Sym* Sub::eval() { Sym::eval();
-	switch (nest.size()) {
-		case 1: return nest[0]->pfxminus();
-		case 2: return nest[0]->sub(nest[1]);
-		default: return new Error(this->dump());
+	if (val=="-") {
+		switch (nest.size()) {
+			case 1: return nest[0]->pfxminus();
+			case 2: return nest[0]->sub(nest[1]);
+		}
 	}
-}
-
-Mul::Mul(string V):Op(V){}
-Sym* Mul::eval() { Sym::eval();
-	switch (nest.size()) {
-		case 2: return nest[0]->mul(nest[1]);
-		default: return new Error(this->dump());
+	if (val=="*") {
+		switch (nest.size()) {
+			case 2: return nest[0]->mul(nest[1]);
+		}
 	}
-}
-
+	return this; }

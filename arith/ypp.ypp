@@ -2,7 +2,22 @@
 #include "hpp.hpp"
 %}
 %defines %union { Sym*o; }
-%token <o> SYM
+%token <o> SYM NUM STR
+%token <o> ADD SUB MUL DIV POW
+%type <o> ex scalar
+
+%left ADD SUB
+%left MUL DIV
+%left POW
+%left PFX
 %%
-REPL : | REPL SYM { cout << $2 << endl; };
+REPL : | REPL ex { cout << $2->dump() << endl; };
+ex : scalar
+   	| ADD ex %prec PFX	{ $$=$1; $$->push($2); }
+	| SUB ex %prec PFX	{ $$=$1; $$->push($2); }
+	| ex ADD ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex SUB ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex MUL ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex DIV ex			{ $$=$2; $$->push($1); $$->push($3); }
+	| ex POW ex			{ $$=$2; $$->push($1); $$->push($3); }
 ;

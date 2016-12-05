@@ -26,9 +26,9 @@ N [0-9]+
 \{				TOC(Op,SYM)
 \}				TOC(Op,SYM)
 
-\+				TOC(Add,ADD)
+\+				TOC(Op,ADD)
 \-				TOC(Op,SUB)
-\*				TOC(Mul,MUL)
+\*				TOC(Op,MUL)
 \/				TOC(Op,DIV)
 \^				TOC(Op,POW)
 

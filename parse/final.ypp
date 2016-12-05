@@ -1,7 +1,4 @@
-%{
-#include "hpp.hpp"
-%}
-%defines %union { Sym*o; }
+%defines %union { Sym*o; }	// universal type only
 %token <o> SYM NUM STR
 %token <o> ADD SUB MUL DIV POW
 %type <o> ex scalar
@@ -11,11 +8,9 @@
 %left POW
 %left PFX
 %%
-REPL : | REPL ex 	{ cout << $2->dump()         << endl; 
-	 				  cout << $2->eval()->dump() << endl; } ;
-scalar : SYM | NUM | STR ;
+REPL : | REPL ex { cout << $2->dump() << endl; };
 ex : scalar
-	| ADD ex %prec PFX	{ $$=$1; $$->push($2); }
+   	| ADD ex %prec PFX	{ $$=$1; $$->push($2); }
 	| SUB ex %prec PFX	{ $$=$1; $$->push($2); }
 	| ex ADD ex			{ $$=$2; $$->push($1); $$->push($3); }
 	| ex SUB ex			{ $$=$2; $$->push($1); $$->push($3); }

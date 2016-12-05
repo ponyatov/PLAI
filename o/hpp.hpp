@@ -30,10 +30,7 @@ struct Num:Sym { float val; Num(string); Num(float); string head();
 	Sym* pfxplus(); Sym* pfxminus();
 	Sym* add(Sym*); Sym* mul(Sym*); };
 
-struct Op:Sym { Op(string); };
-struct Add:Op { Add(string); Sym*eval(); };
-struct Sub:Op { Sub(string); Sym*eval(); };
-struct Mul:Op { Mul(string); Sym*eval(); };
+struct Op:Sym { Op(string); Sym*eval(); };
 
 extern int yylex();
 extern int yylineno;
