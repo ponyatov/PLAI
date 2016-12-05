@@ -9,6 +9,8 @@ N [0-9]+
 %%
 #[^\n]*			{}
 
+^.end			{yyterminate();}
+
 '				{BEGIN(lexstring); LexString="";}
 <lexstring>'	{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
 <lexstring>.	{LexString+=yytext[0];}

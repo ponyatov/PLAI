@@ -26,7 +26,9 @@ struct Error:Sym { Error(string); };
 
 struct Str:Sym { Str(string); string head(); };
 
-struct Num:Sym { float val; Num(string); Num(float); string head(); };
+struct Num:Sym { float val; Num(string); Num(float); string head();
+	Sym* pfxplus(); Sym* pfxminus();
+	Sym* add(Sym*); Sym* mul(Sym*); };
 
 struct Op:Sym { Op(string); };
 struct Add:Op { Add(string); Sym*eval(); };

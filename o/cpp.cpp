@@ -35,6 +35,16 @@ string Str::head() { return "'"+val+"'"; }
 Num::Num(string V):Sym("num",V) { val=atof(V.c_str()); }
 Num::Num(float F):Sym("num","") { val=F; }
 string Num::head() { ostringstream os; os<<val; return os.str(); }
+Sym* Num::pfxplus() { return this; }
+Sym* Num::pfxminus() { return new Num(-val); }
+Sym* Num::add(Sym*o) {
+	if (o->tag=="num") return new Num(val + dynamic_cast<Num*>(o)->val);
+	else return new Error(this->dump());
+}
+Sym* Num::mul(Sym*o) {
+	if (o->tag=="num") return new Num(val * dynamic_cast<Num*>(o)->val);
+	else return new Error(this->dump());
+}
 
 Op::Op(string V):Sym("op",V) {}
 
