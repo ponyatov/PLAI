@@ -10,25 +10,29 @@ N [0-9]+
 #[^\n]*			{}
 
 '				{BEGIN(lexstring); LexString="";}
-<lexstring>'	{BEGIN(INITIAL); yylval.o = new Sym(LexString); return SYM;}
+<lexstring>'	{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
 <lexstring>.	{LexString+=yytext[0];}
 
-{N}				TOC(Sym,SYM)
-{N}\.{N}		TOC(Sym,SYM)
-{N}[eE]{S}{N}	TOC(Sym,SYM)
+{N}				TOC(Num,NUM)
+{N}\.{N}		TOC(Num,NUM)
+{N}[eE]{S}{N}	TOC(Num,NUM)
 
-\(				TOC(Sym,SYM)
-\)				TOC(Sym,SYM)
-\[				TOC(Sym,SYM)
-\]				TOC(Sym,SYM)
-\{				TOC(Sym,SYM)
-\}				TOC(Sym,SYM)
+\(				TOC(Op,SYM)
+\)				TOC(Op,SYM)
+\[				TOC(Op,SYM)
+\]				TOC(Op,SYM)
+\{				TOC(Op,SYM)
+\}				TOC(Op,SYM)
 
-\+				TOC(Sym,SYM)
-\-				TOC(Sym,SYM)
-\*				TOC(Sym,SYM)
+\+				TOC(Add,ADD)
+\-				TOC(Op,SUB)
+\*				TOC(Mul,MUL)
+\/				TOC(Op,DIV)
+\^				TOC(Op,POW)
 
-\=				TOC(Sym,SYM)
+\=				TOC(Op,SYM)
+\@				TOC(Op,SYM)
+\~				TOC(Op,SYM)
 
 [a-zA-Z0-9_.]+	TOC(Sym,SYM)
 
