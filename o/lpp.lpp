@@ -1,0 +1,36 @@
+%{
+#include "hpp.hpp"
+string LexString;
+%}
+%x lexstring
+%option noyywrap yylineno
+S [\+\-]?
+N [0-9]+
+%%
+#[^\n]*			{}
+
+'				{BEGIN(lexstring); LexString="";}
+<lexstring>'	{BEGIN(INITIAL); yylval.o = new Sym(LexString); return SYM;}
+<lexstring>.	{LexString+=yytext[0];}
+
+{N}				TOC(Sym,SYM)
+{N}\.{N}		TOC(Sym,SYM)
+{N}[eE]{S}{N}	TOC(Sym,SYM)
+
+\(				TOC(Sym,SYM)
+\)				TOC(Sym,SYM)
+\[				TOC(Sym,SYM)
+\]				TOC(Sym,SYM)
+\{				TOC(Sym,SYM)
+\}				TOC(Sym,SYM)
+
+\+				TOC(Sym,SYM)
+\-				TOC(Sym,SYM)
+\*				TOC(Sym,SYM)
+
+\=				TOC(Sym,SYM)
+
+[a-zA-Z0-9_.]+	TOC(Sym,SYM)
+
+[ \t\r\n]+		{}
+.				{yyerror("lexer");}

@@ -1,0 +1,7 @@
+# comment line
+1*2 + +2.4+-4e+05		# see section 2.4 + floats
+'some\n\tstring'
+
+core	= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
+files	= [ src.src log.log core .gitignore bat.bat ]
+
