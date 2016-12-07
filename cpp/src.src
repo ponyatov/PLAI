@@ -1,3 +1,22 @@
+# comment: PLAI/ Y script as .cpp language realization sample
+
+TITLE	= cpp
+ABOUT	= 'PLAI/ Y script as .cpp language realization sample'
+AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
+LICENSE	= 'GNU LesserGPL'
+GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+TITLE
+
+core		= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
+vim			= [ bat.bat _vimrc vimfiles/ftdetect/Y.vim vimfiles/syntax/Y.vim ]
+files		= [ src.src log.log core vim .gitignore README.md ]
+bat.bat		= [ '@gvim' -p core-Makefile ]
+.gitignore	= [ '*~' '*.swp' exe.exe log.log ypp.tab.?pp lex.yy.c ]
+
+1*2 + +2.4+-4e+05
 # comment
 1++02.3*-04e+05
 1+2*3
+
+FN = {X:Y:X+Y}
+FN@application
+

@@ -1,25 +1,43 @@
 %{
 #include "hpp.hpp"
+
+string LexString;
 %}
+%x lexstring
 %option noyywrap yylineno
 
 S [\+\-]?
 N [0-9]+
 %%
-#[^\n]*				{}						/* comment			*/
+#[^\n]*			{}						/* comment */
 
-{N}[eE]{S}{N}		TOC(Num,NUM)			/* numbers			*/
-{N}\.{N}			TOC(Num,NUM)
-{N}					TOC(Num,NUM)
+'				{BEGIN(lexstring); LexString="";}
+<lexstring>'	{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
+<lexstring>.	{LexString+=yytext[0];}
 
-\+					TOC(Op,ADD)				/* operators		*/
-\-					TOC(Op,SUB)
-\*					TOC(Op,MUL)
-\/					TOC(Op,DIV)
-\^					TOC(Op,POW)
+{N}				TOC(Num,NUM)			/* numbers */
+{N}\.{N}		TOC(Num,NUM)
+{N}[eE]{S}{N}	TOC(Num,NUM)
 
-[a-zA-Z0-9_]+		TOC(Sym,SYM)			/* symbol			*/
+\(				TOC(Op,LP)				/* brackets */
+\)				TOC(Op,RP)
+\[				TOC(Op,LQ)
+\]				TOC(Op,RQ)
+\{				TOC(Op,LC)
+\}				TOC(Op,RC)
 
-[ \t\r\n]+			{}						/* drop spaces		*/
-.					{yyerror("lexer");}		/* undetected char	*/
+\+				TOC(Op,ADD)				/* operators */
+\-				TOC(Op,SUB)
+\*				TOC(Op,MUL)
+\/				TOC(Op,DIV)
+\^				TOC(Op,POW)
 
+\=				TOC(Op,EQ)
+\@				TOC(Op,AT)
+\~				TOC(Op,TILD)
+\:				TOC(Op,COLON)
+
+[a-zA-Z0-9_.?]+	TOC(Sym,SYM)			/* symbol */
+
+[ \t\r\n]+		{}						/* drop spaces */
+.				{yyerror("lexer");}		/* undetected char */
