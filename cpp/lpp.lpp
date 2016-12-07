@@ -10,6 +10,8 @@ N [0-9]+
 %%
 #[^\n]*			{}						/* comment */
 
+^\.end			{yyterminate();}		/* .end directive */
+
 '				{BEGIN(lexstring); LexString="";}
 <lexstring>'	{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
 <lexstring>\\t	{LexString+='\t';}

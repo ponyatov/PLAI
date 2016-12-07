@@ -1,5 +1,9 @@
 # comment: PLAI/ Y script as .cpp language realization sample
 
+1*2 + +2.4+-4e+05
+
+.end
+
 TITLE	= cpp
 ABOUT	= 'PLAI/ Y script as .cpp language realization sample'
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
