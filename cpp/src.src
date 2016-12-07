@@ -9,7 +9,7 @@ GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+TITLE
 core		= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
 vim			= [ bat.bat _vimrc vimfiles/ftdetect/Y.vim vimfiles/syntax/Y.vim ]
 files		= [ src.src log.log core vim .gitignore README.md ]
-bat.bat		= [ '@gvim' -p core-Makefile ]
+bat.bat		= [ '@gvim' -p (core-Makefile)/' ' ]
 .gitignore	= [ '*~' '*.swp' exe.exe log.log ypp.tab.?pp lex.yy.c ]
 
 1*2 + +2.4+-4e+05
