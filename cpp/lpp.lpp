@@ -1,7 +1,6 @@
 %{
 #include "hpp.hpp"
-
-string LexString;
+string LexString;						/* string parse buffer */
 %}
 %x lexstring
 %option noyywrap yylineno
@@ -13,11 +12,17 @@ N [0-9]+
 
 '				{BEGIN(lexstring); LexString="";}
 <lexstring>'	{BEGIN(INITIAL); yylval.o = new Str(LexString); return STR;}
+<lexstring>\\t	{LexString+='\t';}
+<lexstring>\\n	{LexString+='\n';}
+<lexstring>\\.	{LexString+=yytext[1];}
 <lexstring>.	{LexString+=yytext[0];}
 
-{N}				TOC(Num,NUM)			/* numbers */
-{N}\.{N}		TOC(Num,NUM)
-{N}[eE]{S}{N}	TOC(Num,NUM)
+										/* numbers */
+{N}				TOC(Num,NUM)				/* integer */
+{N}\.{N}		TOC(Num,NUM)				/* point */
+{N}[eE]{S}{N}	TOC(Num,NUM)				/* exponential */
+0x[0-9a-fA-F]+	TOC(Num,NUM)				/* hex machine integer */
+0b[01]+			TOC(Num,NUM)				/* binary string */
 
 \(				TOC(Op,LP)				/* brackets */
 \)				TOC(Op,RP)

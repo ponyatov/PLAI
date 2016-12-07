@@ -1,36 +1,60 @@
-#ifndef _H_HPP
+#ifndef _H_HPP					// GNU GCC have no #pragma once
 #define _H_HPP
+								// standard includes: required for
+#include <iostream>					// cout/cerr
+#include <sstream>					// ostringstream in dump()s
+#include <cstdlib>					// exit() in yyerror()
+#include <deque>					// nest[]ed elements
+#include <map>						// env[]ironments
+using namespace std;			// no std:: prefix in code
 
-#include <iostream>
-#include <sstream>
-#include <cstdlib>
-#include <vector>
-#include <map>
-using namespace std;
-
-struct Sym {
-	string tag; string val;
-	Sym(string,string); Sym(string);
-	vector<Sym*> nest; void push(Sym*);
-	map<string,Sym*> lookup;
-	virtual string head(); string pad(int); virtual string dump(int=0);
+struct Sym {					// algebraic data type
+	string tag;						// T: class/type tag
+	string val;						// V: value
+	Sym(string T, string V);		// <T:V> constructor
+	Sym(string V);					// token constructor
+	deque<Sym*> nest;				// \ nested element
+	void push(Sym*);				// / add nested elememt
+	map<string,Sym*> lookup;		// lookup table
+	virtual string head();			// \ dump as <T:V> string
+	string pad(int);				//   tree padding
+	virtual string dump(int=0);		// / dump tree
 };
 
-struct Num:Sym { Num(string); float val; string head(); };
+struct Num:Sym {				// number/float wrap class
+	float val;						// wrapped value type
+	Num(string);					// token/string constructor
+	Num(float);						// float constructor
+	string head();					// redefine for float val
+};
 
-struct Str:Sym { Str(string); string head(); };
+struct Str:Sym {				// 'string'
+	Str(string);					// constructor
+	string head();					// dump as 'string'
+};
 
-struct Vector:Sym { Vector(); string head(); };
+struct Vector:Sym {				// [vector]
+	Vector();
+	string head();				// dump as [] ...
+};
 
-struct Op:Sym { Op(string); };
-struct Lambda:Sym { Lambda(); string head(); };
+struct Op:Sym {					// operator (and bracket)
+	Op(string);
+};
 
-extern int yylex();
-extern int yylineno;
-extern char* yytext;
-#define TOC(C,X) { yylval.o = new C(yytext); return X; }
-extern int yyparse();
-extern void yyerror(string);
-#include "ypp.tab.hpp"
+struct Lambda:Sym {				// {la:mbda} noname function
+	Lambda();
+	string head();				// dump as {} ...
+};
+
+extern int yylex();				// regexp lexer interface
+extern int yylineno;				// current line number
+extern char* yytext;				// regexp-matched text
+#define TOC(C,X) { 					/* token macro */ \
+	yylval.o = new C(yytext);		/* send token object to parser */ \
+	return X; 						/* annotate returned token type */ }
+extern int yyparse();			// syntax parser interface
+extern void yyerror(string);		// syntax error callback
+#include "ypp.tab.hpp"				// lexer/parser interop defines
 
 #endif // _H_HPP

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
-#include <vector>
+#include <deque>
 #include <map>
 using namespace std;
 
@@ -13,7 +13,7 @@ struct Sym {			// algebraic data type
 	string val;					// V: value
 	Sym(string T, string V);	// <T:V> constructor
 	Sym(string V);				// token constructor
-	vector<Sym*> nest;			// \ nested element
+	deque<Sym*> nest;			// \ nested element
 	void push(Sym*);			// / add nested elememt
 	map<string,Sym*> lookup;	// lookup table
 	virtual string head();		// \ <T:V> string representation

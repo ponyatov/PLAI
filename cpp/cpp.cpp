@@ -17,10 +17,16 @@ string Sym::dump(int depth) { ostringstream os;
 		os << (*it)->dump(depth+1);
 	return os.str(); }
 
-Vector::Vector():Sym("vector","[]"){}
-string Vector::head() { return "[]"; }
+Num::Num(string V):Sym("num",V) { val=atof(V.c_str()); }
+string Num::head() { ostringstream os; os<<val; return os.str(); }
 
 Str::Str(string V):Sym("str",V){}
 string Str::head() { return "'"+val+"'"; }
 
+Vector::Vector():Sym("vector","[]"){}
+string Vector::head() { return "[]"; }
+
 Op::Op(string V):Sym("op",V){}
+
+Lambda::Lambda():Sym("lambda","{}"){}
+string Lambda::head() { return "{}"; }
