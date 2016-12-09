@@ -16,7 +16,9 @@
 %left PFX
 %left TILD
 %%
-REPL : | REPL ex 			{ cout << $2->dump() << endl; } ;
+REPL : | REPL ex 			{ cout << $2->dump() << endl;
+							  cout << $2->eval(&glob)->dump() << endl;
+							  cout << "===============================\n"; } ;
 scalar : SYM | NUM | STR ;
 ex : scalar
 	| LP ex RP				{ $$=$2; }

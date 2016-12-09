@@ -19,13 +19,27 @@ struct Sym {					// algebraic data type
 	virtual string head();			// \ dump as <T:V> string
 	string pad(int);				//   tree padding
 	virtual string dump(int=0);		// / dump tree
+	virtual Sym* eval(Sym*);		// evaluate/compute any object
+	virtual Sym* pfxplus();			// +A
+	virtual Sym* pfxminus();		// -A
+	virtual Sym* add(Sym*);			// A+B
+	virtual Sym* mul(Sym*);			// A*B
 };
 
-struct Num:Sym {				// number/float wrap class
-	float val;						// wrapped value type
+extern Sym glob;				// global environment
+
+struct Error:Sym {				// error object
+	Error(string); };
+
+struct Num:Sym {				// number/double wrap class
+	double val;						// wrapped value type
 	Num(string);					// token/string constructor
-	Num(float);						// float constructor
-	string head();					// redefine for float val
+	Num(double);					// double constructor
+	string head();					// redefine for double val
+	Sym* pfxplus();					// + num:A
+	Sym* pfxminus();				// - num:A
+	Sym* add(Sym*);					// num:A + ?:B
+	Sym* mul(Sym*);					// num:A * ?:B
 };
 
 struct Str:Sym {				// 'string'
@@ -40,6 +54,7 @@ struct Vector:Sym {				// [vector]
 
 struct Op:Sym {					// operator (and bracket)
 	Op(string);
+	Sym*eval(Sym*);					// required for basic math computing
 };
 
 struct Lambda:Sym {				// {la:mbda} noname function
