@@ -16,7 +16,9 @@
 %left PFX
 %left TILD
 %%
-REPL : | REPL ex 			{ cout << $2->dump() << endl; } ;
+REPL : | REPL ex 			{ cout << $2->dump() << endl;
+	 						  cout << $2->eval()->dump() << endl;
+							  cout << "=========================="; } ;
 scalar : SYM | NUM | STR ;
 ex : scalar
 	| LP ex RP				{ $$=$2; }
@@ -25,6 +27,7 @@ ex : scalar
 	| TILD ex				{ $$=$1; $$->push($2); }
 	| ex EQ ex				{ $$=$2; $$->push($1); $$->push($3); }
 	| ex AT ex				{ $$=$2; $$->push($1); $$->push($3); }
+	| ex COLON ex			{ $$=$2; $$->push($1); $$->push($3); }
 	| ADD ex %prec PFX		{ $$=$1; $$->push($2); }
 	| SUB ex %prec PFX		{ $$=$1; $$->push($2); }
 	| ex ADD ex				{ $$=$2; $$->push($1); $$->push($3); }

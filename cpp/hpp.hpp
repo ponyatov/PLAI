@@ -19,7 +19,9 @@ struct Sym {					// algebraic data type
 	virtual string head();			// \ dump as <T:V> string
 	string pad(int);				//   tree padding
 	virtual string dump(int=0);		// / dump tree
+	virtual Sym* eval(Sym*);		// evaluate(environment)
 };
+Sym glob("env","global");
 
 struct Num:Sym {				// number/float wrap class
 	float val;						// wrapped value type
