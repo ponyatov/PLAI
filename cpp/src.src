@@ -14,7 +14,7 @@ TITLE
 meta.hpp = [
 	['#define' ~MODULE MODULE]/' '
 	['#define' ~ABOUT ABOUT]/' '
-]/'\n'
+]/'\n'+'\n'
 
 .end
 

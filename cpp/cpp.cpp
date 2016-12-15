@@ -28,7 +28,9 @@ Sym* Sym::pfxplus()		{ return new Error(" + "+head()); }
 Sym* Sym::pfxminus()	{ return new Error(" - "+head()); }
 
 Sym* Sym::add(Sym*o)	{ return new Error(head()+" + "+o->head()); }
+Sym* Sym::sub(Sym*o)	{ return new Error(head()+" - "+o->head()); }
 Sym* Sym::mul(Sym*o)	{ return new Error(head()+" * "+o->head()); }
+Sym* Sym::div(Sym*o)	{ return new Error(head()+" / "+o->head()); }
 
 Sym* Sym::str()			{ return new Str(val); }
 
@@ -50,11 +52,25 @@ Sym* Num::mul(Sym*o) {
 }
 
 Str::Str(string V):Sym("str",V){}
-string Str::head() { return "'"+val+"'"; }
+string Str::head() { string S="'";
+	for (int i=0;i<val.length();i++) switch (val[i]) {
+		case 0x09: S += "\\t"; break;
+		case 0x0A: S += "\\n"; break;
+		case 0x0D: S += "\\r"; break;
+		default: S += val[i]; break;
+	}
+	return S+"'"; }
 Sym* Str::add(Sym*o) { return new Str(val+o->str()->val); }
 
 Vector::Vector():Sym("vector","[]"){}
 string Vector::head() { return "[]"; }
+Sym* Vector::add(Sym*o) { push(o); return this; }
+Sym* Vector::div(Sym*o) {
+	Sym* V = new Vector();
+	for (auto it=nest.begin(),e=nest.end();it!=e;it++) {
+		V->push(*it); V->push(o); }
+	V->nest.pop_back(); // remove *o tail
+	return V; }
 
 Op::Op(string V):Sym("op",V){}
 Sym* Op::eval(Sym*env) {
@@ -73,6 +89,9 @@ Sym* Op::eval(Sym*env) {
 	if (val=="*") switch (nest.size()) {
 		case 2: return nest[0]->mul(nest[1]);
 	}
+	if (val=="/") switch (nest.size()) {
+		case 2: return nest[0]->div(nest[1]);
+	}
 	return this; }
 
 Lambda::Lambda():Sym("lambda","{}"){}
@@ -82,5 +101,5 @@ Sym glob("env","global");
 void glob_init(){}
 void glob_dump(){
 	cout << endl<<"================== glob ===================" <<endl;
-	cout << glob.dump();
+	cout << glob.dump() <<endl<<endl;
 }

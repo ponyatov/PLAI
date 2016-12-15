@@ -14,7 +14,7 @@ struct Sym {					// algebraic data type
 	Sym(string T, string V);		// <T:V> constructor
 	Sym(string V);					// token constructor
 	deque<Sym*> nest;				// \ nested element
-	void push(Sym*);				// / add nested elememt
+	void push(Sym*);				// / add nested element
 	map<string,Sym*> lookup;		// lookup table
 	virtual string head();			// \ dump as <T:V> string
 	string pad(int);				//   tree padding
@@ -23,7 +23,9 @@ struct Sym {					// algebraic data type
 	virtual Sym* pfxplus();			// +A
 	virtual Sym* pfxminus();		// -A
 	virtual Sym* add(Sym*);			// A+B
+	virtual Sym* sub(Sym*);			// A-B
 	virtual Sym* mul(Sym*);			// A*B
+	virtual Sym* div(Sym*);			// A/B
 	virtual Sym* str();				// str(A) object -> string
 };
 
@@ -54,6 +56,8 @@ struct Str:Sym {				// 'string'
 struct Vector:Sym {				// [vector]
 	Vector();
 	string head();					// dump as [] ...
+	Sym* add(Sym*);					// []+B
+	Sym* div(Sym*);					// []/B
 };
 
 struct Op:Sym {					// operator (and bracket)
