@@ -26,7 +26,9 @@ struct Sym {					// algebraic data type
 	virtual Sym* mul(Sym*);			// A*B
 };
 
-extern Sym glob;				// global environment
+extern Sym glob;				// \ global environment
+extern void glob_init();
+extern void glob_dump();		// /
 
 struct Error:Sym {				// error object
 	Error(string); };

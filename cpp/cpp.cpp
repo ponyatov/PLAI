@@ -1,7 +1,7 @@
 #include "hpp.hpp"
 #define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
 void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
-int main() { return yyparse(); }
+int main() { glob_init(); yyparse(); glob_dump(); return 0; }
 
 Sym::Sym(string T, string V) { tag=T; val=V; }
 Sym::Sym(string V):Sym("sym",V){}
@@ -11,8 +11,9 @@ string Sym::head() { return "<"+tag+":"+val+">"; }
 string Sym::pad(int n) { string S; for (int i=0;i<n;i++) S+='\t'; return S; }
 string Sym::dump(int depth) { ostringstream os;
 	os << endl << pad(depth) << head() << " # " << this ;
-	for (auto it=lookup.begin(),e=lookup.end();it!=e;it++)
-		os << endl << pad(depth+1) << it->first << " = " << it->second->head();
+	for (auto it=lookup.begin(),e=lookup.end();it!=e;it++) {
+		os << endl << pad(depth+1) << it->first;
+		os << it->second->dump(depth+2); }
 	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
 		os << (*it)->dump(depth+1);
 	return os.str(); }
@@ -54,6 +55,10 @@ string Vector::head() { return "[]"; }
 Op::Op(string V):Sym("op",V){}
 Sym* Op::eval(Sym*env) {
 	if (val=="~") return nest[0]; else Sym::eval(env);
+	if (val=="=") {
+		env->lookup[nest[0]->val]=nest[1];
+		return nest[1];
+	}
 	if (val=="+") switch (nest.size()) {
 		case 1: return nest[0]->pfxplus();
 		case 2: return nest[0]->add(nest[1]);
@@ -68,3 +73,10 @@ Sym* Op::eval(Sym*env) {
 
 Lambda::Lambda():Sym("lambda","{}"){}
 string Lambda::head() { return "{}"; }
+
+Sym glob("env","global");
+void glob_init(){}
+void glob_dump(){
+	cout << endl<<"================== glob ===================" <<endl;
+	cout << glob.dump();
+}

@@ -2,12 +2,12 @@
 
 1*2 + +2.4+-4e+05
 
-.end
-
 TITLE	= cpp
 ABOUT	= 'PLAI/ Y script as .cpp language realization sample'
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
+.end
+
 GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+TITLE
 
 core		= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
