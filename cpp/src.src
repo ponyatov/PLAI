@@ -7,14 +7,24 @@ TITLE	= 'PLAI/ Y script as .cpp language realization sample'
 ABOUT	= ''
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
-GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE
-
-TITLE
+GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE+'/'
 
 meta.hpp = [
-	['#define' ~MODULE MODULE]/' '
-	['#define' ~ABOUT ABOUT]/' '
-]/'\n'+'\n'
+	''+['#define' ~MODULE	'"'+MODULE+'"'	]/' '
+	''+['#define' ~TITLE	'"'+TITLE+'"'	]/' '
+	''+['#define' ~ABOUT	'"'+ABOUT+'"'	]/' '
+	''+['#define' ~AUTHOR	'"'+AUTHOR+'"'	]/' '
+	''+['#define' ~LICENSE	'"'+LICENSE+'"'	]/' '
+	''+['#define' ~GITHUB	'"'+GITHUB+'"'	]/' '
+]
+
+README.md = [
+	''+[ '#' MODULE ':' TITLE ]/' '
+	''+[ '###' TITLE ]/' '
+	''+[]
+	''+[ '(c)' AUTHOR ',' LICENSE ]/' '
+	''+[ 'github:' GITHUB ]/' '
+]
 
 .end
 

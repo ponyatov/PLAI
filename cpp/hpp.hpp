@@ -58,6 +58,7 @@ struct Vector:Sym {				// [vector]
 	string head();					// dump as [] ...
 	Sym* add(Sym*);					// []+B
 	Sym* div(Sym*);					// []/B
+	Sym* str();						// [].str
 };
 
 struct Op:Sym {					// operator (and bracket)

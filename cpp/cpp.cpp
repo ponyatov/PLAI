@@ -71,6 +71,10 @@ Sym* Vector::div(Sym*o) {
 		V->push(*it); V->push(o); }
 	V->nest.pop_back(); // remove *o tail
 	return V; }
+Sym* Vector::str() { string S;
+	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
+		S += (*it)->str()->val;
+	return new Str(S); }
 
 Op::Op(string V):Sym("op",V){}
 Sym* Op::eval(Sym*env) {
