@@ -19,15 +19,18 @@ string Sym::dump(int depth) { ostringstream os;
 	return os.str(); }
 
 Sym* Sym::eval(Sym*env) {
+	if (env->lookup.count(val)) return env->lookup[val];		// env[] lookup
 	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
 		(*it) = (*it)->eval(env); // !!! warning: memory leaks
 	return this; }
 
-Sym* Sym::pfxplus()  { return new Error(" + "+head()); }
-Sym* Sym::pfxminus() { return new Error(" - "+head()); }
+Sym* Sym::pfxplus()		{ return new Error(" + "+head()); }
+Sym* Sym::pfxminus()	{ return new Error(" - "+head()); }
 
-Sym* Sym::add(Sym*o)  { return new Error(head()+" + "+o->head()); }
-Sym* Sym::mul(Sym*o)  { return new Error(head()+" * "+o->head()); }
+Sym* Sym::add(Sym*o)	{ return new Error(head()+" + "+o->head()); }
+Sym* Sym::mul(Sym*o)	{ return new Error(head()+" * "+o->head()); }
+
+Sym* Sym::str()			{ return new Str(val); }
 
 Error::Error(string V):Sym("error",V) { yyerror(V); }
 
@@ -48,6 +51,7 @@ Sym* Num::mul(Sym*o) {
 
 Str::Str(string V):Sym("str",V){}
 string Str::head() { return "'"+val+"'"; }
+Sym* Str::add(Sym*o) { return new Str(val+o->str()->val); }
 
 Vector::Vector():Sym("vector","[]"){}
 string Vector::head() { return "[]"; }

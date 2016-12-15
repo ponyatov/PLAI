@@ -24,6 +24,7 @@ struct Sym {					// algebraic data type
 	virtual Sym* pfxminus();		// -A
 	virtual Sym* add(Sym*);			// A+B
 	virtual Sym* mul(Sym*);			// A*B
+	virtual Sym* str();				// str(A) object -> string
 };
 
 extern Sym glob;				// \ global environment
@@ -47,11 +48,12 @@ struct Num:Sym {				// number/double wrap class
 struct Str:Sym {				// 'string'
 	Str(string);					// constructor
 	string head();					// dump as 'string'
+	Sym* add(Sym*);					// 'A'+B
 };
 
 struct Vector:Sym {				// [vector]
 	Vector();
-	string head();				// dump as [] ...
+	string head();					// dump as [] ...
 };
 
 struct Op:Sym {					// operator (and bracket)
@@ -61,7 +63,7 @@ struct Op:Sym {					// operator (and bracket)
 
 struct Lambda:Sym {				// {la:mbda} noname function
 	Lambda();
-	string head();				// dump as {} ...
+	string head();					// dump as {} ...
 };
 
 extern int yylex();				// regexp lexer interface

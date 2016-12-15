@@ -2,13 +2,21 @@
 
 1*2 + +2.4+-4e+05
 
-TITLE	= cpp
-ABOUT	= 'PLAI/ Y script as .cpp language realization sample'
+MODULE	= 'cpp'
+TITLE	= 'PLAI/ Y script as .cpp language realization sample'
+ABOUT	= ''
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
-.end
+GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE
 
-GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+TITLE
+TITLE
+
+meta.hpp = [
+	['#define' ~MODULE MODULE]/' '
+	['#define' ~ABOUT ABOUT]/' '
+]/'\n'
+
+.end
 
 core		= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
 vim			= [ bat.bat _vimrc vimfiles/ftdetect/Y.vim vimfiles/syntax/Y.vim ]
