@@ -116,6 +116,15 @@ void glob_dump(){
 	cout << glob.dump() <<endl<<endl;
 }
 void glob_init(){
+	// metainfo
+	glob.lookup["MODULE"]	= new Str(MODULE);
+	glob.lookup["TITLE"]	= new Str(TITLE);
+	glob.lookup["ABOUT"]	= new Str(ABOUT);
+	glob.lookup["AUTHOR"]	= new Str(AUTHOR);
+	glob.lookup["LICENSE"]	= new Str(LICENSE);
+	glob.lookup["GITHUB"]	= new Str(GITHUB);
+	glob.lookup["LOGO"]		= new Str(LOGO);
+	// file i/o
 	glob.lookup["dir"] = new Fn("dir",Dir::dir);
 }
 

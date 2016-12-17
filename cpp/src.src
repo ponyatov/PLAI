@@ -1,6 +1,16 @@
-# comment: PLAI/ Y script as .cpp language realization sample
+# comment
+
+.end
 
 1*2 + +2.4+-4e+05
+1++02.3*-04e+05
+1+2*3
+
+FN = {X:Y:X+Y}
+FN@application
+
+.end
+# Y script: Dynamic language realization sample in C++ for PLAI/
 
 MODULE	= dir@'cpp'
 TITLE	= 'Y script'
@@ -10,7 +20,6 @@ LICENSE	= 'GNU LesserGPL'
 GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE+'/'
 LOGO	= 'logo.png'
 
-##
 MODULE/meta.hpp = [
 	''+['#define' ~MODULE	'\t"'+MODULE+'"'	]/' '
 	''+['#define' ~TITLE	'\t"'+TITLE+'"'		]/' '
@@ -20,7 +29,6 @@ MODULE/meta.hpp = [
 	''+['#define' ~GITHUB	'\t"'+GITHUB+'"'	]/' '
 	''+['#define' ~LOGO		'\t"'+LOGO+'"'		]/' '
 ]/'\n'+'\n'
-##
 
 MODULE/README.md = [
 	''+[ '# ![logo]('+LOGO+')' MODULE ':' TITLE ]/' '
@@ -31,19 +39,9 @@ MODULE/README.md = [
 	''+[ 'github:' GITHUB ]/' '
 ]/'\n'+'\n'
 
-.end
-
 core		= [ ypp.ypp lpp.lpp hpp.hpp cpp.cpp Makefile ]
 vim			= [ bat.bat _vimrc vimfiles/ftdetect/Y.vim vimfiles/syntax/Y.vim ]
 files		= [ src.src log.log core vim .gitignore README.md ]
 bat.bat		= [ '@gvim' -p (core-Makefile)/' ' ]
 .gitignore	= [ '*~' '*.swp' exe.exe log.log ypp.tab.?pp lex.yy.c ]
-
-1*2 + +2.4+-4e+05
-# comment
-1++02.3*-04e+05
-1+2*3
-
-FN = {X:Y:X+Y}
-FN@application
 
