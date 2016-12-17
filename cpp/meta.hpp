@@ -4,3 +4,4 @@
 #define AUTHOR 	"Dmitry Ponyatov <dponyatov@gmail.com>"
 #define LICENSE "GNU LesserGPL"
 #define GITHUB 	"https://github.com/ponyatov/PLAI/tree/master/Y/"
+#define LOGO 	"logo.png"
