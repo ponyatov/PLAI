@@ -2,13 +2,18 @@
 #include "hpp.hpp"
 string LexString;						/* string parse buffer */
 %}
-%x lexstring
+%x lexstring comment
 %option noyywrap yylineno
 
 S [\+\-]?
 N [0-9]+
 %%
-#[^\n]*			{}						/* comment */
+#@				{BEGIN(comment);}		/* \ block comment */
+<comment>@#		{BEGIN(INITIAL);}
+<comment>\n		{}
+<comment>.		{}						/* / */
+#[^\n]*			{}						/* line comment */
+
 
 ^\.end			{yyterminate();}		/* .end directive */
 

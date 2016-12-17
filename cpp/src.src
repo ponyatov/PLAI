@@ -9,6 +9,7 @@ AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
 GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE+'/'
 
+#@
 MODULE/meta.hpp = [
 	''+['#define' ~MODULE	'\t"'+MODULE+'"'	]/' '
 	''+['#define' ~TITLE	'\t"'+TITLE+'"'		]/' '
@@ -17,6 +18,7 @@ MODULE/meta.hpp = [
 	''+['#define' ~LICENSE	'"'+LICENSE+'"'	]/' '
 	''+['#define' ~GITHUB	'\t"'+GITHUB+'"'	]/' '
 ]/'\n'+'\n'
+@#
 .end
 
 README.md = [
