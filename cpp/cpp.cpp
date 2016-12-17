@@ -34,6 +34,8 @@ Sym* Sym::div(Sym*o)	{ return new Error(head()+" / "+o->head()); }
 
 Sym* Sym::str()			{ return new Str(val); }
 
+Sym* Sym::at(Sym*o)		{ return new Error(head()+" @ "+o->head()); }
+
 Error::Error(string V):Sym("error",V) { yyerror(V); }
 
 Num::Num(string V):Sym("num",V) { val=atof(V.c_str()); }
@@ -61,6 +63,7 @@ string Str::head() { string S="'";
 	}
 	return S+"'"; }
 Sym* Str::add(Sym*o) { return new Str(val+o->str()->val); }
+Sym* Str::str() { return this; }
 
 Vector::Vector():Sym("vector","[]"){}
 string Vector::head() { return "[]"; }
@@ -77,12 +80,12 @@ Sym* Vector::str() { string S;
 	return new Str(S); }
 
 Op::Op(string V):Sym("op",V){}
+
+Sym* Sym::eq(Sym*E,Sym*V) { E->lookup[val]=V; return V; }
 Sym* Op::eval(Sym*env) {
 	if (val=="~") return nest[0]; else Sym::eval(env);
-	if (val=="=") {
-		env->lookup[nest[0]->val]=nest[1];
-		return nest[1];
-	}
+	if (val=="=") return nest[0]->eq(env,nest[1]);
+	if (val=="@") return nest[0]->at(nest[1]);
 	if (val=="+") switch (nest.size()) {
 		case 1: return nest[0]->pfxplus();
 		case 2: return nest[0]->add(nest[1]);
@@ -90,20 +93,29 @@ Sym* Op::eval(Sym*env) {
 	if (val=="-") switch (nest.size()) {
 		case 1: return nest[0]->pfxminus();
 	}
-	if (val=="*") switch (nest.size()) {
-		case 2: return nest[0]->mul(nest[1]);
-	}
-	if (val=="/") switch (nest.size()) {
-		case 2: return nest[0]->div(nest[1]);
-	}
+	if (val=="*") return nest[0]->mul(nest[1]);
+	if (val=="/") return nest[0]->div(nest[1]);
 	return this; }
 
 Lambda::Lambda():Sym("lambda","{}"){}
 string Lambda::head() { return "{}"; }
 
+Fn::Fn(string V, FN F):Sym("fn",V) { fn=F; }
+Sym* Fn::at(Sym*o) { return fn(o); }
+
+Dir::Dir(string V):Sym("dir",V) { mkdir(V.c_str()); }
+Sym* Dir::dir(Sym*o) { return new Dir(o->str()->val); }
+Sym* Dir::div(Sym*o) { return new File(val+'/'+o->str()->val); }
+
+File::File(string V):Sym("file",V) { fh= new ofstream(V); }
+Sym* File::eq(Sym*E,Sym*V) { *fh<< V->str()->val <<flush; return V; }
+
 Sym glob("env","global");
-void glob_init(){}
 void glob_dump(){
 	cout << endl<<"================== glob ===================" <<endl;
 	cout << glob.dump() <<endl<<endl;
 }
+void glob_init(){
+	glob.lookup["dir"] = new Fn("dir",Dir::dir);
+}
+
