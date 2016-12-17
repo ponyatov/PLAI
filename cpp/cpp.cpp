@@ -99,6 +99,8 @@ Sym* Op::eval(Sym*env) {
 
 Lambda::Lambda():Sym("lambda","{}"){}
 string Lambda::head() { return "{}"; }
+Sym* Lambda::eval(Sym*env) { return this; }	// block lambda.eval
+Sym* Lambda::at(Sym*o) { return this; }
 
 Fn::Fn(string V, FN F):Sym("fn",V) { fn=F; }
 Sym* Fn::at(Sym*o) { return fn(o); }

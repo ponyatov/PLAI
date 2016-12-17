@@ -82,6 +82,8 @@ struct Fn:Sym {					// internal function
 struct Lambda:Sym {				// {la:mbda} noname function
 	Lambda();
 	string head();					// dump as {} ...
+	Sym* eval(Sym*);				// block {}.eval
+	Sym* at(Sym*);					// {} @ B
 };
 
 struct Dir:Sym {				// file i/o : directory

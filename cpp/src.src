@@ -1,5 +1,8 @@
 # comment
 
+pp = {X: X+'pp'}
+pp@c
+
 .end
 
 1*2 + +2.4+-4e+05
