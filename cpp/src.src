@@ -2,9 +2,9 @@
 
 1*2 + +2.4+-4e+05
 
-MODULE	= dir@'Y'
-TITLE	= 'PLAI/ Y script as .cpp language realization sample'
-ABOUT	= ''
+MODULE	= dir@'cpp'
+TITLE	= 'Y script'
+ABOUT	= '.cpp language realization sample for PLAI/'
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
 GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE+'/'
