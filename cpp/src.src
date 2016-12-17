@@ -4,7 +4,7 @@
 
 MODULE	= dir@'cpp'
 TITLE	= 'Y script'
-ABOUT	= '.cpp language realization sample for PLAI/'
+ABOUT	= 'Dynamic language realization sample in C++ for PLAI/'
 AUTHOR	= 'Dmitry Ponyatov <dponyatov@gmail.com>'
 LICENSE	= 'GNU LesserGPL'
 GITHUB	= 'https://github.com/ponyatov/PLAI/tree/master/'+MODULE+'/'

@@ -1,6 +1,6 @@
 #define MODULE 	"cpp"
 #define TITLE 	"Y script"
-#define ABOUT 	".cpp language realization sample for PLAI/"
+#define ABOUT 	"Dynamic language realization sample in C++ for PLAI/"
 #define AUTHOR 	"Dmitry Ponyatov <dponyatov@gmail.com>"
 #define LICENSE "GNU LesserGPL"
 #define GITHUB 	"https://github.com/ponyatov/PLAI/tree/master/cpp/"

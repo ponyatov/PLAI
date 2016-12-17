@@ -1,5 +1,5 @@
 # ![logo](logo.png) cpp : Y script
-### .cpp language realization sample for PLAI/
+### Dynamic language realization sample in C++ for PLAI/
 
 (c) Dmitry Ponyatov <dponyatov@gmail.com> , GNU LesserGPL
 
