@@ -71,6 +71,7 @@ SRC += 4/p18_2.rkt 4/p18_3.rkt 4/p18_4.rkt
 TEX += 5/func.tex
 TEX += 5/1/datarepr.tex
 SRC += 5/p19_1.rkt 5/p20_2.rkt 5/p20_3.rkt 5/p21_1.rkt 5/p21_2.rkt 5/p21_3.rkt
+SRC += 5/fundef.bi
 TEX += 5/2/growing.tex
 SRC += 5/2/1.rkt 5/2/2.rkt 5/2/3.rkt
 TEX += 5/3/subst.tex

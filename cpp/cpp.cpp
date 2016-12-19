@@ -1,7 +1,9 @@
 #include "hpp.hpp"
 #define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
 void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
-int main() { glob_init(); yyparse(); glob_dump(); return 0; }
+int main() { glob_init();
+	return yyparse(); }
+//	yyparse(); glob_dump(); return 0; }
 
 Sym::Sym(string T, string V) { tag=T; val=V; }
 Sym::Sym(string V):Sym("sym",V){}
