@@ -23,6 +23,8 @@ struct Sym {					// algebraic data type
 	string pad(int);				//   tree padding
 	virtual string dump(int=0);		// / dump tree
 	virtual Sym* eval(Sym*);		// evaluate/compute any object
+	virtual Sym* copy();			// sym.copy
+	virtual Sym* subst(string,Sym*);// substitute A->B
 	virtual Sym* pfxplus();			// +A
 	virtual Sym* pfxminus();		// -A
 	virtual Sym* add(Sym*);			// A + B
@@ -31,7 +33,7 @@ struct Sym {					// algebraic data type
 	virtual Sym* div(Sym*);			// A / B
 	virtual Sym* str();				// str(A) object -> string
 	virtual Sym* eq(Sym*,Sym*);		// A = B
-	virtual Sym* at(Sym*);			// A @ B
+	virtual Sym* at(Sym*);			// A @ B in [env]
 };
 
 extern Sym glob;				// \ global environment
@@ -50,6 +52,7 @@ struct Num:Sym {				// number/double wrap class
 	Sym* pfxminus();				// - num:A
 	Sym* add(Sym*);					// num:A + ?:B
 	Sym* mul(Sym*);					// num:A * ?:B
+	Sym* copy();
 };
 
 struct Str:Sym {				// 'string'
@@ -69,7 +72,8 @@ struct Vector:Sym {				// [vector]
 
 struct Op:Sym {					// operator (and bracket)
 	Op(string);
-	Sym*eval(Sym*);					// required for basic math computing
+	Sym* eval(Sym*);				// required for basic math computing
+	Sym* copy();					// op.copy
 };
 
 typedef Sym*(*FN)(Sym*);

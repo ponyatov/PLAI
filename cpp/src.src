@@ -1,5 +1,13 @@
 # comment
 
+double = {X:X+X}
+quad = {Y: double@double@Y}
+
+double@1 # 2
+quad@2 # 8
+
+.end
+
 double = {X:X+X}	# function def as lambda -> var
 
 double@1 double@2

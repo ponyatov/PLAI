@@ -87,7 +87,7 @@ Sym* Sym::eq(Sym*E,Sym*V) { E->lookup[val]=V; return V; }
 Sym* Op::eval(Sym*env) {
 	if (val=="~") return nest[0]; else Sym::eval(env);
 	if (val=="=") return nest[0]->eq(env,nest[1]);
-	if (val=="@") return nest[0]->at(nest[1]);
+	if (val=="@") return (nest[0]->at(nest[1]))->eval(env);
 	if (val=="+") switch (nest.size()) {
 		case 1: return nest[0]->pfxplus();
 		case 2: return nest[0]->add(nest[1]);
@@ -102,7 +102,24 @@ Sym* Op::eval(Sym*env) {
 Lambda::Lambda():Sym("lambda","{}"){}
 string Lambda::head() { return "{}"; }
 Sym* Lambda::eval(Sym*env) { return this; }	// block lambda.eval
-Sym* Lambda::at(Sym*o) { return this; }
+
+Sym* Sym::copy()		{ return new Sym(tag,val); }
+Sym* Num::copy()		{ return new Num(val); }
+Sym* Op::copy()			{ return new Op(val); }
+
+Sym* Sym::subst(string A,Sym*B) { Sym*P = this->copy();
+	for (auto it=nest.begin(),e=nest.end();it!=e;it++)
+		if ((*it)->val == A)
+			P->push(B);
+		else
+			P->push((*it)->subst(A,B));
+	return P; }
+
+Sym* Lambda::at(Sym*o) { Sym*P = nest[0];
+	for (auto it=lookup.begin(),e=lookup.end();it!=e;it++) {
+		if (it->second->tag=="op" && it->second->val==":") // param marker
+			P = P->subst(it->first,o); break; } // break: only one param
+	return P; }
 
 Fn::Fn(string V, FN F):Sym("fn",V) { fn=F; }
 Sym* Fn::at(Sym*o) { return fn(o); }

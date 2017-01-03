@@ -9,7 +9,7 @@
 %type <o> ex scalar vector lambda
 
 %right EQ
-%left AT
+%right AT
 %left ADD SUB
 %left MUL DIV
 %left POW
