@@ -420,7 +420,15 @@ TEX += lic/title.tex lic/krishnamurthy.tex
 #MisspelledAnimal += 1/3/p8_1.rkt cr 1/3/p8_4.rkt cr
 #MisspelledAnimal += 1/3/p9_1.rkt cr 1/3/p9_2.rkt
 
+.PHONY: pdf
+pdf: PLAI.pdf PLEX.pdf
+
 include ../texheader/foot.mk
+
+TEX += PLEX.tex lic/titlex.tex
+
+PLEX.pdf: $(TEX) $(FIG) $(SRC)
+	$(LATEX) PLEX && makeindex PLEX && $(LATEX) PLEX
 
 #tmp/ArithC.rkt: $(ArithC) Makefile
 #	cat $(ArithC) > $@
