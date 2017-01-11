@@ -1,0 +1,7 @@
+MODULE = 'py'
+TITLE = 'py-powered bI runtime'
+
+files = [ src.src log.log py.py Makefile bat.bat ]
+touch @ files
+bat.bat = { @gvim -p files }
+
