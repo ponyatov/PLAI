@@ -1,11 +1,14 @@
 #include "hpp.hpp"
 #define YYERR "\n\n"<<yylineno<<":"<<msg<<"["<<yytext<<"]\n\n"
 void yyerror(string msg) { cout<<YYERR; cerr<<YYERR; exit(-1); }
+ofstream ram("ram.log");
 int main() { glob_init();
-	return yyparse(); }
+	ram << "==== REPL ====" << endl; return yyparse(); }
 //	yyparse(); glob_dump(); return 0; }
 
-Sym::Sym(string T, string V) { tag=T; val=V; }
+Sym::~Sym() { ram << "del " << --RAM << ' ' << head() << endl; }
+Sym::Sym(string T, string V) { tag=T; val=V;
+	ram << ++RAM << ' ' << head() << endl; }
 Sym::Sym(string V):Sym("sym",V){}
 void Sym::push(Sym*o) { nest.push_back(o); }
 
@@ -87,7 +90,7 @@ Sym* Sym::eq(Sym*E,Sym*V) { E->lookup[val]=V; return V; }
 Sym* Op::eval(Sym*env) {
 	if (val=="~") return nest[0]; else Sym::eval(env);
 	if (val=="=") return nest[0]->eq(env,nest[1]);
-	if (val=="@") return (nest[0]->at(nest[1]))->eval(env);
+//	if (val=="@") return (nest[0]->at(nest[1]))->eval(env);
 	if (val=="+") switch (nest.size()) {
 		case 1: return nest[0]->pfxplus();
 		case 2: return nest[0]->add(nest[1]);
@@ -136,7 +139,8 @@ void glob_dump(){
 	cout << endl<<"================== glob ===================" <<endl;
 	cout << glob.dump() <<endl<<endl;
 }
-void glob_init(){
+void glob_init() {
+	ram << "==== glob init ====" << endl; 
 	// metainfo
 	glob.lookup["MODULE"]	= new Str(MODULE);
 	glob.lookup["TITLE"]	= new Str(TITLE);
@@ -148,4 +152,6 @@ void glob_init(){
 	// file i/o
 	glob.lookup["dir"] = new Fn("dir",Dir::dir);
 }
+
+long RAM=0;
 

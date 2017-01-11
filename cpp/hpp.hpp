@@ -4,6 +4,7 @@
 								// standard includes: required for
 #include <iostream>					// cout/cerr
 #include <sstream>					// ostringstream in dump()s
+#include <fstream>
 #include <cstdlib>					// exit() in yyerror()
 #include <deque>					// nest[]ed elements
 #include <map>						// env[]ironments
@@ -16,6 +17,7 @@ struct Sym {					// algebraic data type
 	string val;						// V: value
 	Sym(string T, string V);		// <T:V> constructor
 	Sym(string V);					// token constructor
+	~Sym();							// destructor: required for mem manage
 	deque<Sym*> nest;				// \ nested element
 	void push(Sym*);				// / add nested element
 	map<string,Sym*> lookup;		// lookup table
@@ -35,6 +37,9 @@ struct Sym {					// algebraic data type
 	virtual Sym* eq(Sym*,Sym*);		// A = B
 	virtual Sym* at(Sym*);			// A @ B in [env]
 };
+
+extern ofstream ram;
+extern long RAM;				// RAM usage / total object count /
 
 extern Sym glob;				// \ global environment
 extern void glob_init();

@@ -18,7 +18,7 @@
 %%
 REPL : | REPL ex 			{ cout << $2->dump() << endl;
 							  cout << $2->eval(&glob)->dump() << endl;
-							  cout << "===============================\n"; } ;
+							  cout << "============ "<<RAM<<" ============\n"; } ;
 scalar : SYM | NUM | STR ;
 ex : scalar
 	| LP ex RP				{ $$=$2; }
