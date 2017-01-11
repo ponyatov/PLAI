@@ -1,3 +1,5 @@
+# python DLR test
+
 MODULE = 'py'
 TITLE = 'py-powered bI runtime'
 
