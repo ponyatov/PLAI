@@ -1,1 +1,1 @@
-@gvim -p src.src log.log py.py Makefile bat.bat 
+@gvim -c "colorscheme torte" -p src.src log.log py.py
