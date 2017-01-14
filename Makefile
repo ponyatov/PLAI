@@ -1,8 +1,14 @@
 include ../texheader/head.mk
 TEX +=../texheader/lstrkt.sty
+TEX += lic/title.tex lic/krishnamurthy.tex
+ETEX = PLEX.tex lic/titlex.tex lic/krishnamurthex.tex
+FIG += lic/cover.jpg
+EFIG += lic/coverex.jpg
 
-TEX += 1/intro.tex 1/trans.tex
-TEX += 1/1/philo.tex 1/1/meta.tex 1/2/struc.tex 1/3/lang.tex 1/4/homotree.tex
+TEX += 1/intro.tex lic/trans.tex
+ETEX += lic/trans.tex
+TEX += 1/1/philo.tex 1/2/struc.tex 1/3/lang.tex 
+ETEX += 1/1/meta.tex 1/4/homotree.tex
 TEX += 17/alter.tex
 
 SRC = 1/3/p8_1.rkt 1/3/p8_2.rkt 1/3/p8_3.rkt 1/3/p8_4.rkt
@@ -12,7 +18,7 @@ SRC += tmp/mk.mk tmp/git.ignore
 
 TEX += 2/parsing.tex 2/1/lwtparser.tex
 
-FIG = tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
+FIG += tmp/2_p10_L.pdf tmp/2_p10_R.pdf tmp/2_1.pdf
 
 FIG += tmp/1_4_files.pdf
 
@@ -32,35 +38,35 @@ SRC += 3/p14_1.rkt 3/p14_2.rkt 3/p15_2.rkt
 SRC += 2/v1.rkt 2/v2.rkt
 
 TEX += 2/5/coda.tex
+ETEX += parse/cparser.tex 
+ETEX += parse/lexer.tex sym/sym.tex
+ESRC += parse/0.src parse/minimal0.lpp parse/minimal1.lpp parse/minimal1.log
+ESRC += parse/comment.lpp parse/comment.log parse/spaces.lpp parse/spaces.log
+ESRC += parse/ops.lpp parse/ops.log parse/nums.lpp parse/nums.hpp parse/nums.log
 
-TEX += parse/cparser.tex parse/lexer.tex sym/sym.tex
-SRC += parse/0.src parse/minimal0.lpp parse/minimal1.lpp parse/minimal1.log
-SRC += parse/comment.lpp parse/comment.log parse/spaces.lpp parse/spaces.log
-SRC += parse/ops.lpp parse/ops.log parse/nums.lpp parse/nums.hpp parse/nums.log
+ESRC += arith/rc.rc arith/bat.bat arith/Makefile arith/src.src
+ESRC += parse/struc.lpp parse/floats.lpp parse/floats.log
+ESRC += arith/lpp.lpp
+ESRC += parse/string.lpp parse/string.log
 
-SRC += arith/rc.rc arith/bat.bat arith/Makefile arith/src.src
-SRC += parse/struc.lpp parse/floats.lpp parse/floats.log
-SRC += arith/lpp.lpp
-SRC += parse/string.lpp parse/string.log
+ESRC += sym/head.hpp sym/head.cpp
+ESRC += sym/constv.hpp sym/constv.cpp sym/constoc.hpp   
+ESRC += sym/dump.hpp sym/dump.cpp sym/nest.hpp
+ESRC += sym/dumptree.hpp sym/dumptree.cpp
 
-SRC += sym/head.hpp sym/head.cpp
-SRC += sym/constv.hpp sym/constv.cpp sym/constoc.hpp   
-SRC += sym/dump.hpp sym/dump.cpp sym/nest.hpp
-SRC += sym/dumptree.hpp sym/dumptree.cpp
+ETEX += sym/num.tex sym/wrap.tex
+ESRC += sym/num.hpp sym/num.cpp parse/num.lpp
 
-TEX += sym/num.tex sym/wrap.tex
-SRC += sym/num.hpp sym/num.cpp parse/num.lpp
+ETEX += parse/parser.tex parse/repl.tex
+ESRC += parse/struc.ypp parse/0.ypp parse/0y.log 
+ESRC += parse/repl0.ypp parse/repl0.log
 
-TEX += parse/parser.tex parse/repl.tex
-SRC += parse/struc.ypp parse/0.ypp parse/0y.log 
-SRC += parse/repl0.ypp parse/repl0.log
+ETEX += parse/lexyacc.tex
+ESRC += parse/union.ypp
 
-TEX += parse/lexyacc.tex
-SRC += parse/union.ypp
+ESRC += parse/lexyacc.ypp parse/lexyacc.lpp parse/lexyacc.hpp parse/lexyacc.cpp
 
-SRC += parse/lexyacc.ypp parse/lexyacc.lpp parse/lexyacc.hpp parse/lexyacc.cpp
-
-TEX += parse/final.tex 
+ETEX += parse/final.tex 
 
 TEX += 3/interp.tex 3/1/repr.tex 3/2/interp.tex 3/3/notice.tex 3/4/growing.tex
 
@@ -414,20 +420,19 @@ SRC += 17/2/3/1.rkt 17/2/3/2.rkt
 TEX += 17/2/4/trans.tex
 SRC += 17/2/4/1.rkt 17/2/4/2.rkt 17/2/4/3.rkt 17/2/4/4.rkt 
 
-TEX += lic/title.tex lic/krishnamurthy.tex
-  
 #MisspelledAnimal = plai.rkt cr
 #MisspelledAnimal += 1/3/p8_1.rkt cr 1/3/p8_4.rkt cr
 #MisspelledAnimal += 1/3/p9_1.rkt cr 1/3/p9_2.rkt
+
+ETEX += core/DLR.tex
+ETEX += core/cpp/cpp.tex core/py/py.tex core/java/java.tex core/ecma/ecma.tex
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf
 
 include ../texheader/foot.mk
 
-TEX += PLEX.tex lic/titlex.tex
-
-PLEX.pdf: $(TEX) $(FIG) $(SRC)
+PLEX.pdf: $(ETEX) $(EFIG) $(ESRC)
 	$(LATEX) PLEX && makeindex PLEX && $(LATEX) PLEX
 
 #tmp/ArithC.rkt: $(ArithC) Makefile

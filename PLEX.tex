@@ -1,7 +1,7 @@
 \input{../texheader/ebook}
 
-\title{PLAI: Programming Languages: Application and Interpretation}
-\author{\copyright\ Shriram Krishnamurthy}
+\title{PLEX: Programming Languages: EXtensions}
+\author{\copyright\ Dmitry Ponyatov \email{dponyatov@gmail.com}}
 
 % \usepackage{../texheader/lstrkt}\lstdefinestyle{rkt}{language=rkt}
 % 
@@ -16,26 +16,30 @@
 % 		\item{\textcolor{red}{Сделайте\,!}}\\#1
 % 	\end{description}
 % }
-% 
-% % first titlepage fix:
-% %http://tex.stackexchange.com/questions/140168/how-to-remove-a-blank-page-before-the-title-page
-% \usepackage{atbegshi}
-% \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
-% 
+
+% first titlepage fix:
+%http://tex.stackexchange.com/questions/140168/how-to-remove-a-blank-page-before-the-title-page
+\usepackage{atbegshi}
+\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+
 % \newcommand{\bi}{$bI$}
 % \newcommand{\hm}{$H_m$}
 
 \begin{document}
 \input{lic/titlex}
-\tableofcontents
-% \secdown
-% 
-% \input{1/intro}
-% \input{2/parsing}
-% % \input{parse/cparser}
-% \input{3/interp}
-% \input{4/desugaring}
-% 
+\tableofcontents%\secdown
+ 
+\secrel{Введение}\secdown
+\input{lic/krishnamurthex}
+\clearpage
+\input{lic/trans}
+\clearpage
+\secup
+
+\input{core/DLR}
+
+\input{1/1/meta}
+
 % % \input{5/func}
 % % \input{6/env}
 % % \input{7/fnanyw}
