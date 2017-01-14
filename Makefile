@@ -425,7 +425,11 @@ SRC += 17/2/4/1.rkt 17/2/4/2.rkt 17/2/4/3.rkt 17/2/4/4.rkt
 #MisspelledAnimal += 1/3/p9_1.rkt cr 1/3/p9_2.rkt
 
 ETEX += core/DLR.tex
-ETEX += core/cpp/cpp.tex core/py/py.tex core/java/java.tex core/ecma/ecma.tex
+ETEX += core/cpp/cpp.tex core/java/java.tex core/ecma/ecma.tex
+
+ETEX += core/py/py.tex core/py/sym.tex
+ESRC += core/py/sym.py core/py/sym01.py core/py/sym02.py core/py/sym03.py
+ESRC += core/py/sym04.py
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf
