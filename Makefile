@@ -427,9 +427,9 @@ SRC += 17/2/4/1.rkt 17/2/4/2.rkt 17/2/4/3.rkt 17/2/4/4.rkt
 ETEX += core/DLR.tex
 ETEX += core/cpp/cpp.tex core/java/java.tex core/ecma/ecma.tex
 
-ETEX += core/py/py.tex core/py/sym.tex
-ESRC += core/py/sym.py core/py/sym01.py core/py/sym02.py core/py/sym03.py
-ESRC += core/py/sym04.py
+ETEX += core/py/py.tex core/py/sym.tex core/py/ply.tex
+ESRC += core/py/sym01.py core/py/sym02.py core/py/sym03.py core/py/sym04.py
+ESRC += core/py/sym05.py core/py/sym06.py
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf

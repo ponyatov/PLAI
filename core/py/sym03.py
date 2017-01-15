@@ -1,1 +1,1 @@
-#     tag = self.__class__.__name__
+    tag = 'sym' # self.__class__.__name__
