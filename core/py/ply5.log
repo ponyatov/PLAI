@@ -1,0 +1,9 @@
+comment: LexToken(COMMENT,'# python DLR test',1,0)
+error: LexToken(error,"\n\nMODULE = 'py'\nTIT...
+
+Traceback (most recent call last):
+  File "D:\w\PLAI\core\py\plytest.py", line 20, in <module>
+    for i in iter(lexer.token,None): pass
+  File "C:\Python\lib\site-packages\ply-3.9-py2.7.egg\ply\lex.py", line 389, in token
+    raise LexError("Scanning error. Illegal character '%s'" % (lexdata[lexpos]), lexdata[lexpos:])
+ply.lex.LexError: Scanning error. Illegal character '\n'

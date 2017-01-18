@@ -1,1 +1,138 @@
-\secrel{парсер: PLY}
+\secrel{парсер: PLY}\secdown
+
+PLY\ --- реализация средства построения парсеров lex/yacc для \py:
+\url{http://www.dabeaz.com/ply/}
+
+\bigskip
+\begin{itemize}[nosep]
+  \item 
+  полностью реализован на \py
+  \item 
+  использует LR-разбор, который достаточно эффективен и хорошо приспособен для
+  больших грамматик
+  \item 
+  PLY предоставляет большинство фич lex/yacc включая поддержку пустых продукций,
+  правил приоритета, восстановления после ошибок, и поддержку неоднозначных
+  грамматик
+  \item
+  PLY прост в использовании и обеспечивает \emph{очень} обширную проверку
+  ошибок
+  \item 
+  PLY doesn't try to do anything more or less than provide the basic lex/yacc
+  functionality.
+  \ru{PLY не пытается предоставить что-то большее или меньшее чем базовый
+  набор lex/yacc.}
+  In other words, it's not a large parsing framework or a
+  component of some larger system.
+  \ru{Другими словами, это не большой парсер-фреймворк или компонент какой-то
+  более крупной системы.}
+\end{itemize}
+
+\begin{itemize}
+  \item 
+\href{https://habrahabr.ru/post/191252/}{Хабрахабр: Разбор кода и построение
+синтаксических деревьев с PLY.
+Основы}
+  \item 
+\href{http://www.dalkescientific.com/writings/NBN/parsing_with_ply.html}{Parsing
+with PLY \copyright\ Andrew Dalke}
+\end{itemize}
+
+\clearpage
+\secrel{Установка модуля}
+
+\begin{enumerate}
+  \item
+  качаем последнюю версию \file{PLY-x.y.tar.gz} c оф.сайта
+  \url{http://www.dabeaz.com/ply/}
+  \item
+  распаковываем архив в каталог \var{ply-x.y}
+  \item
+  заходим в полученный каталог из командной строки, и запускаем\\
+  \verb|python setup.py install|
+  \item для использования PLY в вашей программе подключите два модуля:
+\begin{verbatim}
+import ply.lex as lex
+import ply.yacc as yacc  
+\end{verbatim}
+\end{enumerate}
+
+\clearpage
+\secrel{Лексер}
+
+\termdef{Лексер}{лексер}\ --- компонент парсера\note{или компилятора}, который
+\emph{группирует буквы} текста программы\note{файла данных в ASCII формате, или
+потока интернет-протокола} в \emph{базовые элементы языка} программирования, на
+котором она написана: \termdef{лексемы}{лексема} или
+\termdef{т\'{о}кены}{токен}. Для разбора текста на токены традиционно
+используются \termdef{регулярные выражения}.
+
+\lstx{\file{lexer.py}: подключение модулей PLY}{core/py/ply0.py}{Python} 
+
+\pagebreak
+Возьмем пример программы на \bi\ script и напишем для нее парсер:
+\lstt{\file{sample\_1.src}}{core/py/1.src} 
+\pagebreak
+
+Для разбора текста на токены в PLY имеется модуль \class{ply.lex}.
+Он очень придирчив к нашему коду, так как использует средства
+\term{интроспекции}: выделяет данные для своей работы из текста программы на
+\py. В частности, PLY требует обязательного присутствия массива с именем
+\var{tokens}. Для каждого элемента этого массива мы обязаны иметь в коде
+регулярку\note{или функцию} с именем \class{t\_<токен>}.
+
+\lstx{\file{lexer.py}: обязательный список токенов}{core/py/ply1.py}{Python} 
+
+\clearpage
+Токен мы можем задать как просто регулярное выражение
+\lstx{\file{lexer.py}: символ}{core/py/ply2.py}{Python} 
+или выполнить дополнительную обработку выделенного токена, используя функцию
+\emph{c регуляркой заданной через \term{docstring}}:
+\lstx{\file{lexer.py}: комментарий}{core/py/ply3.py}{Python} 
+
+\clearpage
+И наконец, для лексера нам обязательно нужна callback-функция обработчика
+ошибок. Обратите внимание, что в ней используется функционал восстановления
+после ошибок: ошибочный токен пропускается, и лексический анализ продолжается. 
+\lstx{\file{lexer.py}: error-callback}{core/py/ply4.py}{Python}
+
+\clearpage
+Временно отключаем коррекцию ошибок, создаем лексер, и получаем ошибку:
+
+\lstx{\file{lexer.py}: лексер}{core/py/ply5.py}{Python}
+\clearpage
+\lstt{\file{lexer.py}: лексер}{core/py/ply5.log}
+
+Наш лексер должен игнорировать пробельные символы:
+\lstx{\file{lexer.py}: игнорируем пробелы}{core/py/ply6.py}{Python}
+
+Операторы можно задать группой\note{обратите внимание на экранирующий символ
+\textbackslash\ перед символами, имеющими в regexp специальное значение}:
+\lstx{\file{lexer.py}: операторы}{core/py/ply7.py}{Python}
+
+\clearpage
+\lstt{\file{lexer.py}: встречено начало 'строки'}{core/py/ply7.log}
+\term{Разбор строк}\ --- немного сложная тема при написании лексера. Проще всего
+это делается через использование \term{состояний}: при встрече символа начала
+строки (кавычки) \emph{таблица регулярных выражений переключается} на другую.
+Может быть два типа состояний:
+
+\begin{description}
+\item[exclusive] общих токенов \emph{не видно}\ --- это те, которые мы писали до
+этого, они по умолчанию находятся в базовом состоянии INITIAL.
+Чтобы сделать токен общим мы должны присвоить ему префикс \verb|t_ANY_<token>|. 
+\item[inclusive] видны общие токены, и в текущем состоянии мы \emph{добавляем} к
+ним дополнительные, с префиксом \verb|t_<state>_<token>|.
+\end{description}
+
+\clearpage
+Также для каждого состояния обязательно должны быть заданы
+\begin{itemize}
+  \item 
+ шаблон игнорирования \verb|t_state_ignore| и
+  \item 
+ callback обработчика ошибок \verb|t_state_error(dat)|\\
+ или общий обработчик \verb|t_ANY_error(dat)|
+\end{itemize}
+ 
+\secup

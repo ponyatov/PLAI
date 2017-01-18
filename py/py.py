@@ -1,4 +1,6 @@
 import sys
+import ply.lex as lex
+import ply.yacc as yacc
 
 src = open('src.src','r')
 log = sys.stdout # open('log.log','w')
@@ -29,9 +31,15 @@ class Sym:
 
 #print >>log,src.read()
 
-add = Sym('+')
-symbol = Sym('symbol')
-symbol.push(add)
-symbol.sel['info'] = Sym('demo')
-print >>log,symbol
-print >>log,symbol.nest[0]
+# add = Sym('+')
+# symbol = Sym('symbol')
+# symbol.push(add)
+# symbol.sel['info'] = Sym('demo')
+# print >>log,symbol
+# print >>log,symbol.nest[0]
+
+tokens = [ 'SYM' ]
+
+t_SYM = r'[a-zA-Z0-9_]+'
+
+lexer = lex.lex()
