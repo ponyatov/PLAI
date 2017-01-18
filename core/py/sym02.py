@@ -1,1 +1,1 @@
-    val = ''
+#    val = '' # init by constructor, must be nonstatic
