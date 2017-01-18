@@ -1,8 +1,3 @@
-import sys
-
-src = open('src.src','r')
-log = sys.stdout # open('log.log','w')
-
 class Sym:
     val = ''
     tag = 'sym'
@@ -17,6 +12,4 @@ class Sym:
         for i in self.nest: S += i.dump(depth + 1)
         return S
 
-#print >>log,src.read()
-
-print >>log,Sym('symbol').push(Sym('+'))
+print Sym('symbol').push(Sym('+')).nest[0]
