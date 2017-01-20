@@ -10,5 +10,4 @@ touch @ files
 bat.bat = { @gvim -p files }
 
 #-01++2.3*-04.5e+06 & 0xDEADBEEF
-
 'xxa'

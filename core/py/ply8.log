@@ -1,0 +1,8 @@
+LexToken(SYM,'gvim',1,150)
+LexToken(OP,'-',1,155)
+LexToken(SYM,'p',1,156)
+LexToken(SYM,'files',1,158)
+LexToken(OP,'}',1,164)
+comment: LexToken(COMMENT,'#-01++2.3*-04.5e+06 & 0xDEADBEEF',1,167)
+LexToken(COMMENT,'#-01++2.3*-04.5e+06 & 0xDEADBEEF',1,167)
+LexToken(STR,'xxa',1,204)

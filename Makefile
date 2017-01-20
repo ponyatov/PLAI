@@ -435,7 +435,8 @@ ESRC += core/py/sym08a.py core/py/sym08b.py core/py/sym08.log
 ETEX += core/py/ply.tex
 ESRC += core/py/1.src core/py/ply0.py core/py/ply1.py core/py/ply2.py
 ESRC += core/py/ply3.py core/py/ply4.py core/py/ply5.py core/py/ply5.log
-ESRC += core/py/ply6.py core/py/ply7.py core/py/ply7.log 
+ESRC += core/py/ply6.py core/py/ply7.py core/py/ply7.log
+ESRC += core/py/ply8a.py core/py/ply8b.py core/py/ply8c.py
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf

@@ -119,8 +119,9 @@ import ply.yacc as yacc
 
 \begin{description}
 \item[exclusive] общих токенов \emph{не видно}\ --- это те, которые мы писали до
-этого, они по умолчанию находятся в базовом состоянии INITIAL.
-Чтобы сделать токен общим мы должны присвоить ему префикс \verb|t_ANY_<token>|. 
+этого, они по умолчанию находятся в базовом состоянии INITIAL.\\
+Чтобы сделать токен видимым везде, мы должны присвоить ему префикс
+\verb|t_ANY_<token>|.
 \item[inclusive] видны общие токены, и в текущем состоянии мы \emph{добавляем} к
 ним дополнительные, с префиксом \verb|t_<state>_<token>|.
 \end{description}
@@ -131,8 +132,17 @@ import ply.yacc as yacc
   \item 
  шаблон игнорирования \verb|t_state_ignore| и
   \item 
- callback обработчика ошибок \verb|t_state_error(dat)|\\
- или общий обработчик \verb|t_ANY_error(dat)|
+ callback обработчика ошибок \verb|t_state_error(tok)|\\
+ или общий обработчик \verb|t_ANY_error(tok)|
 \end{itemize}
+\lstx{\file{lexer.py}: разбор строк через состояние
+\var{string}}{core/py/ply8a.py}{Python}
+\clearpage
+\lstt{\file{lexer.py}: разбор строк через состояние
+\var{string}}{core/py/ply8b.py}
+\lstx{\file{lexer.py}: разбор строк через состояние
+\var{string}}{core/py/ply8c.py}{Python}
+\lstt{\file{lexer.log}: разбор строк через состояние
+\var{string}}{core/py/ply8.log}
  
 \secup

@@ -1,7 +1,8 @@
-import ply.lex as lex
+import ply.lex  as lex
 import ply.yacc as yacc
 
-tokens = [ 'SYM' , 'NUM', 'DIR', 'COMMENT' , 'OP' , 'CHAR' , 'STR' ]
+tokens = [ 'SYM' , 'NUM', 'DIR', 'COMMENT' , 'OP' ,
+          'STR','CHAR' ]
 
 t_SYM = r'[a-zA-Z0-9_]+'    # symbol
 
@@ -18,29 +19,32 @@ t_ignore = ' \t\r\n'        # ignore spaces
 
 states = [('string','exclusive')]
 
-lexstring=''
-def t_ANY_TICK(tok):
-    r'\''
-    global lexstring
-    if tok.lexer.current_state() == 'string':
-        tok.lexer.begin('INITIAL')
-        tok.value=lexstring
-        return tok
-    else:
-        tok.lexer.begin('string')
-        lexstring=''
-        return None
+t_string_ignore = '' # must be defined for every state
 
-def t_string_CHAR(tok):
+lexstring = ''      # global buffer for parsed string
+
+def t_STR(tok):             # will be called in <INITIAL>
+    r'\''
+    tok.lexer.begin('string')   # trigger state
+    global lexstring            # \ clar buffer
+    lexstring = ''              # / 
+    return None                 # drop token
+
+def t_string_STR(tok):      # will be called in <string>
+    r'\''
+    tok.lexer.begin('INITIAL')  # trigger state
+    global lexstring            # \ return buffer
+    tok.value = lexstring       
+    return tok                  # / in token
+
+def t_string_CHAR(tok):     # add any char to lexstring
     r'.'
     global lexstring
     lexstring += tok.value
     
-t_string_ignore = ''    # must be defined
-
 def t_ANY_error(tok):       # error callback
     print 'error:', tok # report
-#     dat.lexer.skip(1)   # error recovery
+#     tok.lexer.skip(1)   # error recovery
 
 lexer = lex.lex()
 lexer.input(file('1.src').read())
