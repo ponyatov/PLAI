@@ -128,21 +128,49 @@ import ply.yacc as yacc
 
 \clearpage
 Также для каждого состояния обязательно должны быть заданы
-\begin{itemize}
+\begin{itemize}[nosep]
   \item 
  шаблон игнорирования \verb|t_state_ignore| и
   \item 
  callback обработчика ошибок \verb|t_state_error(tok)|\\
  или общий обработчик \verb|t_ANY_error(tok)|
 \end{itemize}
+\emph{Будьте осторожны с порядком определений токенов: он учитывается при
+разборе.} Если поставить \verb|t_string_CHAR| выше \verb|t_string_STR|,
+возникает ошибка, так как CHAR поглощает закрывающую кавычку.
 \lstx{\file{lexer.py}: разбор строк через состояние
 \var{string}}{core/py/ply8a.py}{Python}
-\clearpage
 \lstt{\file{lexer.py}: разбор строк через состояние
 \var{string}}{core/py/ply8b.py}
 \lstx{\file{lexer.py}: разбор строк через состояние
 \var{string}}{core/py/ply8c.py}{Python}
 \lstt{\file{lexer.log}: разбор строк через состояние
 \var{string}}{core/py/ply8.log}
+
+\clearpage
+И наконец, нам нужен разбор чисел нескольких видов: целые, дробные и bin/hex.
+При попытке разбора чисел возникает проблема: начало числа распознается как
+\class{SYM}, а идущая следом точка вызывает ошибку. Это связано с
+\href{http://www.dabeaz.com/ply/ply.html#ply_nn6}{приоритетом
+разбора токенов}.
+
+При определении регулярных выражений для токенов правила разбора добавляются в
+следующем порядке:
+\begin{enumerate}
+  \item 
+  все токены определенные через функции добавляются \emph{в порядке описания в
+  файле исходного кода}
+  \item
+  токены определенные через строки \emph{в порядке уменьшения длины regexp}
+  (раньше идут более длиные регулярки)
+\end{enumerate}
+
+Сортировка в порядке уменьшения длины решает проблему типа распознавания
+\verb|==| как двух \verb|=|, но если вам нужен полный контроль порядка,
+необходимо задавать проблемные или все регулярки \emph{как функции}.
+\lstx{\file{lexer.py}: числа}{core/py/ply9a.py}{Python}
+\lstx{\file{lexer.py}: числа}{core/py/ply9b.py}{Python}
+\lstx{\file{lexer.py}: числа}{core/py/ply9bb.py}{Python}
+\lstx{\file{lexer.py}: числа}{core/py/ply9c.py}{Python}
  
 \secup

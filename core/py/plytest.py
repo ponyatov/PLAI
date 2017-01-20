@@ -1,17 +1,37 @@
 import ply.lex  as lex
 import ply.yacc as yacc
 
-tokens = [ 'SYM' , 'NUM', 'DIR', 'COMMENT' , 'OP' ,
+tokens = ['INT' , 'NUM' , 'EXP' , 'BIN' , 'HEX' ,
+          'SYM' , 'DIR', 'COMMENT' , 'OP' ,
           'STR','CHAR' ]
 
-t_SYM = r'[a-zA-Z0-9_]+'    # symbol
+def t_BIN(tok):             # binary string
+    r'0b[01]+'
+    tok.value = int(tok.value,2)
+    return tok 
+def t_HEX(tok):             # hexadeciman number
+    r'0x[0-9a-fA-F]+'
+    tok.value = int(tok.value,16)
+    return tok 
+def t_EXP(tok):             # number exponential form
+    r'[0-9]+(\.[0-9]+)?[eE][\+\-]?[0-9]+'
+    tok.value = float(tok.value)
+    return tok
+def t_NUM(tok):             # number point form
+    r'[0-9]+\.[0-9]*'
+    tok.value = float(tok.value)
+    return tok
+    
+def t_SYM(tok):             # symbol
+    r'[a-zA-Z0-9_]+'
+    return tok
 
 def t_COMMENT(tok):
     r'\#[^\n]+'
     print 'comment:', tok
     return tok
 
-t_OP = r'[=@\+\-\*\/\^\[\]\{\}]'
+t_OP = r'[=@\+\-\*\/\^\[\]\{\}&]'
 
 t_DIR = r'\.[a-z]+'        # directive
 
