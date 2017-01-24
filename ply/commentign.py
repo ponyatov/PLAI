@@ -1,0 +1,1 @@
+t_ignore_COMMENT = r'\#.*'

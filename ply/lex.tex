@@ -133,7 +133,39 @@ need to store multiple values on a token, assign a tuple, dictionary, or
 instance to value.
 
 \secrel{Discarded tokens}
+
+To discard a token, such as a comment, simply define a token rule that returns
+no value. For example:
+\lstx{comment token}{ply/comment.py}{Python}
+Alternatively, you can include the prefix \verb|ignore_| in the token
+declaration to force a token to be ignored. For example:
+\lstx{ignore\_comment}{ply/commentign.py}{Python}
+Be advised that if you are ignoring many different kinds of text, you may still
+want to use functions since these provide more precise control over the order in
+which regular expressions are matched (i.e., functions are matched in order of
+specification whereas strings are sorted by regular expression length).
+
 \secrel{Line numbers and positional information}
+
+By default, lex.py knows nothing about line numbers. This is because lex.py
+doesn't know anything about what constitutes a "line" of input (e.g., the
+newline character or even if the input is textual data). To update this
+information, you need to write a special rule. In the example, the
+\verb|t_newline()| rule shows how to do this.
+\lstx{track line numbers}{ply/newline.py}{Python}
+Within the rule, the lineno attribute of the underlying lexer t.lexer is
+updated. After the line number is updated, the token is simply discarded since
+nothing is returned.
+
+lex.py does not perform and kind of automatic column tracking. However, it does
+record positional information related to each token in the lexpos attribute.
+Using this, it is usually possible to compute column information as a separate
+step. For instance, just count backwards until you reach a newline.
+\lstx{compute column}{ply/column.py}{Python}
+Since column information is often only useful in the context of error handling,
+calculating the column position can be performed when needed as opposed to doing
+it for each token.
+
 \secrel{Ignored characters}
 \secrel{Literal characters}
 \secrel{Error handling}
