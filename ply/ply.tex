@@ -10,86 +10,11 @@ with PLY.
 PLY-3.5 is compatible with both \py 2 and \py 3. If you are using \py 2, you
 have to use \py\ 2.6 or newer.
 
-\secrel{Introduction}
+\input{ply/intro}
+\input{ply/overview}
+\input{ply/lex}
+\input{ply/parse}
 
-PLY is a pure-\py implementation of the popular compiler construction tools
-\lex\ and \yacc. The main goal of PLY is to stay fairly faithful to the way in
-which traditional \prog{lex}/\prog{yacc} tools work. This includes supporting
-LALR(1) parsing as well as providing extensive input validation, error
-reporting, and diagnostics. Thus, if you've used yacc in another programming
-language, it should be relatively straightforward to use PLY.
-
-Early versions of PLY were developed to support an Introduction to Compilers
-Course I taught in 2001 at the University of Chicago. Since PLY was primarily
-developed as an instructional tool, you will find it to be fairly picky about
-token and grammar rule specification. In part, this added formality is meant to
-catch common programming mistakes made by novice users. However, advanced users
-will also find such features to be useful when building complicated grammars for
-real programming languages. It should also be noted that PLY does not provide
-much in the way of bells and whistles (e.g., automatic construction of abstract
-syntax trees, tree traversal, etc.). Nor would I consider it to be a parsing
-framework. Instead, you will find a bare-bones, yet fully capable lex/yacc
-implementation written entirely in \py.
-
-The rest of this document assumes that you are somewhat familiar with parsing
-theory, syntax directed translation, and the use of compiler construction tools
-such as lex and yacc in other programming languages. If you are unfamiliar with
-these topics, you will probably want to consult an introductory text such as
-"Compilers: Principles, Techniques, and Tools", by Aho, Sethi, and Ullman.
-O'Reilly's "Lex and Yacc" by John Levine may also be handy. In fact, the
-O'Reilly book can be used as a reference for PLY as the concepts are virtually
-identical.
-
-\secrel{PLY Overview}
-\secrel{Lex}\secdown
-\secrel{Lex Example}
-\secrel{The tokens list}
-\secrel{Specification of tokens}
-\secrel{Token values}
-\secrel{Discarded tokens}
-\secrel{Line numbers and positional information}
-\secrel{Ignored characters}
-\secrel{Literal characters}
-\secrel{Error handling}
-\secrel{EOF Handling}
-\secrel{Building and using the lexer}
-\secrel{The @TOKEN decorator}
-\secrel{Optimized mode}
-\secrel{Debugging}
-\secrel{Alternative specification of lexers}
-\secrel{Maintaining state}
-\secrel{Lexer cloning}
-\secrel{Internal lexer state}
-\secrel{Conditional lexing and start conditions}
-\secrel{Miscellaneous Issues}
-\secup
-\secrel{Parsing basics}
-\secrel{Yacc}\secdown
-\secrel{An example}
-\secrel{Combining Grammar Rule Functions}
-\secrel{Character Literals}
-\secrel{Empty Productions}
-\secrel{Changing the starting symbol}
-\secrel{Dealing With Ambiguous Grammars}
-\secrel{The parser.out file}
-\secrel{Syntax Error Handling}\secdown
-\secrel{Recovery and resynchronization with error rules}
-\secrel{Panic mode recovery}
-\secrel{Signalling an error from a production}
-\secrel{When Do Syntax Errors Get Reported}
-\secrel{General comments on error handling}
-\secup
-\secrel{Line Number and Position Tracking}
-\secrel{AST Construction}
-\secrel{Embedded Actions}
-\secrel{Miscellaneous Yacc Notes}
-\secup
-\secrel{Multiple Parsers and Lexers}
-\secrel{Using Python's Optimized Mode}
-\secrel{Advanced Debugging}\secdown
-\secrel{Debugging the lex() and yacc() commands}
-\secrel{Run-time Debugging}
-\secup
 \secrel{Packaging Advice}
 \secrel{Where to go from here\,?}
 \secup

@@ -1,0 +1,11 @@
+$ python example.py
+LexToken(NUMBER,3,2,1)
+LexToken(PLUS,'+',2,3)
+LexToken(NUMBER,4,2,5)
+LexToken(TIMES,'*',2,7)
+LexToken(NUMBER,10,2,10)
+LexToken(PLUS,'+',3,14)
+LexToken(MINUS,'-',3,16)
+LexToken(NUMBER,20,3,18)
+LexToken(TIMES,'*',3,20)
+LexToken(NUMBER,2,3,21)

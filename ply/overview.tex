@@ -1,0 +1,32 @@
+\secrel{PLY Overview}
+
+PLY consists of two separate modules; lex.py and yacc.py, both of which are
+found in a Python package called ply. The lex.py module is used to break input
+text into a collection of tokens specified by a collection of regular expression
+rules. yacc.py is used to recognize language syntax that has been specified in
+the form of a context free grammar.
+
+The two tools are meant to work together. Specifically, lex.py provides an
+external interface in the form of a token() function that returns the next valid
+token on the input stream. yacc.py calls this repeatedly to retrieve tokens and
+invoke grammar rules. The output of yacc.py is often an Abstract Syntax Tree
+(AST). However, this is entirely up to the user. If desired, yacc.py can also be
+used to implement simple one-pass compilers.
+
+Like its Unix counterpart, yacc.py provides most of the features you expect
+including extensive error checking, grammar validation, support for empty
+productions, error tokens, and ambiguity resolution via precedence rules. In
+fact, almost everything that is possible in traditional yacc should be supported
+in PLY.
+
+The primary difference between yacc.py and Unix yacc is that yacc.py doesn't
+involve a separate code-generation process. Instead, PLY relies on reflection
+(introspection) to build its lexers and parsers. Unlike traditional lex/yacc
+which require a special input file that is converted into a separate source
+file, the specifications given to PLY are valid Python programs. This means that
+there are no extra source files nor is there a special compiler construction
+step (e.g., running yacc to generate Python code for the compiler). Since the
+generation of the parsing tables is relatively expensive, PLY caches the results
+and saves them to a file. If no changes are detected in the input source, the
+tables are read from the cache. Otherwise, they are regenerated.
+

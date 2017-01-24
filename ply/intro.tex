@@ -1,0 +1,29 @@
+\secrel{Introduction}
+
+PLY is a pure-\py implementation of the popular compiler construction tools
+\lex\ and \yacc. The main goal of PLY is to stay fairly faithful to the way in
+which traditional \prog{lex}/\prog{yacc} tools work. This includes supporting
+LALR(1) parsing as well as providing extensive input validation, error
+reporting, and diagnostics. Thus, if you've used yacc in another programming
+language, it should be relatively straightforward to use PLY.
+
+Early versions of PLY were developed to support an Introduction to Compilers
+Course I taught in 2001 at the University of Chicago. Since PLY was primarily
+developed as an instructional tool, you will find it to be fairly picky about
+token and grammar rule specification. In part, this added formality is meant to
+catch common programming mistakes made by novice users. However, advanced users
+will also find such features to be useful when building complicated grammars for
+real programming languages. It should also be noted that PLY does not provide
+much in the way of bells and whistles (e.g., automatic construction of abstract
+syntax trees, tree traversal, etc.). Nor would I consider it to be a parsing
+framework. Instead, you will find a bare-bones, yet fully capable lex/yacc
+implementation written entirely in \py.
+
+The rest of this document assumes that you are somewhat familiar with parsing
+theory, syntax directed translation, and the use of compiler construction tools
+such as lex and yacc in other programming languages. If you are unfamiliar with
+these topics, you will probably want to consult an introductory text such as
+"Compilers: Principles, Techniques, and Tools", by Aho, Sethi, and Ullman.
+O'Reilly's "Lex and Yacc" by John Levine may also be handy. In fact, the
+O'Reilly book can be used as a reference for PLY as the concepts are virtually
+identical.

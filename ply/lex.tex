@@ -1,0 +1,69 @@
+\secrel{Lex}\secdown
+
+lex.py is used to tokenize an input string. For example, suppose you're writing
+a programming language and a user supplied the following input string:
+\begin{verbatim}
+x = 3 + 42 * (s - t)
+\end{verbatim}
+A tokenizer splits the string into individual tokens
+\begin{verbatim}
+'x','=', '3', '+', '42', '*', '(', 's', '-', 't', ')'
+\end{verbatim}
+Tokens are usually given names to indicate what they are. For example:
+\begin{verbatim}
+'ID','EQUALS','NUMBER','PLUS','NUMBER','TIMES',
+'LPAREN','ID','MINUS','ID','RPAREN'
+\end{verbatim}
+More specifically, the input is broken into pairs of token types and values. For
+example:
+\begin{verbatim}
+('ID','x'), ('EQUALS','='), ('NUMBER','3'), 
+('PLUS','+'), ('NUMBER','42), ('TIMES','*'),
+('LPAREN','('), ('ID','s'), ('MINUS','-'),
+('ID','t'), ('RPAREN',')'
+\end{verbatim}
+The identification of tokens is typically done by writing a series of regular
+expression rules. The next section shows how this is done using lex.py.
+
+\secrel{Lex Example}
+
+The following example shows how lex.py is used to write a simple tokenizer.
+\lstt{\file{calclex.py}}{ply/calclex.py}
+To use the lexer, you first need to feed it some input text using its input()
+method. After that, repeated calls to token() produce tokens. The following code
+shows how this works:
+\lstt{\file{calclex.py}}{ply/calclex_test.py}
+When executed, the example will produce the following output:
+\lstt{\file{calclex.py}}{ply/calclex.log}
+Lexers also support the iteration protocol. So, you can write the above loop as
+follows:
+\lstx{iteration}{ply/iter.py}{Python}
+The tokens returned by lexer.token() are instances of LexToken. This object has
+attributes tok.type, tok.value, tok.lineno, and tok.lexpos. The following code
+shows an example of accessing these attributes:
+\lstx{tokenize}{ply/tokenize.py}{Python}
+The tok.type and tok.value attributes contain the type and value of the token
+itself. tok.line and tok.lexpos contain information about the location of the
+token. tok.lexpos is the index of the token relative to the start of the input
+text.
+
+\secrel{The tokens list}
+\secrel{Specification of tokens}
+\secrel{Token values}
+\secrel{Discarded tokens}
+\secrel{Line numbers and positional information}
+\secrel{Ignored characters}
+\secrel{Literal characters}
+\secrel{Error handling}
+\secrel{EOF Handling}
+\secrel{Building and using the lexer}
+\secrel{The @TOKEN decorator}
+\secrel{Optimized mode}
+\secrel{Debugging}
+\secrel{Alternative specification of lexers}
+\secrel{Maintaining state}
+\secrel{Lexer cloning}
+\secrel{Internal lexer state}
+\secrel{Conditional lexing and start conditions}
+\secrel{Miscellaneous Issues}
+\secup
