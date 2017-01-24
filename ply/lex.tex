@@ -205,6 +205,15 @@ For example:
 \lstx{literal actions}{ply/literals.py}{Python}
 
 \secrel{Error handling}
+
+The \verb|t_error()| function is used to handle lexing errors that occur when
+illegal characters are detected. In this case, the \verb|t.value| attribute
+contains the rest of the input string that has not been tokenized. In the
+example, the error function was defined as follows:
+\lstx{\var{t\_error}}{ply/error.py}{Python}
+In this case, we simply print the offending character and skip ahead one
+character by calling \verb|t.lexer.skip(1)|.
+
 \secrel{EOF Handling}
 \secrel{Building and using the lexer}
 \secrel{The @TOKEN decorator}
