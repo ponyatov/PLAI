@@ -215,6 +215,19 @@ In this case, we simply print the offending character and skip ahead one
 character by calling \verb|t.lexer.skip(1)|.
 
 \secrel{EOF Handling}
+
+The \verb|t_eof()| function is used to handle an end-of-file (EOF) condition in
+the input. As input, it receives a token type \verb|'eof'| with the \var{lineno}
+and \var{lexpos} attributes set appropriately. The main use of this function is
+provide more input to the lexer so that it can continue to parse.
+Here is an example of how this works:
+\lstx{\var{t\_eof}}{ply/eof.py}{Python}
+The EOF function should return the next available token (by calling
+\verb|self.lexer.token()|) or \verb|None| to indicate no more data. Be aware
+that setting more input with the \verb|self.lexer.input()| method does NOT reset
+the lexer state or the lineno attribute used for position tracking. The lexpos
+attribute is reset so be aware of that if you're using it in error reporting.
+
 \secrel{Building and using the lexer}
 \secrel{The @TOKEN decorator}
 \secrel{Optimized mode}
