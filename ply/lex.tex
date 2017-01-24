@@ -257,6 +257,27 @@ This will attach \verb|identifier| to the docstring for \verb|t_ID()| allowing
 \file{lex.py} to work normally.
 
 \secrel{Optimized mode}
+
+For improved performance, it may be desirable to use Python's optimized mode
+(e.g., running Python with the -O option). However, doing so causes Python to
+ignore documentation strings. This presents special problems for lex.py. To
+handle this case, you can create your lexer using the optimize option as
+follows:
+\lstx{lextab}{ply/lextab.py}{Python}
+Next, run Python in its normal operating mode. When you do this, lex.py will
+write a file called lextab.py in the same directory as the module containing the
+lexer specification. This file contains all of the regular expression rules and
+tables used during lexing. On subsequent executions, lextab.py will simply be
+imported to build the lexer. This approach substantially improves the startup
+time of the lexer and it \emph{works in Python's optimized mode}.
+
+To change the name of the lexer-generated module, use the lextab keyword
+argument. For example:
+\lstx{footab}{ply/footab.py}{Python}
+When running in optimized mode, it is important to note that lex disables most
+error checking. Thus, this is really only recommended if you're sure everything
+is working correctly and you're ready to start releasing production code.
+
 \secrel{Debugging}
 \secrel{Alternative specification of lexers}
 \secrel{Maintaining state}
