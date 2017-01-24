@@ -119,6 +119,19 @@ those rules will be triggered for identifiers that include those words as a
 prefix such as "forget" or "printed". This is probably not what you want.
 
 \secrel{Token values}
+
+When tokens are returned by lex, they have a value that is stored in the value
+attribute. Normally, the value is the text that was matched. However, the value
+can be assigned to any Python object. For instance, when lexing identifiers, you
+may want to return both the identifier name and information from some sort of
+symbol table. To do this, you might write a rule like this:
+\lstx{symbol table lookup}{ply/values.py}{Python}
+It is important to note that storing data in other attribute names is not
+recommended. The yacc.py module only exposes the contents of the value
+attribute. Thus, accessing other attributes may be unnecessarily awkward. If you
+need to store multiple values on a token, assign a tuple, dictionary, or
+instance to value.
+
 \secrel{Discarded tokens}
 \secrel{Line numbers and positional information}
 \secrel{Ignored characters}

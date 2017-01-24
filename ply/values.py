@@ -1,0 +1,6 @@
+def t_ID(t):
+    ...
+    # Look up symbol table information and return a tuple
+    t.value = (t.value, symbol_lookup(t.value))
+    ...
+    return t
