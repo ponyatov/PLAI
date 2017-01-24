@@ -48,6 +48,15 @@ token. tok.lexpos is the index of the token relative to the start of the input
 text.
 
 \secrel{The tokens list}
+
+All lexers must provide a list tokens that defines all of the possible token
+names that can be produced by the lexer. This list is always required and is
+used to perform a variety of validation checks. The tokens list is also used by
+the yacc.py module to identify terminals.
+
+In the example, the following code specified the token names:
+\lstx{\var{tokens}}{ply/tokens.py}{Python}
+
 \secrel{Specification of tokens}
 \secrel{Token values}
 \secrel{Discarded tokens}

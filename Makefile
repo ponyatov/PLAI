@@ -441,7 +441,7 @@ ESRC += core/py/ply9a.py core/py/ply9b.py core/py/ply9bb.py core/py/ply9c.py
 
 ETEX += ply/ply.tex ply/intro.tex ply/overview.tex ply/lex.tex ply/parse.tex
 ESRC += ply/calclex.py ply/calclex_test.py ply/calclex.log ply/iter.py
-ESRC += ply/tokenize.py 
+ESRC += ply/tokenize.py ply/tokens.py 
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf
