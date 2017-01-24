@@ -58,6 +58,66 @@ In the example, the following code specified the token names:
 \lstx{\var{tokens}}{ply/tokens.py}{Python}
 
 \secrel{Specification of tokens}
+
+Each token is specified by writing a regular expression rule compatible with
+Python's re module. Each of these rules are defined by making declarations with
+a special prefix t\_ to indicate that it defines a token. For simple tokens, the
+regular expression can be specified as strings such as this (note: Python raw
+strings are used since they are the most convenient way to write regular
+expression strings):
+\lstx{\var{t\_PLUS}}{ply/plus.py}{Python}
+In this case, the name following the t\_ must exactly match one of the names
+supplied in tokens. If some kind of action needs to be performed, a token rule
+can be specified as a function. For example, this rule matches numbers and
+converts the string into a Python integer.
+\lstx{\var{t\_NUMBER}}{ply/number.py}{Python}
+When a function is used, the regular expression rule is specified in the
+function documentation string. The function always takes a single argument which
+is an instance of LexToken. This object has attributes of t.type which is the
+token type (as a string), t.value which is the lexeme (the actual text matched),
+t.lineno which is the current line number, and t.lexpos which is the position of
+the token relative to the beginning of the input text. By default, t.type is set
+to the name following the t\_ prefix. The action function can modify the
+contents of the LexToken object as appropriate. However, when it is done, the
+resulting token should be returned. If no value is returned by the action
+function, the token is simply discarded and the next token read.
+
+Internally, lex.py uses the re module to do its pattern matching. Patterns are
+compiled using the re.VERBOSE flag which can be used to help readability.
+However, be aware that unescaped whitespace is ignored and comments are allowed
+in this mode. If your pattern involves whitespace, make sure you use \verb|\s|.
+If you need to match the \verb|#| character, use \verb|[#]|.
+
+When building the master regular expression, rules are added in the following
+order:
+\begin{enumerate}[nosep]
+  \item 
+All tokens defined by functions are added in the same order as they appear in
+the lexer file.
+  \item 
+Tokens defined by strings are added next by sorting them in order of decreasing
+regular expression length (longer expressions are added first).
+\end{enumerate}
+
+Without this ordering, it can be difficult to correctly match certain types of
+tokens. For example, if you wanted to have separate tokens for "=" and "==", you
+need to make sure that "==" is checked first. By sorting regular expressions in
+order of decreasing length, this problem is solved for rules defined as strings.
+For functions, the order can be explicitly controlled since rules appearing
+first are checked first.
+
+To handle reserved words, you should write a single rule to match an identifier
+and do a special name lookup in a function like this:
+\lstt{lookup}{ply/reserved.py}
+This approach greatly reduces the number of regular expression rules and is
+likely to make things a little faster.
+
+\paragraph{Note}: You should avoid writing individual rules for reserved words.
+For example, if you write rules like this,
+\lstx{\ }{ply/for.py}{Python}
+those rules will be triggered for identifiers that include those words as a
+prefix such as "forget" or "printed". This is probably not what you want.
+
 \secrel{Token values}
 \secrel{Discarded tokens}
 \secrel{Line numbers and positional information}
