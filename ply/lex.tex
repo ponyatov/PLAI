@@ -229,6 +229,20 @@ the lexer state or the lineno attribute used for position tracking. The lexpos
 attribute is reset so be aware of that if you're using it in error reporting.
 
 \secrel{Building and using the lexer}
+
+To build the lexer, the function lex.lex() is used. For example:
+\lstx{build lexer}{ply/lex.py}{Python}
+This function uses Python reflection (or introspection) to read the regular
+expression rules out of the calling context and build the lexer. Once the lexer
+has been built, two methods can be used to control the lexer.
+\begin{itemize}[nosep]
+  \item 
+\verb|lexer.input(data)|\\Reset the lexer and store a new input string.
+  \item 
+\verb|lexer.token()|\\Return the next token. Returns a special LexToken instance
+on success or None if the end of the input text has been reached.
+\end{itemize}
+
 \secrel{The @TOKEN decorator}
 \secrel{Optimized mode}
 \secrel{Debugging}
