@@ -445,7 +445,7 @@ ESRC += ply/tokenize.py ply/tokens.py ply/plus.py ply/number.py
 ESRC += ply/reserved.py ply/for.py ply/values.py ply/ignored.py
 ESRC += ply/comment.py ply/commentign.py ply/newline.py ply/column.py
 ESRC += ply/litlist.py ply/litstr.py ply/literals.py ply/error.py ply/eof.py
-ESRC += ply/lex.py 
+ESRC += ply/lex.py ply/token.py ply/tokenid.py 
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf

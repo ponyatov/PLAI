@@ -244,6 +244,18 @@ on success or None if the end of the input text has been reached.
 \end{itemize}
 
 \secrel{The @TOKEN decorator}
+
+In some applications, you may want to define build tokens from as a series of
+more complex regular expression rules. For example:
+\lstx{@TOKEN}{ply/tokenid.py}{Python}
+In this case, we want the regular expression rule for ID to be one of the
+variables above. However, there is no way to directly specify this using a
+normal documentation string. To solve this problem, you can use the @TOKEN
+decorator. For example:
+\lstx{@TOKEN}{ply/token.py}{Python}
+This will attach \verb|identifier| to the docstring for \verb|t_ID()| allowing
+\file{lex.py} to work normally.
+
 \secrel{Optimized mode}
 \secrel{Debugging}
 \secrel{Alternative specification of lexers}
