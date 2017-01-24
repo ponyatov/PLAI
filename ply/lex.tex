@@ -167,6 +167,22 @@ calculating the column position can be performed when needed as opposed to doing
 it for each token.
 
 \secrel{Ignored characters}
+
+The special \verb|t_ignore| rule is reserved by lex.py for characters that
+should be completely ignored in the input stream. Usually this is used to skip
+over whitespace and other non-essential characters. Although it is possible to
+define a regular expression rule for whitespace in a manner similar to
+\verb|t_newline()|, the use of \verb|t_ignore| provides substantially better
+lexing performance because it is handled as a special case and is checked in a
+much more efficient manner than the normal regular expression rules.
+\lstx{ignored characters}{ply/ignored.py}{Python}
+
+The characters given in \verb|t_ignore| are not ignored when such characters are
+part of other regular expression patterns. For example, if you had a rule to
+capture quoted text, that pattern can include the ignored characters (which will
+be captured in the normal way). The main purpose of \verb|t_ignore| is to ignore
+whitespace and other padding between the tokens that you actually want to parse.
+
 \secrel{Literal characters}
 \secrel{Error handling}
 \secrel{EOF Handling}
