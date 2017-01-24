@@ -279,7 +279,61 @@ error checking. Thus, this is really only recommended if you're sure everything
 is working correctly and you're ready to start releasing production code.
 
 \secrel{Debugging}
-\secrel{Alternative specification of lexers}
+
+For the purpose of debugging, you can run \verb|lex()| in a debugging mode as
+follows:
+\lstx{footab}{ply/debug.py}{Python}
+This will produce various sorts of debugging information including all of the
+added rules, the master regular expressions used by the lexer, and tokens
+generating during lexing.
+
+In addition, \file{lex.py} comes with a simple main function which will either
+tokenize input read from standard input or from a file specified on the command
+line. To use it, simply put this in your lexer:
+\lstx{footab}{ply/runmain.py}{Python}
+Please refer to the "Debugging" section \ref{plydebug} near the end for some
+more advanced details of debugging.
+
+\secrel{Module specification of lexer}
+
+As shown in the example, lexers are specified all within one Python module. If
+you want to put token rules in a different module from the one in which you
+invoke \verb|lex()|, use the module keyword argument.
+
+For example, you might have a dedicated module that just contains the token
+rules:
+\lstt{module}{ply/module.py}
+
+Now, if you wanted to build a tokenizer from these rules from within a different
+module, you would do the following (shown for Python interactive mode):
+\lstt{module}{ply/modimport.py}
+
+\secrel{Class-wrapped lexers}
+
+The module option can also be used to define lexers from instances of a class.
+For example:
+\lstt{class}{ply/modclass.py}
+
+When building a lexer from class, \emph{you should construct the lexer from an
+instance of the class}, not the class object itself. This is because PLY only
+works properly if the lexer actions are defined by bound-methods.
+
+When using the module option to \verb|lex()|, PLY collects symbols from the
+underlying object using the \verb|dir()| function. There is no direct access to
+the \verb|__dict__| attribute of the object supplied as a module value.
+
+\secrel{Closured lexer}
+
+Finally, if you want to keep things nicely encapsulated, but don't want to use a
+full-fledged class definition, lexers can be defined using closures. For
+example:
+\lstt{closure}{ply/closure.py}
+
+\paragraph{Important note}: If you are defining a lexer using a class or
+closure, be aware that PLY still requires you to only define a single lexer per
+module (source file). There are extensive validation/error checking parts of the
+PLY that may falsely report error messages if you don't follow this rule.
+
 \secrel{Maintaining state}
 \secrel{Lexer cloning}
 \secrel{Internal lexer state}
