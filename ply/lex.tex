@@ -184,6 +184,26 @@ be captured in the normal way). The main purpose of \verb|t_ignore| is to ignore
 whitespace and other padding between the tokens that you actually want to parse.
 
 \secrel{Literal characters}
+
+Literal characters can be specified by defining a variable literals in your
+lexing module. For example:
+\lstx{\var{literals}}{ply/litlist.py}{Python}
+or alternatively
+\lstx{\var{literals}}{ply/litstr.py}{Python}
+
+A literal character is simply a single character that is returned "as is" when
+encountered by the lexer. Literals are checked after all of the defined regular
+expression rules. Thus, if a rule starts with one of the literal characters, it
+will always take precedence.
+
+When a literal token is returned, both its type and value attributes are set to
+the character itself. For example, '+'.
+
+It's possible to write token functions that perform additional actions when
+literals are matched. However, you'll need to set the token type appropriately.
+For example:
+\lstx{literal actions}{ply/literals.py}{Python}
+
 \secrel{Error handling}
 \secrel{EOF Handling}
 \secrel{Building and using the lexer}
