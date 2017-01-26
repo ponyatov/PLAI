@@ -447,7 +447,8 @@ ESRC += ply/comment.py ply/commentign.py ply/newline.py ply/column.py
 ESRC += ply/litlist.py ply/litstr.py ply/literals.py ply/error.py ply/eof.py
 ESRC += ply/lex.py ply/token.py ply/tokenid.py ply/lextab.py ply/footab.py
 ESRC += ply/debug.py ply/runmain.py
-ESRC += ply/module.py ply/modimport.py ply/modclass.py ply/closure.py 
+ESRC += ply/module.py ply/modimport.py ply/modclass.py ply/closure.py
+ESRC += ply/state1.py ply/state2.py ply/state3.py ply/state4.py 
 
 .PHONY: pdf
 pdf: PLAI.pdf PLEX.pdf

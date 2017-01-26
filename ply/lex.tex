@@ -308,7 +308,7 @@ Now, if you wanted to build a tokenizer from these rules from within a different
 module, you would do the following (shown for Python interactive mode):
 \lstt{module}{ply/modimport.py}
 
-\secrel{Class-wrapped lexers}
+\secrel{Class-wrapped lexers}\label{plylexclass}
 
 The module option can also be used to define lexers from instances of a class.
 For example:
@@ -334,7 +334,46 @@ closure, be aware that PLY still requires you to only define a single lexer per
 module (source file). There are extensive validation/error checking parts of the
 PLY that may falsely report error messages if you don't follow this rule.
 
-\secrel{Maintaining state}
+\secrel{Maintaining state variables}
+
+In your lexer, you may want to maintain a variety of state information. This
+also might include mode settings, symbol tables, and other details. As an
+example, suppose that you wanted to keep track of how many \var{NUMBER} tokens
+had been encountered.
+
+One way to do this is to keep a set of global variables in the module where you
+created the lexer. For example:
+\lstx{\ }{ply/state1.py}{Python}
+If you don't like the use of a global variable, another place to store
+information is inside the Lexer object created by lex(). To this, you can use
+the lexer attribute of tokens passed to the various rules. For example:
+\lstx{\ }{ply/state2.py}{Python}
+
+This latter approach has the advantage of being simple and working correctly in
+applications where multiple instantiations of a given lexer exist in the same
+application. However, this might also feel like a gross violation of
+encapsulation to OO purists. Just to put your mind at some ease, all internal
+attributes of the lexer (with the exception of lineno) have names that are
+prefixed by lex (e.g., lexdata,lexpos, etc.). Thus, it is perfectly safe to
+store attributes in the lexer that don't have names starting with that prefix or
+a name that conflicts with one of the predefined methods (e.g., input(),
+token(), etc.).
+
+If you don't like assigning values on the lexer object, you can define your
+lexer as a class as shown in the previous section \ref{plylexclass}:
+\lstx{\ }{ply/state3.py}{Python}
+The class approach may be the easiest to manage if your application is going to
+be creating multiple instances of the same lexer and you need to manage a lot of
+state.
+
+State can also be managed through closures. For example, in Python 3:
+\lstx{\ }{ply/state4.py}{Python}
+
+\secrel{Lexer states (string constants parsing)}
+
+First place for using \term{lexer states}\ --- string constants parsing in
+programming languages.
+
 \secrel{Lexer cloning}
 \secrel{Internal lexer state}
 \secrel{Conditional lexing and start conditions}
