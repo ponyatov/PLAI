@@ -1,0 +1,141 @@
+\secrel{Part 1}
+
+“If you don’t know how compilers work, then you don’t know how computers work.
+If you’re not 100\% sure whether you know how compilers work, then you don’t
+know how they work.”\ --- Steve Yegge
+
+There you have it. Think about it. It doesn’t really matter whether you’re a
+newbie or a seasoned software developer: if you don’t know how compilers and
+interpreters work, then you don’t know how computers work. It’s that simple.
+
+So, do you know how compilers and interpreters work? And I mean, are you 100\%
+sure that you know how they work? If you don’t. 
+\begin{framed}\end{framed}
+Or if you don’t and you’re really agitated about it. 
+\begin{framed}\end{framed}
+
+Do not worry. If you stick around and work through the series and build an
+interpreter and a compiler with me you will know how they work in the end. And
+you will become a confident happy camper too. At least I hope so.
+\begin{framed}\end{framed}
+
+Why would you study interpreters and compilers? I will give you three reasons.
+\begin{enumerate}
+  \item 
+To write an interpreter or a compiler you have to have a lot of technical skills
+that you need to use together. Writing an interpreter or a compiler will help
+you improve those skills and become a better software developer. As well, the
+skills you will learn are useful in writing any software, not just interpreters
+or compilers.
+  \item 
+You really want to know how computers work. Often interpreters and compilers
+look like magic. And you shouldn’t be comfortable with that magic. You want to
+demystify the process of building an interpreter and a compiler, understand how
+they work, and get in control of things.
+  \item 
+You want to create your own programming language or domain specific language. If
+you create one, you will also need to create either an interpreter or a compiler
+for it. Recently, there has been a resurgence of interest in new programming
+languages. And you can see a new programming language pop up almost every day:
+Elixir, Go, Rust just to name a few.
+\end{enumerate}
+
+Okay, but what are interpreters and compilers?
+
+The goal of an interpreter or a compiler is to translate a source program in
+some high-level language into some other form. Pretty vague, isn’t it? Just bear
+with me, later in the series you will learn exactly what the source program is
+translated into.
+
+At this point you may also wonder what the difference is between an interpreter
+and a compiler. For the purpose of this series, let’s agree that if a translator
+translates a source program into machine language, it is a compiler. If a
+translator processes and executes the source program without translating it into
+machine language first, it is an interpreter. Visually it looks something like
+this:
+\begin{framed}\end{framed}
+
+I hope that by now you’re convinced that you really want to study and build an
+interpreter and a compiler. What can you expect from this series on
+interpreters?
+
+Here is the deal. You and I are going to create a simple interpreter for a large
+subset of Pascal language. At the end of this series you will have a working
+Pascal interpreter and a source-level debugger like Python’s pdb.
+
+You might ask, why Pascal? For one thing, it’s not a made-up language that I
+came up with just for this series: it’s a real programming language that has
+many important language constructs. And some old, but useful, CS books use
+Pascal programming language in their examples (I understand that that’s not a
+particularly compelling reason to choose a language to build an interpreter for,
+but I thought it would be nice for a change to learn a non-mainstream language
+:)
+
+Here is an example of a factorial function in Pascal that you will be able to
+interpret with your own interpreter and debug with the interactive source-level
+debugger that you will create along the way:
+\lstx{program factorial}{ruslan/pas.pas}{Pascal}
+
+The implementation language of the Pascal interpreter will be Python, but you
+can use any language you want because the ideas presented don’t depend on any
+particular implementation language. Okay, let’s get down to business. Ready,
+set, go!
+
+You will start your first foray into interpreters and compilers by writing a
+simple interpreter of arithmetic expressions, also known as a calculator. Today
+the goal is pretty minimalistic: to make your calculator handle the addition of
+two single digit integers like $3+5$. Here is the source code for your
+calculator, sorry, interpreter:
+\lstx{}{ruslan/py.py}{Python}
+
+Save the above code into calc1.py file or download it directly from GitHub.
+Before you start digging deeper into the code, run the calculator on the command
+line and see it in action. Play with it! Here is a sample session on my laptop
+(if you want to run the calculator under Python3 you will need to replace
+raw\_input with input):
+\lstx{}{ruslan/py.py}{Python}
+
+For your simple calculator to work properly without throwing an exception, your
+input needs to follow certain rules:
+\begin{itemize}[nosep]
+  \item 
+Only single digit integers are allowed in the input
+  \item 
+The only arithmetic operation supported at the moment is addition
+  \item 
+No whitespace characters are allowed anywhere in the input
+\end{itemize}
+
+Those restrictions are necessary to make the calculator simple. Don’t worry,
+you’ll make it pretty complex pretty soon.
+
+Okay, now let’s dive in and see how your interpreter works and how it evaluates
+arithmetic expressions.
+
+When you enter an expression $3+5$ on the command line your interpreter gets a
+string “3+5”. In order for the interpreter to actually understand what to do
+with that string it first needs to break the input “3+5” into components called
+tokens. A token is an object that has a type and a value. For example, for the
+string “3” the type of the token will be INTEGER and the corresponding value
+will be integer 3.
+
+The process of breaking the input string into tokens is called lexical analysis.
+So, the first step your interpreter needs to do is read the input of characters
+and convert it into a stream of tokens. The part of the interpreter that does it
+is called a lexical analyzer, or lexer for short. You might also encounter other
+names for the same component, like scanner or tokenizer. They all mean the same:
+the part of your interpreter or compiler that turns the input of characters into
+a stream of tokens.
+
+The method \verb|get_next_token| of the Interpreter class is your lexical
+analyzer. Every time you call it, you get the next token created from the input
+of characters passed to the interpreter. Let’s take a closer look at the method
+itself and see how it actually does its job of converting characters into
+tokens. The input is stored in the variable text that holds the input string and
+pos is an index into that string (think of the string as an array of
+characters). pos is initially set to 0 and points to the character ‘3’. The
+method first checks whether the character is a digit and if so, it increments
+pos and returns a token instance with the type INTEGER and the value set to the
+integer value of the string ‘3’, which is an integer 3:
+
+\img{ruslan/png.png}{height=0.2\textheight}
