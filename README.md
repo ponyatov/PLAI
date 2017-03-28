@@ -11,6 +11,8 @@
 
 [pdf] http://www.cs.brown.edu/courses/cs173/2012/book/book.pdf
 
+[OOP] https://users.dcc.uchile.cl/~etanter/ooplai/ (c) Eric Tanter
+
 ### preinstall
 
 [racket] https://racket-lang.org/
